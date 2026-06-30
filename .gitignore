@@ -2,3 +2,5 @@ scratch*
 *pycache*
 workbench*
 nfcu_raw.json
+.claude*
+*venv
