@@ -1,13 +1,12 @@
 [project]
 name = "nfcu-pipe"
 version = "0.1.0"
-description = "A headless data ingestion pipeline for Navy Federal financial transactions via Plaid."
+description = "Daily raw extract of NFCU account data via SimpleFIN into S3."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "flask>=3.0.0",
-    "plaid-python>=24.0.0",
-    "python-dotenv>=1.0.1",
+    "boto3",
+    "requests",
 ]
 
 # This line tells uv NOT to try and build/install the root folder as a package
