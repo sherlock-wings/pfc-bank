@@ -1,0 +1,28 @@
+name: nfcu-pipe daily extract
+
+on:
+  schedule:
+    - cron: "0 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  id-token: write   # mint the OIDC token used to assume the AWS role
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    env:
+      S3_BUCKET: pfc-nfcu
+      S3_PREFIX: ${{ vars.S3_PREFIX }}            # set to _demo/transactions for Phase 0
+      SIMPLEFIN_ACCESS_URL: ${{ secrets.SIMPLEFIN_ACCESS_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: us-east-2
+      - run: uv run extract.py
