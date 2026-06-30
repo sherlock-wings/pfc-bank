@@ -3,11 +3,17 @@
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urlsplit, urlunsplit
 
 import boto3
 import requests
+
+# Every run re-fetches a wide window so a missed/dropped run is backfilled by
+# the next success. Dedup happens later in dbt, not here. 90 is SimpleFIN's
+# max window; wide windows emit a harmless "exceeds recommended range" warning
+# in `errors` that does not reduce data or trip the empty-pull alert.
+PULL_WINDOW_DAYS = int(os.environ.get("PULL_WINDOW_DAYS", "90"))
 
 
 def access_url() -> str:
@@ -25,7 +31,9 @@ def fetch_accounts(url: str) -> bytes:
     if parts.port:
         netloc = f"{netloc}:{parts.port}"
     base = urlunsplit((parts.scheme, netloc, parts.path, "", "")).rstrip("/")
-    resp = requests.get(f"{base}/accounts", auth=auth, timeout=60)
+    start = datetime.now(timezone.utc) - timedelta(days=PULL_WINDOW_DAYS)
+    params = {"start-date": int(start.timestamp())}
+    resp = requests.get(f"{base}/accounts", auth=auth, params=params, timeout=60)
     resp.raise_for_status()
     return resp.content
 
