@@ -12,6 +12,7 @@ permissions:
 jobs:
   extract:
     runs-on: ubuntu-latest
+    environment: dev   # loads the dev-scoped vars/secret (AWS_ROLE_ARN, S3_PREFIX, SIMPLEFIN_ACCESS_URL)
     env:
       S3_BUCKET: pfc-nfcu
       S3_PREFIX: ${{ vars.S3_PREFIX }}            # set to _demo/transactions for Phase 0
