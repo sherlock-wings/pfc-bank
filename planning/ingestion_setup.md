@@ -61,18 +61,19 @@ Two different limits, per the [developer guide](https://beta-bridge.simplefin.or
 - **History available:** *"varies for each institution"* — SimpleFIN guarantees no depth for NFCU.
 - **Rate limit:** 24 requests/day, so you cannot poll faster than ~hourly.
 
-First live NFCU pull (2026-06-30): all 5 accounts and current balances came back, but **every transaction was stamped at one identical timestamp ~24h prior** — MX's initial-sync placeholder, not real posting dates. The request already covered the full 90 days back; NFCU/MX simply returned nothing older. Production returned no warning in `errors`.
+**RESOLVED (2026-07-01): deep backfill is real.** A pull ~2 days after linking returned
+5 accounts and **real, correctly-dated history spanning ~87 days** (2026-04-03 → 2026-06-29;
+410 transactions on checking alone). So NFCU/MX *does* serve the full window — the
+earlier "forward-accumulation only" worry is disproven, and the 90-day window is a
+genuine backfill backstop. A missed run is recovered by the next pull.
 
-Working hypothesis: **history accumulates forward from link date** — there is no pre-link backfill, so depth grows ~1 day per day from signup. Consistent with the first pull, not yet confirmed.
+(For the record — the first pull on 2026-06-30, hours after linking, returned everything
+stamped at one placeholder timestamp: MX's initial-sync artifact. Real dated history
+appeared within ~2 days as MX finished backfilling.)
 
-Resolve it directly (don't wait 90 days): request a past-only window that ends *before* the link date.
-
-```bash
-S=$(date -d '2026-04-25' +%s); E=$(date -d '2026-06-25' +%s)
-curl -s "$ACCESS_URL/accounts?start-date=$S&end-date=$E" | python3 -m json.tool
-```
-
-- Empty transactions → confirmed: no pre-link history; depth only builds forward.
-- Non-empty → history exists; keep requesting it.
-
-Design consequence if history only builds forward: the 90-day window is **not** a real backfill backstop yet. **A missed run can permanently lose any data older than the next pull returns**, so until depth is proven, cadence must never miss a day (or backfill must be handled another way).
+### The 90-day cap warning is harmless
+Requesting *exactly* 90 days makes the server return `errors: ["...exceeds limit of 90
+days and was capped."]` — a **warning, not a failure**. Data is still returned in full;
+`is_empty()` ignores `errors`, so the guard and alerting are unaffected. To keep `errors`
+empty on healthy pulls (so a non-empty array stays a real signal), `extract.py` requests
+`PULL_WINDOW_DAYS = 88` — just under the cap.

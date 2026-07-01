@@ -57,3 +57,34 @@ NFCU actively fights aggregators and forces periodic re-auth (it broke all Plaid
 - Python fetch+dump script.
 - `.github/workflows/daily.yml`.
 - IAM role + OIDC trust (bucket already exists).
+
+## Frictionless re-link (SHELL PLAN — revisit later)
+
+**Goal:** when NFCU forces a re-auth (inevitable, see Known risk), make recovery as
+close to a phone-only, one-tap action as possible.
+
+**The irreducible manual step:** re-authenticating NFCU is an MFA flow at SimpleFIN
+Bridge. It is interactive by design (that's the security boundary) and *cannot* be fully
+automated. Best case is "open a link on your phone, complete MFA, done." So the target
+is a *mobile-browser* re-auth, not literally a GitHub button — GitHub can't do the MFA.
+
+**The key open question that decides everything (verify next time it breaks):**
+Does the SimpleFIN **access URL survive a re-auth**, or is a new one issued?
+- **If it survives** → re-linking is purely: phone → <https://bridge.simplefin.org> →
+  tap the broken NFCU connection → MFA → done. No GitHub, no secret rotation. Optionally
+  trigger the workflow from the **GitHub mobile app** (`workflow_dispatch`) to confirm the
+  fix immediately instead of waiting for the next scheduled slot. This is already ~one-tap.
+- **If it rotates** → also need to update the `SIMPLEFIN_ACCESS_URL` secret, which is the
+  real friction (editing a GitHub secret from a phone is painful). Options to explore:
+  - Re-run the setup-token → access-URL exchange, then update the secret via the GitHub
+    API from a small helper (Action or tiny endpoint) holding a scoped PAT. Adds moving
+    parts + a stored credential — only worth it if re-auth is frequent.
+  - Or accept a rare manual secret edit.
+
+**Next action:** the next time the link breaks (or by deliberately re-authing once),
+observe whether the access URL changes. That single observation picks the branch above.
+Until then this stays a stub.
+
+**Nice-to-haves for later:** a `workflow_dispatch`-only "test link now" run that pulls and
+reports health without waiting for cron; a bookmark/shortcut on the phone home screen
+straight to the NFCU connection in SimpleFIN Bridge.
