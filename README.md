@@ -16,3 +16,7 @@ The flow should be like this:
 1. How will we get past NFCU MFA Requirements?
   - I have heard that a tool called Plaid may be a good fit here
 2. What will be the overall approach to get to NFCU? Do we simulate someone actually trying to use the website like a normal user (meaning we need a tool like Selenium or Playwright)? Something else?
+
+## Operations
+
+**Re-link runbook:** a workflow failure email usually means SimpleFIN's NFCU connection needs re-auth — re-link NFCU at <https://bridge.simplefin.org> (one-time MFA) and the pipeline resumes. See the frictionless-relink plan at the bottom of `planning/plan.md`.
