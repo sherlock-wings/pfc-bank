@@ -15,10 +15,12 @@ import requests
 BD_KEY_RE = re.compile(r"_bd(\d+)\.json$")
 
 # Every run re-fetches a wide window so a missed/dropped run is backfilled by
-# the next success. Dedup happens later in dbt, not here. 90 is SimpleFIN's
-# max window; wide windows emit a harmless "exceeds recommended range" warning
-# in `errors` that does not reduce data or trip the empty-pull alert.
-PULL_WINDOW_DAYS = int(os.environ.get("PULL_WINDOW_DAYS", "90"))
+# the next success. Dedup happens later in dbt, not here. SimpleFIN caps the
+# request span at 90 days; requesting *exactly* 90 trips a "capped" warning in
+# `errors` on every pull (timing tips the span just over 90). Staying a couple
+# days under keeps `errors` empty on healthy pulls, so a non-empty `errors`
+# array stays a meaningful signal instead of noise everyone learns to ignore.
+PULL_WINDOW_DAYS = int(os.environ.get("PULL_WINDOW_DAYS", "88"))
 
 # Best-effort schedule (cron fires every ~90 min): each run is one attempt, the
 # next slot is the retry. We keep pulling until we capture a refresh dated today
