@@ -1,8 +1,11 @@
-name: nfcu-pipe daily extract
+name: nfcu-pipe extract   # fires every 90 min; extract.py stops once today's refresh is captured
 
 on:
   schedule:
-    - cron: "0 23 * * *"
+    # Every 90 min, clock-anchored to 00:00 (16 slots/day, first 00:00, last 22:30).
+    # Two entries because cron can't express a 90-min interval in one line.
+    - cron: "0 0,3,6,9,12,15,18,21 * * *"    # 00:00 03:00 06:00 09:00 12:00 15:00 18:00 21:00
+    - cron: "30 1,4,7,10,13,16,19,22 * * *"  # 01:30 04:30 07:30 10:30 13:30 16:30 19:30 22:30
   workflow_dispatch:
 
 permissions:

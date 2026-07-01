@@ -12,12 +12,26 @@ Rejected:
 - **Web scraping** — fights NFCU MFA + bot detection every run. Fallback only.
 
 ## Architecture
-- **Runner:** GitHub Actions cron `0 23 * * *`.
-- **Fetch:** `GET <access-url>/accounts` (HTTP Basic auth from the SimpleFIN access URL).
-- **Store:** write the response **verbatim** to S3. No transform, no schema, no dedupe.
-- **Bucket/key:** `pfc-nfcu/transactions/YYYY/MM/DD/yyyy-mm-ddThhmmss.json`.
-- **AWS auth:** GitHub OIDC assumes a scoped IAM role (`s3:PutObject` on `pfc-nfcu` only). No stored keys.
-- **Alerting:** email on failure or empty pull.
+- **Runner:** GitHub Actions cron every 90 min, clock-anchored to 00:00 (16 slots/day,
+  first 00:00, last 22:30; two cron entries since cron can't express a 90-min interval).
+  Best-effort. Each run is one attempt; the next slot is the retry. **Freshness-aware
+  guard:** the script keeps pulling until it captures a refresh whose `balance-date` is
+  dated today, then stops — so a refresh landing at any hour (MX's refresh time drifts)
+  is caught within ~90 min. Actual attempts vary 1–16/day depending on when the refresh
+  lands; the 16-slot ceiling leaves healthy margin under SimpleFIN's 24/day cap.
+- **Fetch:** `GET <access-url>/accounts?start-date=<90d ago>` (HTTP Basic auth from the
+  SimpleFIN access URL). See `ingestion_setup.md` for the 90-day request-span vs.
+  history-depth caveat.
+- **Store:** write the response **verbatim** to S3, but only when `balance-date` advances
+  past the last stored pull (skips redundant re-writes). No transform/schema/dedupe.
+- **Bucket/key:** `pfc-nfcu/transactions/YYYY/MM/DD/yyyy-mm-ddThhmmssZ_bd<balance-date-epoch>.json`.
+  The `_bd<epoch>` suffix lets the guard judge freshness from keys alone (ListBucket only).
+- **AWS auth:** GitHub OIDC assumes a scoped IAM role. No stored keys. Needs
+  `s3:PutObject` (write the dump) **and** `s3:ListBucket` (guard reads keys for
+  balance-dates) on `pfc-nfcu`. No `s3:GetObject` required.
+- **Alerting:** quiet during the day's hourly retries; email once only if no successful
+  fetch by `ALERT_CUTOFF_HOUR_UTC` (default 20:00 UTC). A fetch that succeeds but isn't
+  yet fresh is not a failure — it just retries next hour.
 - **Language:** Python.
 
 ## Phase 0 — no-invest test ($0)

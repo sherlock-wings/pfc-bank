@@ -2,6 +2,7 @@
 """Fetch raw account data from SimpleFIN and dump it verbatim to S3."""
 import json
 import os
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from urllib.parse import urlsplit, urlunsplit
@@ -9,11 +10,22 @@ from urllib.parse import urlsplit, urlunsplit
 import boto3
 import requests
 
+# Each stored object embeds the newest balance-date it captured, so the guard
+# can reason about freshness from object keys alone (ListBucket, no GetObject).
+BD_KEY_RE = re.compile(r"_bd(\d+)\.json$")
+
 # Every run re-fetches a wide window so a missed/dropped run is backfilled by
 # the next success. Dedup happens later in dbt, not here. 90 is SimpleFIN's
 # max window; wide windows emit a harmless "exceeds recommended range" warning
 # in `errors` that does not reduce data or trip the empty-pull alert.
 PULL_WINDOW_DAYS = int(os.environ.get("PULL_WINDOW_DAYS", "90"))
+
+# Best-effort schedule (cron fires every ~90 min): each run is one attempt, the
+# next slot is the retry. We keep pulling until we capture a refresh dated today
+# (balance-date advanced), then stop — so a refresh landing any time of day is
+# caught within ~90 min regardless of drift. Only fail loudly (alert) if the day
+# reaches the cutoff with no successful fetch at all.
+ALERT_CUTOFF_HOUR_UTC = int(os.environ.get("ALERT_CUTOFF_HOUR_UTC", "20"))
 
 
 def access_url() -> str:
@@ -45,11 +57,39 @@ def is_empty(raw: bytes) -> bool:
         return True
 
 
-def upload(raw: bytes) -> str:
+def day_prefix(now: datetime) -> tuple[str, str]:
+    """Return (bucket, key prefix) for the given day, e.g. transactions/2026/06/30/."""
     bucket = os.environ.get("S3_BUCKET", "pfc-nfcu")
     prefix = (os.environ.get("S3_PREFIX") or "transactions").strip("/")
-    now = datetime.now(timezone.utc)
-    key = f"{prefix}/{now:%Y/%m/%d}/{now:%Y-%m-%dT%H%M%S}Z.json"
+    return bucket, f"{prefix}/{now:%Y/%m/%d}/"
+
+
+def stored_balance_dates(now: datetime) -> list[int]:
+    """Balance-dates already captured today and yesterday (spans the day boundary)."""
+    s3 = boto3.client("s3")
+    out: list[int] = []
+    for day in (now, now - timedelta(days=1)):
+        bucket, prefix = day_prefix(day)
+        for obj in s3.list_objects_v2(Bucket=bucket, Prefix=prefix).get("Contents", []):
+            m = BD_KEY_RE.search(obj["Key"])
+            if m:
+                out.append(int(m.group(1)))
+    return out
+
+
+def max_balance_date(raw: bytes) -> int | None:
+    """Newest balance-date across accounts, or None."""
+    try:
+        accounts = json.loads(raw).get("accounts") or []
+    except ValueError:
+        return None
+    bds = [a["balance-date"] for a in accounts if a.get("balance-date")]
+    return max(bds) if bds else None
+
+
+def upload(raw: bytes, now: datetime, bd: int) -> str:
+    bucket, prefix = day_prefix(now)
+    key = f"{prefix}{now:%Y-%m-%dT%H%M%S}Z_bd{bd}.json"
     boto3.client("s3").put_object(
         Bucket=bucket, Key=key, Body=raw, ContentType="application/json"
     )
@@ -57,10 +97,37 @@ def upload(raw: bytes) -> str:
 
 
 def main() -> None:
-    raw = fetch_accounts(access_url())
-    if is_empty(raw):
-        sys.exit("SimpleFIN returned no accounts; failing run to trigger alert")
-    print(f"Wrote {len(raw)} bytes to {upload(raw)}")
+    now = datetime.now(timezone.utc)
+    stored = stored_balance_dates(now)
+
+    # Done for today once we've captured a refresh whose balance-date is dated
+    # today: MX refreshes ~once/day, so there's nothing newer to wait for.
+    if any(datetime.fromtimestamp(bd, timezone.utc).date() == now.date() for bd in stored):
+        print("Today's refresh already captured; nothing to do.")
+        return
+
+    try:
+        raw = fetch_accounts(access_url())
+        if is_empty(raw):
+            raise RuntimeError("SimpleFIN returned no accounts")
+    except Exception as exc:
+        # Stay quiet during the day's retries; only alert once the cutoff passes
+        # with still no successful fetch. The next hourly run is the retry.
+        if now.hour >= ALERT_CUTOFF_HOUR_UTC:
+            sys.exit(f"No successful fetch by {ALERT_CUTOFF_HOUR_UTC}:00 UTC: {exc}")
+        print(f"Fetch failed ({exc}); retrying next hour.")
+        return
+
+    # Fetch succeeded but the data may be unchanged since the last stored pull.
+    # Only write (and thus stop) once balance-date actually advances.
+    bd = max_balance_date(raw)
+    last = max(stored) if stored else None
+    if bd is not None and last is not None and bd <= last:
+        print(f"No new refresh yet (balance-date {bd} <= stored {last}); retrying next hour.")
+        return
+
+    marker = bd if bd is not None else int(now.timestamp())
+    print(f"Wrote {len(raw)} bytes to {upload(raw, now, marker)}")
 
 
 if __name__ == "__main__":
