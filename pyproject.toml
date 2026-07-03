@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "boto3",
+    "dbt-duckdb>=1.10.1",
+    "duckdb>=1.5.4",
     "requests",
 ]
 
