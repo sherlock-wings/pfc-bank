@@ -1,0 +1,37 @@
+name: nfcu reauth
+
+on:
+  workflow_dispatch:
+    inputs:
+      setup_token:
+        description: "Setup token from bridge.simplefin.org (Connect an app)"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  update-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exchange setup token for access URL
+        id: exchange
+        run: |
+          CLAIM_URL=$(echo "${{ inputs.setup_token }}" | base64 -d)
+          ACCESS_URL=$(curl -sf -X POST "$CLAIM_URL")
+          echo "::add-mask::$ACCESS_URL"
+          echo "access_url=$ACCESS_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Update SIMPLEFIN_ACCESS_URL secret
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_ADMIN_PAT }}
+        run: |
+          gh secret set SIMPLEFIN_ACCESS_URL \
+            --repo sherlock-wings/nfcu-pipe \
+            --env dev \
+            --body "${{ steps.exchange.outputs.access_url }}"
+
+      - name: Trigger a verification pull
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_ADMIN_PAT }}
+        run: gh workflow run extract.yml --repo sherlock-wings/nfcu-pipe
