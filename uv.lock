@@ -661,6 +661,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "boto3" },
+    { name = "dbt-core" },
     { name = "dbt-duckdb" },
     { name = "duckdb" },
     { name = "requests" },
@@ -669,6 +670,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "boto3" },
+    { name = "dbt-core", specifier = ">=1.11.12" },
     { name = "dbt-duckdb", specifier = ">=1.10.1" },
     { name = "duckdb", specifier = ">=1.5.4" },
     { name = "requests" },
