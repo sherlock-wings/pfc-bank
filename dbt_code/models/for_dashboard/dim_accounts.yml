@@ -2,39 +2,9 @@ version: 2
 
 models:
   - name: dim_accounts
-  - description: "Top-level account information. Shows all NFCU accounts and their balances."
+    description: "Top-level account information. Shows all NFCU accounts and their balances."
 
     columns:
-      - name: bank_account_id
-        data_type: text
-        description: "Natural key for bank accounts-- some kind of UUID."
-        tests:
-          - unique
-          - not_null
-      - name: bank_account_id
-        data_type: text
-        description: "Natural key for bank accounts-- some kind of UUID."
-        tests:
-          - unique
-          - not_null
-      - name: bank_account_id
-        data_type: text
-        description: "Natural key for bank accounts-- some kind of UUID."
-        tests:
-          - unique
-          - not_null
-      - name: bank_account_id
-        data_type: text
-        description: "Natural key for bank accounts-- some kind of UUID."
-        tests:
-          - unique
-          - not_null
-      - name: bank_account_id
-        data_type: text
-        description: "Natural key for bank accounts-- some kind of UUID."
-        tests:
-          - unique
-          - not_null
       - name: bank_account_id
         data_type: text
         description: "Natural key for bank accounts-- some kind of UUID."
@@ -65,4 +35,7 @@ models:
       - name: filename
         data_type: text
         description: "Name of the file (stored in S3) that contains the given record."
-      
+      - name: record_loaded_at_timestamp
+        data_type: timestamptz
+        description: "The time at which the given record was loaded to s3."
+              
