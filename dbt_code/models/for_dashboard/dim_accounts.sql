@@ -1,7 +1,3 @@
-{{ config(
-    external_location='s3://pfc-nfcu/datamart/dim_account.parquet'
-) }}
-
 with init as (
 select unnest(accounts) as acnt, filename
 from read_json_auto('s3://pfc-nfcu/transactions/*/*/*/*.json')
