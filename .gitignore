@@ -6,3 +6,4 @@ workbench*
 *venv
 .user.yml
 *.parquet
+logs*
