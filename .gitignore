@@ -1,6 +1,6 @@
 scratch*
 *pycache*
 workbench*
-nfcu_raw.json
+*.json
 .claude*
 *venv
