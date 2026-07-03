@@ -1,0 +1,15 @@
+dbt_code:  
+  target: dev  
+  outputs:
+    dev: 
+      type: duckdb 
+      path: ':memory:' 
+      threads: 4
+      extensions: 
+        - httpfs
+        - aws
+      plugins: 
+        - module: aws
+          config:
+            method: credential_provider
+         
