@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: nfcu_raw
+    schema: main
+    meta:
+      plugin: s3 
+    tables:
+      - name: transactions 
+        description: "Raw transaction data streamed from S3"
+        config:
+          # The exact S3 path where DuckDB should look
+          external_location: 's3://pfc-nfcu/transactions/*/*/*/.json'
