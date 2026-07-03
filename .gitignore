@@ -1,6 +1,6 @@
 scratch*
 *pycache*
 workbench*
-*.json
+*T*.json
 .claude*
 *venv
