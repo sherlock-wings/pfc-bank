@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: dim_accounts
+  - description: "Top-level account information. Shows all NFCU accounts and their balances."
+
+    columns:
+      - name: bank_account_id
+        data_type: text
+        description: "Natural key for bank accounts-- some kind of UUID."
+        tests:
+          - unique
+          - not_null
+      - name: bank_account_id
+        data_type: text
+        description: "Natural key for bank accounts-- some kind of UUID."
+        tests:
+          - unique
+          - not_null
+      - name: bank_account_id
+        data_type: text
+        description: "Natural key for bank accounts-- some kind of UUID."
+        tests:
+          - unique
+          - not_null
+      - name: bank_account_id
+        data_type: text
+        description: "Natural key for bank accounts-- some kind of UUID."
+        tests:
+          - unique
+          - not_null
+      - name: bank_account_id
+        data_type: text
+        description: "Natural key for bank accounts-- some kind of UUID."
+        tests:
+          - unique
+          - not_null
+      - name: bank_account_id
+        data_type: text
+        description: "Natural key for bank accounts-- some kind of UUID."
+        tests:
+          - unique
+          - not_null
+      - name: bank_account_name
+        data_type: text
+        description: "Name of the NFCU Bank account."
+      - name: currency
+        data_type: text
+        description: "Three-digit ISO code for the currency type for the bank account. 100% USD at time of last edit."
+      - name: actual_balance
+        data_type: decimal(14,2)
+        description: "Current balance of the account, excluding pending transactions. Typically higher than available balance."
+        tests:
+          - not_null
+      - name: available_balance
+        data_type: decimal(14,2)
+        description: "Spend-able balance of the account, including pending transactions. Typically lower than the actual balance."
+        tests:
+          - not_null
+      - name: balance_as_of_timestamp
+        data_type: timestamptz
+        description: "Timestamp of when the financial record was obtained by SimpleFIN from NFCU."
+        tests:
+          - not_null
+      - name: filename
+        data_type: text
+        description: "Name of the file (stored in S3) that contains the given record."
+      
