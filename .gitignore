@@ -4,3 +4,4 @@ workbench*
 *T*.json
 .claude*
 *venv
+.user.yml
