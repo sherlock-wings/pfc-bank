@@ -22,6 +22,5 @@ models:
   dbt_code:
     for_dashboards:
       +materialized: external
-      +plugin: s3
       +format: parquet
       +external_location: 's3://pfc-nfcu/dashboard_mart/{name}.parquet'  

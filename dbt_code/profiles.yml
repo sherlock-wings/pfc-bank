@@ -8,8 +8,7 @@ dbt_code:
       extensions: 
         - httpfs
         - aws
-      plugins: 
-        - module: aws
-          config:
-            method: credential_provider
+      secrets: 
+        - type: s3
+          provider: credential_chain
          
