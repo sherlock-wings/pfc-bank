@@ -5,3 +5,4 @@ workbench*
 .claude*
 *venv
 .user.yml
+*.parquet

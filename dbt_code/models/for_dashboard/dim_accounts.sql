@@ -14,6 +14,6 @@ select acnt.id as bank_account_id
       ,get_current_timestamp() as record_loaded_at_timestamp
 from init
 qualify row_number() over (
-        partition by bank_account_id
-        order     by balance_as_of_date desc
+        partition by acnt.name
+        order     by to_timestamp(acnt."balance-date") desc
 ) = 1

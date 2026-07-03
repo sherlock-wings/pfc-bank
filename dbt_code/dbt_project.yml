@@ -20,7 +20,6 @@ clean-targets:
 
 models:
   dbt_code:
-    for_dashboards:
+    for_dashboard:
       +materialized: external
       +format: parquet
-      +external_location: 's3://pfc-nfcu/dashboard_mart/{name}.parquet'  

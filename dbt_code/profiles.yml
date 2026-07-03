@@ -3,7 +3,8 @@ dbt_code:
   outputs:
     dev: 
       type: duckdb 
-      path: ':memory:' 
+      path: ':memory:'
+      external_root: 's3://pfc-nfcu/dashboard_mart'
       threads: 4
       extensions: 
         - httpfs
@@ -11,4 +12,5 @@ dbt_code:
       secrets: 
         - type: s3
           provider: credential_chain
+          region: 'us-east-2'
          
