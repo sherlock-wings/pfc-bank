@@ -16,6 +16,8 @@ jobs:
   extract:
     runs-on: ubuntu-latest
     environment: dev   # loads the dev-scoped vars/secret (AWS_ROLE_ARN, S3_PREFIX, SIMPLEFIN_ACCESS_URL)
+    outputs:
+      new_data: ${{ steps.extract.outputs.new_data }}
     env:
       S3_BUCKET: pfc-nfcu
       S3_PREFIX: ${{ vars.S3_PREFIX }}            # set to _demo/transactions for Phase 0
@@ -29,4 +31,25 @@ jobs:
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: us-east-2
-      - run: uv run extract.py
+      - id: extract
+        run: uv run extract.py
+
+  dbt_build:
+    needs: extract
+    if: needs.extract.outputs.new_data == 'true'
+    runs-on: ubuntu-latest
+    environment: dev
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: us-east-2
+      - run: uv run dbt build
+        working-directory: dbt_code

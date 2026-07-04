@@ -30,6 +30,13 @@ PULL_WINDOW_DAYS = int(os.environ.get("PULL_WINDOW_DAYS", "88"))
 ALERT_CUTOFF_HOUR_UTC = int(os.environ.get("ALERT_CUTOFF_HOUR_UTC", "20"))
 
 
+def set_output(name: str, value: str) -> None:
+    path = os.environ.get("GITHUB_OUTPUT")
+    if path:
+        with open(path, "a") as f:
+            f.write(f"{name}={value}\n")
+
+
 def access_url() -> str:
     url = os.environ.get("SIMPLEFIN_ACCESS_URL")
     if not url:
@@ -130,6 +137,7 @@ def main() -> None:
 
     marker = bd if bd is not None else int(now.timestamp())
     print(f"Wrote {len(raw)} bytes to {upload(raw, now, marker)}")
+    set_output("new_data", "true")
 
 
 if __name__ == "__main__":

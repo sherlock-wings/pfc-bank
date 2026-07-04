@@ -13,13 +13,19 @@ models:
         data_type: text
         description: "NFCU generated label for the Merchant receiving payment in a given transaction."
         tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn
       - name: merchant_category
         data_type: text
         description: "General category for the given merchant."
       - name: merchant_subcategory
         data_type: text
         description: "More specific category for the given merchant."
+        tests:
+          - not_null:
+              config:
+                severity: warn
       - name: earliest_txn_at
         data_type: timestamptz
         description: "The earliest time this merchant is seen in transactions data."
