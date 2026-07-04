@@ -12,7 +12,7 @@
                     "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
                 },
                 "StringLike": {
-                    "token.actions.githubusercontent.com:sub": "repo:sherlock-wings/nfcu-pipe:*"
+                    "token.actions.githubusercontent.com:sub": "repo:sherlock-wings/pfc-bank:*"
                 }
             }
         }

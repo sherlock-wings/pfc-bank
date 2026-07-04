@@ -27,11 +27,11 @@ jobs:
           GH_TOKEN: ${{ secrets.SECRETS_ADMIN_PAT }}
         run: |
           gh secret set SIMPLEFIN_ACCESS_URL \
-            --repo sherlock-wings/nfcu-pipe \
+            --repo sherlock-wings/pfc-bank \
             --env dev \
             --body "${{ steps.exchange.outputs.access_url }}"
 
       - name: Trigger a verification pull
         env:
           GH_TOKEN: ${{ secrets.SECRETS_ADMIN_PAT }}
-        run: gh workflow run extract.yml --repo sherlock-wings/nfcu-pipe
+        run: gh workflow run extract.yml --repo sherlock-wings/pfc-bank
