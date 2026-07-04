@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: rpt_top_expenses
+    description: "Top-level expenses from all merchants and categories"
+
+    columns:
+      - name: merchant_name
+        data_type: text
+        description: "NFCU generated label for the Merchant receiving payment in a given transaction."
+        tests:
+          - not_null
+      - name: merchant_category
+        data_type: text
+        description: "General category for the given merchant."
+      - name: merchant_subcategory
+        data_type: text
+        description: "More specific category for the given merchant."
+      - name: earliest_txn_at
+        data_type: timestamptz
+        description: "The earliest time this merchant is seen in transactions data."
+      - name: latest_txn_at
+        data_type: timestamptz
+        description: "The latest time this merchant is seen in transactions data."
+      - name: total_transactions
+        data_type: bigint
+        description: "The total count for transactions with a given payee."
+      - name: total_spend
+        data_type: decimal(38,2)
+        description: "Total currency spend on a merchant. Excludes any transaction where we received money from the merchant, and exludes interal transfers between my NFCU accounts."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: avg_spend_per_txn
+        data_type: decimal(38,2)
+        description: "Average currency spent on a merchant per each transaction. Excludes any transaction where we received money from the merchant, and exludes interal transfers between my NFCU accounts."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      
