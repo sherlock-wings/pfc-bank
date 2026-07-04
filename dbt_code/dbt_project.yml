@@ -23,6 +23,8 @@ on-run-start:
 
 models:
   dbt_code:
+    +contract:
+      enforced: true
     dashboard_mart:
       +materialized: external
       +format: parquet
