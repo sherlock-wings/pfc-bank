@@ -10,7 +10,7 @@ models:
         data_type: text
         description: "MD5 hash of the merchant name. Used to join the merchant_category map to dim_merchant."
         tests: 
-        - relation:
+        - relationships:
             arguments:
               to: ref('dim_merchant')
               field: merchant_key
