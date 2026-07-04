@@ -6,12 +6,13 @@ select md5(lower(payee)) as merchant_key
       ,min(posted_at_timestamp) as first_txn_at_timestamp
       ,max(posted_at_timestamp) as last_txn_at_timestamp
       ,count(distinct txn_id) as total_transactions
+      ,sum(amount) as total_amount
 from {{ ref('fact_transactions') }}
 group by payee
 )
 
 ,last_day as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_spend
+    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('day', get_current_timestamp()) - interval 1 day
                                   and date_trunc('day', get_current_timestamp()) 
@@ -19,7 +20,7 @@ group by payee
 )
 
 ,last_week as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_spend
+    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('week', get_current_timestamp()) - interval 1 week
                                   and date_trunc('week', get_current_timestamp()) 
@@ -27,7 +28,7 @@ group by payee
 )
 
 ,last_month as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_spend
+    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('month', get_current_timestamp()) - interval 1 month
                                   and date_trunc('month', get_current_timestamp()) 
@@ -35,7 +36,7 @@ group by payee
 )
 
 ,last_quarter as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_spend
+    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('quarter', get_current_timestamp()) - interval 1 quarter
                                   and date_trunc('quarter', get_current_timestamp()) 
@@ -43,7 +44,7 @@ group by payee
 )
 
 ,last_year as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_spend
+    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('year', get_current_timestamp()) - interval 1 year
                                   and date_trunc('year', get_current_timestamp()) 
@@ -57,11 +58,12 @@ select s.merchant_key
       ,s.first_txn_at_timestamp as earliest_txn_at
       ,s.last_txn_at_timestamp as latest_txn_at
       ,s.total_transactions
-      ,coalesce(d.total_spend, 0) as spend_past_day
-      ,coalesce(w.total_spend, 0) as spend_past_week
-      ,coalesce(m.total_spend, 0) as spend_past_month
-      ,coalesce(q.total_spend, 0) as spend_past_quarter
-      ,coalesce(y.total_spend, 0) as spend_past_year
+      ,coalesce(d.total_amount, 0) as amount_past_day
+      ,coalesce(w.total_amount, 0) as amount_past_week
+      ,coalesce(m.total_amount, 0) as amount_past_month
+      ,coalesce(q.total_amount, 0) as amount_past_quarter
+      ,coalesce(y.total_amount, 0) as amount_past_year
+      ,s.total_amount
       ,get_current_timestamp() as record_updated_at
 from skeleton s 
 left join last_day d 

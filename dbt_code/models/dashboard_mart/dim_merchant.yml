@@ -29,21 +29,27 @@ models:
       - name: total_transactions
         data_type: bigint
         description: "The total count for transactions with a given payee."
-      - name: spend_past_day
+      - name: total_amount
         data_type: decimal(38,2)
-        description: "Total currency spend on the given payee in the past day."
-      - name: spend_past_week
+        description: "Total currency exchanged with the given merchant overall."
+      - name: amount_past_day
         data_type: decimal(38,2)
-        description: "Total currency spend on the given payee in the past week."
-      - name: spend_past_month
+        description: "Total currency exchanged with the given merchant in the past day."
+      - name: amount_past_week
         data_type: decimal(38,2)
-        description: "Total currency spend on the given payee in the past month."
-      - name: spend_past_quarter
+        description: "Total currency exchanged with the given merchant in the past week."
+      - name: amount_past_month
         data_type: decimal(38,2)
-        description: "Total currency spend on the given payee in the past quarter."
-      - name: spend_past_year
+        description: "Total currency exchanged with the given merchant in the past month."
+      - name: amount_past_quarter
         data_type: decimal(38,2)
-        description: "Total currency spend on the given payee in the past year."
+        description: "Total currency exchanged with the given merchant in the past quarter."
+      - name: amount_past_year
+        data_type: decimal(38,2)
+        description: "Total currency exchanged with the given merchant in the past year."
+      - name: amount_past_year
+        data_type: decimal(38,2)
+        description: "Total currency exchanged with the given merchant overall."
       - name: record_updated_at
         data_type: timestamptz
         description: "Time at which the given record was last written to S3."
