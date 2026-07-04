@@ -17,9 +17,13 @@ snapshot-paths: ["snapshots"]
 clean-targets:         
   - "target"
   - "dbt_packages"
+
+on-run-start:
+  - "{{ register_upstream_external_models() }}"
+
 models:
   dbt_code:
-    for_dashboard:
+    dashboard_mart:
       +materialized: external
       +format: parquet
     
