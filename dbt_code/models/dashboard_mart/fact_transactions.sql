@@ -10,6 +10,7 @@ SELECT
   acnt.name AS bank_account_name,
   t.id AS txn_id,
   t.description,
+  md5(lower(t.payee)) as merchant_key,
   t.payee,
   CAST(t.amount AS DECIMAL(14,2))       AS amount,
   to_timestamp(t.posted)                AS posted_at_timestamp,

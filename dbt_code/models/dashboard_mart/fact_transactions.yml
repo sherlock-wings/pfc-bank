@@ -10,6 +10,17 @@ models:
         description: "Natural key for bank accounts-- some kind of UUID."
         tests:
           - not_null
+      - name: merchant_key
+        data_type: text
+        description: "MD5 hash key for the NFCU-Generated label of the merchant associated with the transaction."
+        tests:
+        - relationships:
+            arguments:
+              to: ref('dim_merchant')
+              field: merchant_key
+            config: 
+              severity: warn
+
       - name: bank_account_name
         data_type: text
         description: "Name of the NFCU Bank account."
