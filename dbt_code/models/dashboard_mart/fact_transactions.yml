@@ -23,7 +23,7 @@ models:
         data_type: text
         description: "NFCU Generated transaction description."
       - name: payee
-        data_type: decimal(14,2)
+        data_type: text
         description: "The name would suggest that this field contains a name or description of who was paid the money in the transcation. It looks more like the same content as `description` but just less detailed. So not sure."
       - name: amount
         data_type: decimal(14,2)
