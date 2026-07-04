@@ -4,33 +4,47 @@ models:
   - name: dim_merchant
     descripotion: "A listing of all the merchants I buy stuff from."
     columns:
+      - name: merchant_key
+        data_type: text
+        description: "MD5 hash of the NFCU generated label for the Merchant receiving payment in a given transaction."
+        tests:
+          - not_null
       - name: merchant_name
         data_type: text
         description: "NFCU generated label for the Merchant receiving payment in a given transaction."
         tests:
           - not_null
-      - name: first_txn_at_timestamp
+      - name: merchant_category
+        data_type: text
+        description: "General category for the given merchant."
+      - name: merchant_subcategory
+        data_type: text
+        description: "More specific category for the given merchant."
+      - name: earliest_txn_at
         data_type: timestamptz
         description: "The earliest time this merchant is seen in transactions data."
-      - name: last_txn_at_timestamp
+      - name: latest_txn_at
         data_type: timestamptz
         description: "The latest time this merchant is seen in transactions data."
       - name: total_transactions
-        data_type: integer
+        data_type: bigint
         description: "The total count for transactions with a given payee."
       - name: spend_past_day
-        data_type: decimal(14,2)
+        data_type: decimal(38,2)
         description: "Total currency spend on the given payee in the past day."
       - name: spend_past_week
-        data_type: decimal(14,2)
+        data_type: decimal(38,2)
         description: "Total currency spend on the given payee in the past week."
       - name: spend_past_month
-        data_type: decimal(14,2)
+        data_type: decimal(38,2)
         description: "Total currency spend on the given payee in the past month."
       - name: spend_past_quarter
-        data_type: decimal(14,2)
+        data_type: decimal(38,2)
         description: "Total currency spend on the given payee in the past quarter."
       - name: spend_past_year
-        data_type: decimal(14,2)
+        data_type: decimal(38,2)
         description: "Total currency spend on the given payee in the past year."
+      - name: record_updated_at
+        data_type: timestamptz
+        description: "Time at which the given record was last written to S3."
         
