@@ -4,7 +4,6 @@ dbt_code:
     dev: 
       type: duckdb 
       path: ':memory:'
-      external_root: 's3://pfc-nfcu/dashboard_mart'
       threads: 4
       extensions: 
         - httpfs
