@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: dashboard_mart
+    tables:
+      - name: dim_accounts
+        config:
+          external_location: "s3://pfc-nfcu/dashboard_mart/dim_accounts.parquet"
+      - name: fact_transactions
+        config:
+          external_location: "s3://pfc-nfcu/dashboard_mart/fact_transactions.parquet"
+      - name: dim_merchant
+        config:
+          external_location: "s3://pfc-nfcu/dashboard_mart/dim_merchant.parquet" 
