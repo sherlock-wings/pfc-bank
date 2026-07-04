@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       setup_token:
-        description: "Setup token from bridge.simplefin.org (Connect an app)"
+        description: "Setup token from bridge.simplefin.org (Delete NFCU connection, then New Connection)"
         required: true
 
 permissions:
