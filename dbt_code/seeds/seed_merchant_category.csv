@@ -1,43 +1,43 @@
-last_updated_timestamp,payee,merchant_category,merchant_subcategory
+last_updated_timestamp,merchant_name,merchant_category,merchant_subcategory
 2026-07-04 02:05:30-04,netflix,subscription,streaming
 2026-07-04 02:05:30-04,best buy,department store,electronics
 2026-07-04 02:05:30-04,cook out,cost-of-living,take-out
 2026-07-04 02:05:30-04,furryland of charles,pet-care,grooming
 2026-07-04 02:05:30-04,ladson vape,vice,kratom
-2026-07-04 02:05:30-04,h&m,clothing,
-2026-07-04 02:05:30-04,godwin s summerville sc patrick f callahan,,
+2026-07-04 02:05:30-04,h&m,home-goods,clothing
+2026-07-04 02:05:30-04,godwin s summerville sc patrick f callahan,going-out,bars
 2026-07-04 02:05:30-04,nespresso,home-goods,coffee
-2026-07-04 02:05:30-04,city of asheville,,
+2026-07-04 02:05:30-04,city of asheville,travel,parking
 2026-07-04 02:05:30-04,harleyville liquor harleyvill patrick f callahan,vice,alcohol
 2026-07-04 02:05:30-04,dropps,home-goods,laundry
 2026-07-04 02:05:30-04,pack s tavern,going-out,restaurant
 2026-07-04 02:05:30-04,bold fitness sum club fees,subscription,gym
-2026-07-04 02:05:30-04,ulta beauty,home-goods,
-2026-07-04 02:05:30-04,petsmart,petcare,pet-food
+2026-07-04 02:05:30-04,ulta beauty,home-goods,cosmetics
+2026-07-04 02:05:30-04,petsmart,pet-care,pet-food
 2026-07-04 02:05:30-04,amazon web services,entertainment,programming
 2026-07-04 02:05:30-04,kohl's,home-goods,clothing
-2026-07-04 02:05:30-04,steel city pi summervill patrick f callahan,,
-2026-07-04 02:05:30-04,interest charge,,
+2026-07-04 02:05:30-04,steel city pi summervill patrick f callahan,going-out,restaurant
+2026-07-04 02:05:30-04,interest charge,debt,credit card
 2026-07-04 02:05:30-04,agave cantina on main,going-out,restaurant
 2026-07-04 02:05:30-04,spinx,cost-of-living,gas
 2026-07-04 02:05:30-04,publix,cost-of-living,grocery
 2026-07-04 02:05:30-04,microsoft,subscription,video games
 2026-07-04 02:05:30-04,hoa dues,cost-of-living,housing
-2026-07-04 02:05:30-04,summerville na summervill patrick f callahan,,
+2026-07-04 02:05:30-04,summerville na summervill patrick f callahan,**UNKNOWN**,**UNKNOWN**
 2026-07-04 02:05:30-04,diesel barbershop johns islan patrick f callahan,personal-care,hair
-2026-07-04 02:05:30-04,baddaddysburgerbar baddaddysb patrick f callahan,cost-of-living,
+2026-07-04 02:05:30-04,baddaddysburgerbar baddaddysb patrick f callahan,cost-of-living,take-out
 2026-07-04 02:05:30-04,bottles summervill,vice,alcohol
-2026-07-04 02:05:30-04,hudson news,entertainment,news
-2026-07-04 02:05:30-04,new belgium asheville patrick f callahan,vice,alcohol
+2026-07-04 02:05:30-04,hudson news,discretional,snacks & beverages
+2026-07-04 02:05:30-04,new belgium asheville patrick f callahan,going-out,bars
 2026-07-04 02:05:30-04,wingstop,cost-of-living,take-out
 2026-07-04 02:05:30-04,microsoft game c patrick f callahan,subscription,video-games
 2026-07-04 02:05:30-04,rubys bagels summerville sc patrick f callahan,cost-of-living,take-out
-2026-07-04 02:05:30-04,twisted laurel avl asheville patrick f callahan,,
+2026-07-04 02:05:30-04,twisted laurel avl asheville patrick f callahan,**UNKNOWN**,**UNKNOWN**
 2026-07-04 02:05:30-04,smashley s burger clover com patrick f callahan,going-out,restaurant
 2026-07-04 02:05:30-04,the kerryman,going-out,restaurant
 2026-07-04 02:05:30-04,aldi,cost-of-living,grocery
 2026-07-04 02:05:30-04,corner liqour stor summervill patrick f callahan,vice,alcohol
-2026-07-04 02:05:30-04,lowcountry public summerville patrick f callahan,,
+2026-07-04 02:05:30-04,lowcountry public summerville patrick f callahan,**UNKNOWN**,**UNKNOWN**
 2026-07-04 02:05:30-04,link.com,entertainment,programming
 2026-07-04 02:05:30-04,rise and shine patrick f callahan,cost-of-living,take-out
 2026-07-04 02:05:30-04,harris teeter,cost-of-living,take-out
@@ -61,26 +61,26 @@ last_updated_timestamp,payee,merchant_category,merchant_subcategory
 2026-07-04 02:05:30-04,deposit meridian,payroll,meridian
 2026-07-04 02:05:30-04,jim 'n nick's,going-out,restaurant
 2026-07-04 02:05:30-04,cielo mexican summervill patrick f callahan,going-out,restaurant
-2026-07-04 02:05:30-04,loft of ashevil patrick f callahan,,
+2026-07-04 02:05:30-04,loft of ashevil patrick f callahan,travel,hotel
 2026-07-04 02:05:30-04,hyatt place hotel,travel,hotel
 2026-07-04 02:05:30-04,ingles markets,cost-of-living,grocery
 2026-07-04 02:05:30-04,atlantic spirits,vice,alcohol
-2026-07-04 02:05:30-04,amazon,online-shopping,
+2026-07-04 02:05:30-04,amazon,discretional,online-shopping
 2026-07-04 02:05:30-04,steam,entertainment,video-games
-2026-07-04 02:05:30-04,spo bennymazzetto patrick f callahan,,
+2026-07-04 02:05:30-04,spo bennymazzetto patrick f callahan,cost-of-living,take-out
 2026-07-04 02:05:30-04,naan at nexton s patrick f callahan,cost-of-living,restaurant
 2026-07-04 02:05:30-04,uber eats,cost-of-living,take-out
 2026-07-04 02:05:30-04,py primohoagies s patrick f callahan,cost-of-living,take-out
 2026-07-04 02:05:30-04,domino's,cost-of-living,take-out
-2026-07-04 02:05:30-04,transfer from venmo,transfer,peer-to-peer
+2026-07-04 02:05:30-04,transfer from venmo,transfer,peer-to-peer payment
 2026-07-04 02:05:30-04,nintendo,subscription,video-games
 2026-07-04 02:05:30-04,culver's,cost-of-living,take-out
 2026-07-04 02:05:30-04,kanji sushi hibachi,cost-of-living,take-out
 2026-07-04 02:05:30-04,kohls summerville sc patrick f callahan,home-goods,clothing
 2026-07-04 02:05:30-04,doordash,cost-of-living,take-out
 2026-07-04 02:05:30-04,united airlines,travel,flying
-2026-07-04 02:05:30-04,meals com sc patrick f callahan,,
-2026-07-04 02:05:30-04,patreon,entertainment,youtube
+2026-07-04 02:05:30-04,meals com sc patrick f callahan,cost-of-living,grocery
+2026-07-04 02:05:30-04,patreon,subscription,content-creators
 2026-07-04 02:05:30-04,cracker barrel,cost-of-living,take-out
 2026-07-04 02:05:30-04,taco bell,cost-of-living,take-out
 2026-07-04 02:05:30-04,old navy,home-goods,clothing
@@ -89,16 +89,16 @@ last_updated_timestamp,payee,merchant_category,merchant_subcategory
 2026-07-04 02:05:30-04,vivachicken osc patrick f callahan,cost-of-living,take-out
 2026-07-04 02:05:30-04,lowe's,home-goods,home-hardware-and-appliances
 2026-07-04 02:05:30-04,shell,cost-of-living,gas
-2026-07-04 02:05:30-04,uber pending transaction,,
+2026-07-04 02:05:30-04,uber pending transaction,nfcu,pending-transaction
 2026-07-04 02:05:30-04,transfer to mortgage,cost-of-living,housing
 2026-07-04 02:05:30-04,t-mobile,cost-of-living,phone
-2026-07-04 02:05:30-04,zelle transfer,transfers,peer-to-peer
+2026-07-04 02:05:30-04,zelle transfer,transfers,peer-to-peer payment
 2026-07-04 02:05:30-04,target,home-goods,department-store
 2026-07-04 02:05:30-04,dutch bros coffee,home-goods,coffee
 2026-07-04 02:05:30-04,uber,travel,rideshare
 2026-07-04 02:05:30-04,transfer from savings sav other,transfers,from-other-account
 2026-07-04 02:05:30-04,american airlines,travel,flying
-2026-07-04 02:05:30-04,tmbobzbhzjil redmond patrick f callahan,,
+2026-07-04 02:05:30-04,tmbobzbhzjil redmond patrick f callahan,**UNKNOWN**,**UNKNOWN**
 2026-07-04 02:05:30-04,five guys,cost-of-living,take-out
 2026-07-04 02:05:30-04,cvs,cost-of-living,healthcare
 2026-07-04 02:05:30-04,py core pest solu patrick f callahan,cost-of-living,home-maintenance
@@ -113,23 +113,23 @@ last_updated_timestamp,payee,merchant_category,merchant_subcategory
 2026-07-04 02:05:30-04,xbox,entertainment,video-games
 2026-07-04 02:05:30-04,dividend,rewards,nfcu
 2026-07-04 02:05:30-04,transfer to other,transfers,other-accounts
-2026-07-04 02:05:30-04,nfcu online payment,,
+2026-07-04 02:05:30-04,nfcu online payment,payments,nfcu
 2026-07-04 02:05:30-04,kairos mediterrane patrick f callahan,cost-of-living,take-out
 2026-07-04 02:05:30-04,transfer from shares other,transfers,other-accounts
 2026-07-04 02:05:30-04,comcast,cost-of-living,internet
 2026-07-04 02:05:30-04,atm withdrawal,fees,atm
 2026-07-04 02:05:30-04,mcdonald's,cost-of-living,take-out
-2026-07-04 02:05:30-04,professional monckscorne patrick f callahan pos transaction via cantaloupe,,
-2026-07-04 02:05:30-04,cal patrick f callahan,,
+2026-07-04 02:05:30-04,professional monckscorne patrick f callahan pos transaction via cantaloupe,**UNKNOWN**,**UNKNOWN**
+2026-07-04 02:05:30-04,cal patrick f callahan,**UNKNOWN**,**UNKNOWN**
 2026-07-04 02:05:30-04,abc store,vice,liquor
 2026-07-04 02:05:30-04,silas restaurant chicago il patrick f callahan,going-out,restaurant
-2026-07-04 02:05:30-04,gpm investments llc,,
+2026-07-04 02:05:30-04,gpm investments llc,**UNKNOWN**,**UNKNOWN**
 2026-07-04 02:05:30-04,starbucks,home-goods,coffee
-2026-07-04 02:05:30-04,transfer to checking,transfer,nfcu
+2026-07-04 02:05:30-04,transfer to checking,transfer,to-from-other-accounts
 2026-07-04 02:05:30-04,bottles,vice,alcohol
 2026-07-04 02:05:30-04,chick-fil-a,cost-of-living,take-out
 2026-07-04 02:05:30-04,kickin chick summervill patrick f callahan,going-out,restaurant
-2026-07-04 02:05:30-04,bath & body works,home-goods,amenities
+2026-07-04 02:05:30-04,bath & body works,discretional,home-amenities
 2026-07-04 02:05:30-04,firehouse subs,cost-of-living,take-out
 2026-07-04 02:05:30-04,rusty bull north char patrick f callahan,going-out,bars
 2026-07-04 02:05:30-04,zaxby's,cost-of-living,take-out
@@ -141,25 +141,25 @@ last_updated_timestamp,payee,merchant_category,merchant_subcategory
 2026-07-04 02:05:30-04,china city patrick f callahan,cost-of-living,take-out
 2026-07-04 02:05:30-04,eggsupgrill eggsupgrisc patrick f callahan,cost-of-living,take-out
 2026-07-04 02:05:30-04,adidas,home-goods,clothing
-2026-07-04 02:05:30-04,cypress gardens moncks corner patrick f callahan,,
+2026-07-04 02:05:30-04,cypress gardens moncks corner patrick f callahan,travel,attractions
 2026-07-04 02:05:30-04,reward redemption,rewards,nfcu
-2026-07-04 02:05:30-04,zelle debit,transfers,peer-to-peer
+2026-07-04 02:05:30-04,zelle debit,transfers,peer-to-peer payment
 2026-07-04 02:05:30-04,northwoods stadium north char patrick f callahan,going-out,movies
-2026-07-04 02:05:30-04,katsubo north,going-out,groceryrestaurant
+2026-07-04 02:05:30-04,katsubo north,going-out,restaurant
 2026-07-04 02:05:30-04,northstar peo,payroll,meridian
 2026-07-04 02:05:30-04,atlantic spirits summerville patrick f callahan,vice,alcohol
-2026-07-04 02:05:30-04,professional monckscorner sc via cantaloupe,,
+2026-07-04 02:05:30-04,professional monckscorner sc via cantaloupe,**UNKNOWN**,**UNKNOWN**
 2026-07-04 02:05:30-04,prod theknotww comny patrick f callahan,home-goods,marriage
-2026-07-04 02:05:30-04,asheville n patrick f callahan,,
-2026-07-04 02:05:30-04,willows dream asheville nc patrick f callahan,,
+2026-07-04 02:05:30-04,asheville n patrick f callahan,fees,parking
+2026-07-04 02:05:30-04,willows dream asheville nc patrick f callahan,**UNKNOWN**,**UNKNOWN**
 2026-07-04 02:05:30-04,lodi coffee charleston patrick f callahan,home-goods,coffee
-2026-07-04 02:05:30-04,transfer from checking,transfer,nfcu
+2026-07-04 02:05:30-04,transfer from checking,transfer,to-from-other-accounts
 2026-07-04 02:05:30-04,el cafecito no ladson sc patrick f callahan,home-goods,coffee
 2026-07-04 02:05:30-04,piggly wiggly,cost-of-living,grocery
 2026-07-04 02:05:30-04,walmart,cost-of-living,grocery
 2026-07-04 02:05:30-04,dominion energy,cost-of-living,utlity
 2026-07-04 02:05:30-04,allpaid town of li patrick f callahan,cost-of-living,utlity
-2026-07-04 02:05:30-04,smoulder chicago il patrick f callahan,,
-2026-07-04 02:05:30-04,leye ema,,
-2026-07-04 02:05:30-04,patrick f callahan,,
+2026-07-04 02:05:30-04,smoulder chicago il patrick f callahan,**UNKNOWN**,**UNKNOWN**
+2026-07-04 02:05:30-04,leye ema,**UNKNOWN**,**UNKNOWN**
+2026-07-04 02:05:30-04,patrick f callahan,**UNKNOWN**,**UNKNOWN**
 2026-07-04 02:05:30-04,home team bbq charleston patrick f callahan,going-out,restaurant
