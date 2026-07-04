@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: map_merchant_category
+    description: "Passthrough view containing merchant categories."
+
+    columns:
+      - name: last_updated_timestamp
+        data_type: text
+        description: "Last time the seed file was manually updated."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+              
+      - name: merchant_name
+        data_type: text
+        description: "Name of the person or busienss with whom I'm exchanging money in a given transaction."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+              
+      - name: merchant_category
+        data_type: text
+        description: "Category of purchase (home-goods, )"
+        tests: 
+          - not_null:
+              config:
+                severity: warn
+              
+      - name: merchant_subcategory
+        data_type: text
+        description: "NFCU Generated transaction description."
+      - name: payee
+        data_type: decimal(14,2)
+        description: "The name would suggest that this field contains a name or description of who was paid the money in the transcation. It looks more like the same content as `description` but just less detailed. So not sure."
+      - name: amount
+        data_type: decimal(14,2)
+        description: "Currency amount gained/lost in the transaction."
+      - name: posted_at_timestamp
+        data_type: timestamptz
+        description: "The time at which the transaction was posted to the SimpleFIN/MX Aggregator."
+      - name: filename
+        data_type: text
+        description: "Name of the file (stored in S3) that contains the given record."
+      - name: record_loaded_at_timestamp
+        data_type: timestamptz
+        description: "The time at which the given record was loaded to s3."
+              
