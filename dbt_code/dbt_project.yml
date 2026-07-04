@@ -17,9 +17,10 @@ snapshot-paths: ["snapshots"]
 clean-targets:         
   - "target"
   - "dbt_packages"
-
 models:
   dbt_code:
     for_dashboard:
       +materialized: external
       +format: parquet
+    
+    
