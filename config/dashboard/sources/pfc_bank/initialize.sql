@@ -1,0 +1,7 @@
+INSTALL httpfs;
+LOAD httpfs;
+CREATE SECRET nfcu (
+  TYPE S3,
+  PROVIDER CREDENTIAL_CHAIN,
+  REGION 'us-east-2'
+);

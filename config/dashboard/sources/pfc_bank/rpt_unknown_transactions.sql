@@ -1,0 +1,1 @@
+select * from read_parquet('s3://dashboard_mart/rpt_unknown_transactions.parquet')

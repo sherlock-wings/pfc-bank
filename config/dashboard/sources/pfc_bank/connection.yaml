@@ -1,0 +1,4 @@
+name: pfc_bank
+type: duckdb
+options:
+  filename: ':memory:'
