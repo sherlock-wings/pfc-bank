@@ -6,20 +6,28 @@ models:
 
     columns:
 
-      - name: merchant_key
+      - name: merchant_category_key
         data_type: text
         description: "MD5 hash of the merchant name. Used to join the merchant_category map to dim_merchant."
         tests: 
         - relationships:
             arguments:
               to: ref('dim_merchant')
-              field: merchant_key
+              field: merchant_category_key
             config: 
               severity: warn   
                     
       - name: merchant_name
         data_type: text
         description: "Name of the person or busienss with whom I'm exchanging money in a given transaction."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+              
+      - name: txn_description
+        data_type: text
+        description: "POS-generated description of the transaction with the merchant."
         tests:
           - not_null:
               config:

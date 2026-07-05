@@ -9,8 +9,11 @@ SELECT
   acnt.id AS bank_account_id,
   acnt.name AS bank_account_name,
   t.id AS txn_id,
-  t.description,
-  md5(lower(t.payee)) as merchant_key,
+  t.description as txn_description,
+  md5(coalesce(lower(t.payee), 'NULL')
+      || '||' || 
+      coalesce(lower(t.description), 'NULL')
+  ) as merchant_category_key,
   t.payee,
   CAST(t.amount AS DECIMAL(14,2))       AS amount,
   to_timestamp(t.posted)                AS posted_at_timestamp,

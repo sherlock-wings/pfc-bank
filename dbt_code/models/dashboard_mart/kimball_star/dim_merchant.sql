@@ -1,58 +1,75 @@
 {{ config(location='s3://pfc-nfcu/dashboard_mart/dim_merchant.parquet') }}
 
 with skeleton as (
-select md5(lower(payee)) as merchant_key
+select merchant_category_key
       ,lower(payee) as merchant_name
+      ,lower(txn_description) as txn_description
       ,min(posted_at_timestamp) as first_txn_at_timestamp
       ,max(posted_at_timestamp) as last_txn_at_timestamp
       ,count(distinct txn_id) as total_transactions
       ,sum(amount) as total_amount
 from {{ ref('fact_transactions') }}
-group by payee
+group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_day as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
+    select merchant_category_key
+          ,lower(payee) as merchant_name
+          ,lower(txn_description) as txn_description
+          ,sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('day', get_current_timestamp()) - interval 1 day
                                   and date_trunc('day', get_current_timestamp()) 
-    group by payee
+    group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_week as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
+    select merchant_category_key
+          ,lower(payee) as merchant_name
+          ,lower(txn_description) as txn_description
+          ,sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('week', get_current_timestamp()) - interval 1 week
                                   and date_trunc('week', get_current_timestamp()) 
-    group by payee
+    group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_month as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
+    select merchant_category_key
+          ,lower(payee) as merchant_name
+          ,lower(txn_description) as txn_description
+          ,sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('month', get_current_timestamp()) - interval 1 month
                                   and date_trunc('month', get_current_timestamp()) 
-    group by payee
+    group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_quarter as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
+    select merchant_category_key
+          ,lower(payee) as merchant_name
+          ,lower(txn_description) as txn_description
+          ,sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('quarter', get_current_timestamp()) - interval 1 quarter
                                   and date_trunc('quarter', get_current_timestamp()) 
-    group by payee
+    group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_year as (
-    select md5(lower(payee)) as merchant_key, sum(amount) as total_amount
+    select merchant_category_key
+          ,lower(payee) as merchant_name
+          ,lower(txn_description) as txn_description
+          ,sum(amount) as total_amount
     from {{ ref('fact_transactions') }}
     where posted_at_timestamp between date_trunc('year', get_current_timestamp()) - interval 1 year
                                   and date_trunc('year', get_current_timestamp()) 
-    group by payee
+    group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
-select s.merchant_key
+select s.merchant_category_key
       ,s.merchant_name
+      ,s.txn_description
       ,e.merchant_category
       ,e.merchant_subcategory
       ,s.first_txn_at_timestamp as earliest_txn_at
@@ -67,14 +84,14 @@ select s.merchant_key
       ,get_current_timestamp() as record_updated_at
 from skeleton s 
 left join last_day d 
-       on s.merchant_key = d.merchant_key
+       on s.merchant_category_key = d.merchant_category_key
 left join last_week w 
-       on s.merchant_key = w.merchant_key
+       on s.merchant_category_key = w.merchant_category_key
 left join last_month m 
-       on s.merchant_key = m.merchant_key
+       on s.merchant_category_key = m.merchant_category_key
 left join last_quarter q 
-       on s.merchant_key = q.merchant_key
+       on s.merchant_category_key = q.merchant_category_key
 left join last_year y 
-       on s.merchant_key = y.merchant_key
+       on s.merchant_category_key = y.merchant_category_key
 left join {{ ref('map_merchant_category')}} e 
-       on e.merchant_key = s.merchant_key
+       on e.merchant_category_key = s.merchant_category_key

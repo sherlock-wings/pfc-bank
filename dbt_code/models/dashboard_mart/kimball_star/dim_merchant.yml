@@ -4,14 +4,21 @@ models:
   - name: dim_merchant
     descripotion: "A listing of all the merchants I buy stuff from."
     columns:
-      - name: merchant_key
+      - name: merchant_category_key
         data_type: text
-        description: "MD5 hash of the NFCU generated label for the Merchant receiving payment in a given transaction."
+        description: "MD5 hash of the NFCU generated label and description for the Merchant receiving payment in a given transaction."
         tests:
           - not_null
       - name: merchant_name
         data_type: text
         description: "NFCU generated label for the Merchant receiving payment in a given transaction."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: txn_description
+        data_type: text
+        description: "POS generated description for the given transaction."
         tests:
           - not_null:
               config:
