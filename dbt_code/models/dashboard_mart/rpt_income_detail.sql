@@ -1,4 +1,4 @@
-{{ config(location='s3://pfc-nfcu/dashboard_mart/rpt_expenses_detail.parquet') }}
+{{ config(location='s3://pfc-nfcu/dashboard_mart/rpt_income_detail.parquet') }}
 
 select f.posted_at_timestamp
       ,m.merchant_category
