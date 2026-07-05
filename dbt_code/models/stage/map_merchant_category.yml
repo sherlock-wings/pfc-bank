@@ -35,7 +35,7 @@ models:
               
       - name: merchant_category
         data_type: text
-        description: "Category of purchase (home-goods, )"
+        description: "Category of purchase (home-goods, cost-of-living, etc.)"
         tests: 
           - not_null:
               config:
@@ -43,7 +43,7 @@ models:
               
       - name: merchant_subcategory
         data_type: text
-        description: "NFCU Generated transaction description."
+        description: "Subcategory of purchase (video-games, gas, etc.)"
       - name: last_updated_timestamp
         data_type: timestamptz
         description: "Last time the given record from the merchant mapping (mantained by hand) was updated."
