@@ -8,10 +8,11 @@ title: Welcome to Evidence
 </Details>
 
 ```sql categories
-  select
-      category
-  from needful_things.orders
-  group by category
+select * from pfc_bank.rpt_top_expenses
+```
+
+```sql unknown_merch
+select * from pfc_bank.rpt_unknown_transactions
 ```
 
 <Dropdown data={categories} name=category value=category>
