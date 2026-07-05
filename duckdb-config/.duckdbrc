@@ -1,0 +1,33 @@
+-- Quality of life script
+-- Without it, querying `rpt_top_expenses` looks like 
+-- 
+-- ```sql
+-- select * 
+-- from read_parquet('s3://pfc-nfcu/dashboard_mart/rpt_top_expenses.parquet');
+-- ```
+-- 
+-- With this script, we can do 
+-- 
+-- ```sql
+-- select * 
+-- from rpt_top_expenses;
+-- ```
+-- Saves the fingers! 
+
+INSTALL httpfs;
+LOAD httpfs;
+CREATE SECRET nfcu (
+  TYPE S3,
+  PROVIDER CREDENTIAL_CHAIN,
+  REGION 'us-east-2'
+);
+
+-- auto-alias every parquet file under dashboard_mart as a view named after its filename
+COPY (
+  SELECT 'CREATE OR REPLACE VIEW ' ||
+         regexp_replace(regexp_extract(file, '([^/]+)\.parquet$', 1), '[^a-zA-Z0-9_]', '_', 'g') ||
+         ' AS SELECT * FROM read_parquet(''' || file || ''');' AS ddl
+  FROM glob('s3://pfc-nfcu/dashboard_mart/*.parquet')
+) TO '/home/pfc/.cache/duckdb/generated_views.sql' (HEADER false);
+
+.read /home/pfc/.cache/duckdb/generated_views.sql
