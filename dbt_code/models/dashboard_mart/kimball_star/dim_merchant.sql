@@ -1,4 +1,4 @@
-{{ config(location='s3://pfc-nfcu/dashboard_mart/kimball_star//dim_merchant.parquet') }}
+{{ config(location='s3://pfc-nfcu/dashboard_mart/kimball_star/dim_merchant.parquet') }}
 
 with skeleton as (
 select merchant_category_key
