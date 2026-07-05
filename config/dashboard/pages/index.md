@@ -9,6 +9,10 @@ queries:
   - cc_debt: total_cc_debt.sql
   - mortgage: total_mortgage.sql
   - rows_mortgage: rows_mortgage_payment.sql
+  - rows_interest: rows_cc_interest_payments.sql
+  - rows_coe_expenses: rows_coe_expenses_detail.sql
+  - rows_big_expenses: rows_big_ticket.sql
+  - rows_all_expenses: rows_all_expenses.sql
 ---
 <BigValue 
   data={total_accounts_balance} 
@@ -47,9 +51,57 @@ queries:
 />
 
 ### Payments
-<DataTable data={rows_mortgage}>
+
+<DataTable data={rows_mortgage} totalRow=true>
 <Column id=posted_date/>
+<Column id=amount_spent fmt=usd2/>
 <Column id=description/>
 <Column id=account/>
-<Column id=amount_spent fmt=usd2/>
 </DataTable>
+
+## Credit Card Debt
+
+<BigValue 
+  data={cc_debt} 
+  value=balance
+  title="Credit Card Debt"
+  fmt=usd2
+/>
+
+<DataTable data={rows_interest} totalRow=true>
+<Column id=posted_date/>
+<Column id=amount_spent fmt=usd2/>
+<Column id=category/>
+<Column id=subcategory/>
+<Column id=merchant/>
+<Column id=description/>
+</DataTable>
+
+## Large One-time Expenses
+<DataTable data={rows_big_expenses} totalRow=true>
+<Column id=posted_date/>
+<Column id=amount_spent fmt=usd2/>
+<Column id=description/>
+<Column id=account/>
+</DataTable>
+
+## Cost-of-Living 
+
+<BarChart 
+    data={rows_coe_expenses}
+    x=year_month
+    y=amount_spent 
+    yAxisTitle="Total Expense ($)"
+    series=subcategory
+/>
+
+## All Expenses
+
+<DataTable data={rows_all_expenses} totalRow=true>
+<Column id=posted_date/>
+<Column id=amount_spent fmt=usd2/>
+<Column id=description/>
+<Column id=category/>
+<Column id=subcategory/>
+</DataTable>
+
