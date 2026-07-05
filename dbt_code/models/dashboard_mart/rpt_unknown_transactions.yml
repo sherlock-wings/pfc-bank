@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: rpt_unknown_transactions
+    description: "Passthrough view containing merchant categories."
+
+    columns:
+
+      - name: amount
+        data_type: decimal(14,2)
+        description: "Amount exchanged in the transaction."
+      - name: posted_at_timestamp
+        data_type: timestamptz
+        description: "The time at which the transaction was posted to the SimpleFIN/MX Aggregator."
+      - name: payee
+        data_type: text
+        description: "The name would suggest that this field contains a name or description of who was paid the money in the transcation. It looks more like the same content as `description` but just less detailed. So not sure."
+      - name: txn_description
+        data_type: text
+        description: "NFCU Generated transaction description."
+      - name: merchant_category
+        data_type: text
+        description: "Category of purchase (home-goods, cost-of-living, etc.)"
