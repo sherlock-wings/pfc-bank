@@ -8,6 +8,7 @@ queries:
   - checking_balance: total_checking.sql
   - cc_debt: total_cc_debt.sql
   - mortgage: total_mortgage.sql
+  - rows_mortgage: rows_mortgage_payment.sql
 ---
 <BigValue 
   data={total_accounts_balance} 
@@ -36,9 +37,19 @@ queries:
 
 # Expenses
 
+## Housing
+
 <BigValue 
   data={mortgage} 
   value=balance
   title="Mortgage on 1047 Berry Patch Cir"
   fmt=usd2
 />
+
+### Payments
+<DataTable data={rows_mortgage}>
+<Column id=posted_date/>
+<Column id=description/>
+<Column id=account/>
+<Column id=amount_spent fmt=usd2/>
+</DataTable>
