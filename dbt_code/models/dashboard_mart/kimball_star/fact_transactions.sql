@@ -1,4 +1,4 @@
-{{ config(location='s3://pfc-nfcu/dashboard_mart/fact_transactions.parquet') }}
+{{ config(location='s3://pfc-nfcu/dashboard_mart/kimball_star/fact_transactions.parquet') }}
 
 WITH raw AS (
   SELECT UNNEST(accounts) AS acnt

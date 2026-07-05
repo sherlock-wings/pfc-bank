@@ -1,4 +1,4 @@
-{{ config(location='s3://pfc-nfcu/dashboard_mart/dim_accounts.parquet') }}
+{{ config(location='s3://pfc-nfcu/dashboard_mart/kimball_star/dim_accounts.parquet') }}
 
 with init as (
 select unnest(accounts) as acnt
