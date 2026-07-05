@@ -7,3 +7,4 @@ workbench*
 .user.yml
 *.parquet
 logs*
+output.csv
