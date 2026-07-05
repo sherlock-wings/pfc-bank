@@ -9,5 +9,5 @@ select merchant_name
       ,try_cast(round(total_transactions/total_amount*-1 ,2) as decimal(38,2)) as avg_spend_per_txn
 from {{ ref('dim_merchant') }}
 where merchant_category not like '%transfer%'
-  and total_amount <= 0 
+  and total_amount < 0 
 order by total_amount*-1 desc
