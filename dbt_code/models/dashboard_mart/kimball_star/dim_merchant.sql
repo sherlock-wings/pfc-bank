@@ -71,12 +71,12 @@ select s.merchant_category_key
       ,s.merchant_name
       ,s.txn_description
       ,case 
-         when e.txn_description ilike '%pos adjustment%'
+         when s.txn_description ilike '%pos adjustment%'
          then 'payments'
          else e.merchant_category 
        end as merchant_category
       ,case 
-         when e.txn_description ilike '%pos adjustment%'
+         when s.txn_description ilike '%pos adjustment%'
          then 'refunds'
          else e.merchant_subcategory 
        end as merchant_subcategory
