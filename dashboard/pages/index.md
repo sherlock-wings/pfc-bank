@@ -95,6 +95,7 @@ queries:
     series=subcategory
     xGridLines=false
     sort=false
+    legend=false
 />
 
 ## All Expenses
