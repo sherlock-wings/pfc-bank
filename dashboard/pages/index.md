@@ -85,7 +85,7 @@ queries:
 <Column id=account/>
 </DataTable>
 
-## Cost-of-Living 
+## Cost of Living 
 
 <BarChart 
     data={rows_coe_expenses}
