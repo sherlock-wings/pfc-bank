@@ -9,5 +9,5 @@ where merchant_category || merchant_subcategory not ilike '%kratom%'
   and date_trunc('month', posted_at_timestamp) 
   -- trailing 6 months
   between date_trunc('month', current_date()) - interval 6 month
-      and date_trunc('month', current_date())
+      and current_date()
 order by 1 desc

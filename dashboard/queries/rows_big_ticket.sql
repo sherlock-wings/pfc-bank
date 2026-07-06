@@ -10,5 +10,5 @@ where amount_spent >= 500.000
   and date_trunc('month', posted_at_timestamp) 
   -- trailing 6 months
   between date_trunc('month', current_date()) - interval 6 month
-      and date_trunc('month', current_date())
+      and current_date()
 order by posted_at_timestamp desc;
