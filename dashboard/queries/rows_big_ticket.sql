@@ -4,8 +4,9 @@ select date_trunc('day', posted_at_timestamp)::date as posted_date
       ,merchant_subcategory as subcategory
       ,merchant
       ,txn_description as description
-      ,accountfrom pfc_bank.rpt_expenses_detail
-where amount_spent >= 500.000
+      ,account
+from pfc_bank.rpt_expenses_detail
+where amount_spent >= 500.000 -- make this modular with 250, 500, 750, 1k+, etc filters
   and description not ilike '%mortgage%'
   and date_trunc('month', posted_at_timestamp) 
   -- trailing 6 months
