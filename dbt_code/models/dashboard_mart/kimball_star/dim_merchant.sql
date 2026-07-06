@@ -1,6 +1,11 @@
 {{ config(location='s3://pfc-nfcu/dashboard_mart/kimball_star/dim_merchant.parquet') }}
 
-with skeleton as (
+with latest_day_in_data as (
+      select max(posted_at_timestamp) as _end
+      from {{ ref('fact_transactions') }}
+)
+
+,skeleton as (
 select merchant_category_key
       ,lower(payee) as merchant_name
       ,lower(txn_description) as txn_description
@@ -13,57 +18,62 @@ group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_day as (
-    select merchant_category_key
-          ,lower(payee) as merchant_name
-          ,lower(txn_description) as txn_description
-          ,sum(amount) as total_amount
-    from {{ ref('fact_transactions') }}
-    where posted_at_timestamp between date_trunc('day', get_current_timestamp()) - interval 1 day
-                                  and date_trunc('day', get_current_timestamp()) 
+    select f.merchant_category_key
+          ,lower(f.payee) as merchant_name
+          ,lower(f.txn_description) as txn_description
+          ,sum(f.amount) as total_amount
+    from {{ ref('fact_transactions') }} f 
+    cross join latest_day_in_data l
+    where posted_at_timestamp between l._end - interval 1 day
+                                  and l._end 
     group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_week as (
-    select merchant_category_key
-          ,lower(payee) as merchant_name
-          ,lower(txn_description) as txn_description
-          ,sum(amount) as total_amount
-    from {{ ref('fact_transactions') }}
-    where posted_at_timestamp between date_trunc('week', get_current_timestamp()) - interval 1 week
-                                  and date_trunc('week', get_current_timestamp()) 
+    select f.merchant_category_key
+          ,lower(f.payee) as merchant_name
+          ,lower(f.txn_description) as txn_description
+          ,sum(f.amount) as total_amount
+    from {{ ref('fact_transactions') }} f 
+    cross join latest_day_in_data l
+    where posted_at_timestamp between l._end - interval 1 week
+                                  and l._end 
     group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_month as (
-    select merchant_category_key
-          ,lower(payee) as merchant_name
-          ,lower(txn_description) as txn_description
-          ,sum(amount) as total_amount
-    from {{ ref('fact_transactions') }}
-    where posted_at_timestamp between date_trunc('month', get_current_timestamp()) - interval 1 month
-                                  and date_trunc('month', get_current_timestamp()) 
+    select f.merchant_category_key
+          ,lower(f.payee) as merchant_name
+          ,lower(f.txn_description) as txn_description
+          ,sum(f.amount) as total_amount
+    from {{ ref('fact_transactions') }} f 
+    cross join latest_day_in_data l
+    where posted_at_timestamp between l._end - interval 1 month
+                                  and l._end 
     group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_quarter as (
-    select merchant_category_key
-          ,lower(payee) as merchant_name
-          ,lower(txn_description) as txn_description
-          ,sum(amount) as total_amount
-    from {{ ref('fact_transactions') }}
-    where posted_at_timestamp between date_trunc('quarter', get_current_timestamp()) - interval 1 quarter
-                                  and date_trunc('quarter', get_current_timestamp()) 
+    select f.merchant_category_key
+          ,lower(f.payee) as merchant_name
+          ,lower(f.txn_description) as txn_description
+          ,sum(f.amount) as total_amount
+    from {{ ref('fact_transactions') }} f 
+    cross join latest_day_in_data l
+    where posted_at_timestamp between l._end - interval 1 quarter
+                                  and l._end 
     group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
 ,last_year as (
-    select merchant_category_key
-          ,lower(payee) as merchant_name
-          ,lower(txn_description) as txn_description
-          ,sum(amount) as total_amount
-    from {{ ref('fact_transactions') }}
-    where posted_at_timestamp between date_trunc('year', get_current_timestamp()) - interval 1 year
-                                  and date_trunc('year', get_current_timestamp()) 
+    select f.merchant_category_key
+          ,lower(f.payee) as merchant_name
+          ,lower(f.txn_description) as txn_description
+          ,sum(f.amount) as total_amount
+    from {{ ref('fact_transactions') }} f 
+    cross join latest_day_in_data l
+    where posted_at_timestamp between l._end - interval 1 year
+                                  and l._end 
     group by merchant_category_key, lower(payee), lower(txn_description)
 )
 
