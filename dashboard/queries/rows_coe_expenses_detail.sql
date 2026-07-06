@@ -1,6 +1,5 @@
-select 
-
-year(posted_at_timestamp) || '|' || LPAD(CAST(EXTRACT(MONTH FROM posted_at_timestamp) AS VARCHAR), 2, '0')  as year_month, 
+select
+strftime(date_trunc('month', posted_at_timestamp), '%Y-%m') as year_month,
 merchant_subcategory as subcategory,
 sum(amount_spent) as amount_spent
 from pfc_bank.rpt_expenses_detail

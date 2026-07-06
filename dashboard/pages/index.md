@@ -93,6 +93,8 @@ queries:
     y=amount_spent 
     yAxisTitle="Total Expense ($)"
     series=subcategory
+    xGridLines=false
+    sort=false
 />
 
 ## All Expenses
