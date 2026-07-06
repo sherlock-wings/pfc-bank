@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: rpt_monthly_savings
+    description: "Monthly report which compares amount spent to amount earned."
+
+    columns:
+
+      - name: year_month
+        data_type: date
+        description: "Year and month in which given expenses & savings were incurred"
+      - name: total_spend
+        data_type: decimal(38,2)
+        description: "Total amount spent during a given year and month."
+      - name: total_earned
+        data_type: decimal(38,2)
+        description: "Total amount saved during a given year and month."
+      - name: dollars_saved
+        data_type: decimal(38,2)
+        description: "Total amount saved during a given year and month."
+      - name: pcnt_saved
+        data_type: decimal(36,4)
+        description: "Total percent of earnings saved during a given year and month."
+      - name: dollars_lost
+        data_type: decimal(38,2)
+        description: "Total amount lost during a given year and month."
+      - name: pcnt_lost
+        data_type: decimal(36,4)
+        description: "Total percent of earnings lost during a given year and month."
