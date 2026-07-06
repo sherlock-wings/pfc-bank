@@ -13,6 +13,7 @@ queries:
   - rows_coe_expenses: rows_coe_expenses_detail.sql
   - rows_big_expenses: rows_big_ticket.sql
   - rows_all_expenses: rows_all_expenses.sql
+  - rows_all_income: rows_income.sql
 ---
 <BigValue 
   data={total_accounts_balance} 
@@ -108,3 +109,13 @@ queries:
 <Column id=subcategory/>
 </DataTable>
 
+# Income
+
+## All Income streams
+
+<DataTable data={rows_all_income} totalRow=true>
+<Column id=posted_date/>
+<Column id=amount_earned fmt=usd2/>
+<Column id=income_type/>
+<Column id=income_source/>
+</DataTable>
