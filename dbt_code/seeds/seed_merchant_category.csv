@@ -55,7 +55,6 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,Py Core Pest Solu Patrick F Callahan,POS Debit - Visa Check Card 6158 - PY CORE PEST SOLU 8556158 PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,home-maintenance
 2026-07-05 07:38:30 -04,Starbucks,POS Debit - Visa Check Card 6158 - STARBUCKS 09777 SUMMERVILLE S PATRICK F CALLAHAN POS TRANSACTION,discretional,snacks & beverages
 2026-07-05 07:38:30 -04,Harris Teeter,POS Debit - Visa Check Card 6158 - HARRISTEETER 35 680 B SUMMER PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,grocery
-2026-07-05 07:38:30 -04,Best Buy,POS Adjustment - BEST BUY 0001 SUMMERVILLE SC BEST BUY 0001 SUMMERVILLE SC POS ADJUSTMENT - CR,discretional,electronics
 2026-07-05 07:38:30 -04,Comcast,ACH Transaction - COMCAST-XFINITY CABLE SVCS 0002100002 ACH DEBIT,cost-of-living,utility - internet
 2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL 9M6Z9 AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,McDonald's,POS Debit - Visa Check Card 6158 - MCDONALD S F7341 LADSON SC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
@@ -231,7 +230,6 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,Uber Eats,POS Debit - Visa Check Card 6158 - UBER EATS PENDIN SAN FRANCI PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Costco,POS Debit - Visa Check Card 6158 - COSTCO WHSE 0360 CHARLESTON PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,grocery
 2026-07-05 07:38:30 -04,Corner Liqour Stor Summervill Patrick F Callahan,POS Debit - Visa Check Card 6158 - CORNER LIQOUR STOR SUMMERVILL PATRICK F CALLAHAN POS TRANSACTION,vice,alcohol
-2026-07-05 07:38:30 -04,Steam,POS Adjustment - WL STEAM PURCHASE 425-889-9642 WA WL STEAM PURCHASE 425-889-9642 WA POS ADJUSTMENT - CR,entertainment,video-games
 2026-07-05 07:38:30 -04,The Home Depot,"THE HOME DEPOT #1120     SUMMERVILLE  SC",home-goods,home-hardware
 2026-07-05 07:38:30 -04,Cook Out,POS Debit - Visa Check Card 6158 - COOK OUT SUMMERVIL SUMMERVILL PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Culver's,POS Debit - Visa Check Card 6158 - CULVERS ARDEN ARDEN NC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
