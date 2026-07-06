@@ -1,5 +1,5 @@
 ---
-title: Welcome to Evidence
+title: Callahan Family Finances :)
 
 queries:
   - total_accounts_balance: total_assets_minus_mortgage.sql
@@ -10,10 +10,11 @@ queries:
   - mortgage: total_mortgage.sql
   - rows_mortgage: rows_mortgage_payment.sql
   - rows_interest: rows_cc_interest_payments.sql
-  - rows_coe_expenses: rows_coe_expenses_detail.sql
-  - rows_big_expenses: rows_big_ticket.sql
+  - chart_coe_expenses: chart_coe_expenses_detail.sql
   - rows_all_expenses: rows_all_expenses.sql
   - rows_all_income: rows_income.sql
+  - chart_expenses_by_cat: chart_expenses_by_cat.sql
+  - chart_monthly_savings: chart_monthly_savings.sql
 ---
 <BigValue 
   data={total_accounts_balance} 
@@ -78,18 +79,10 @@ queries:
 <Column id=description/>
 </DataTable>
 
-## Large One-time Expenses
-<DataTable data={rows_big_expenses} totalRow=true>
-<Column id=posted_date/>
-<Column id=amount_spent fmt=usd2/>
-<Column id=description/>
-<Column id=account/>
-</DataTable>
-
 ## Cost of Living 
 
 <BarChart 
-    data={rows_coe_expenses}
+    data={chart_coe_expenses}
     x=year_month
     y=amount_spent 
     yAxisTitle="Total Expense ($)"
@@ -101,6 +94,38 @@ queries:
 
 ## All Expenses
 
+### By Category
+
+<BarChart 
+    data={chart_expenses_by_cat}
+    x=category
+    y=total_spend 
+    yAxisTitle="Total Expense ($)"
+    series=subcategory
+    xGridLines=false
+    sort=true
+    legend=false
+    type=stacked
+    swapXY=true
+    echartsOptions={{
+        tooltip: {
+            formatter: (params) => {
+                const rows = params
+                    .filter((p) => p.seriesName !== 'stackTotal' && p.value[0])
+                    .sort((a, b) => b.value[0] - a.value[0]);
+                if (!rows.length) return '';
+                let output = `<span id="tooltip" style='font-weight: 600;'>${params[0].name}</span>`;
+                for (const p of rows) {
+                    output += `<br><span style='font-size: 11px;'>${p.marker} ${p.seriesName}</span><span style='float:right; margin-left: 10px; font-size: 12px;'>${p.value[0].toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>`;
+                }
+                return output;
+            }
+        }
+    }}
+/>
+
+### By Line-Item
+
 <DataTable data={rows_all_expenses} totalRow=true>
 <Column id=posted_date/>
 <Column id=amount_spent fmt=usd2/>
@@ -110,6 +135,33 @@ queries:
 </DataTable>
 
 # Income
+
+## Monthly Savings
+
+<BarChart 
+    data={chart_monthly_savings} 
+    x=year_month 
+    y=total_spend 
+    y2=total_earned
+    sort=false
+    echartsOptions={{
+        tooltip: {
+            formatter: (params) => {
+                const row = chart_monthly_savings[params[0].dataIndex];
+                if (!row) return '';
+                const pct = (v) => (v * 100).toFixed(1) + '%';
+                const usd = (v) => v.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+                let output = `<span style='font-weight:600;'>${params[0].value[0]}</span>`;
+                for (const p of params) {
+                    output += `<br/>${p.marker} ${p.seriesName}: ${usd(p.value[1])}`;
+                }
+                output += `<br/>Saved: ${usd(row.dollars_saved)} (${pct(row.pcnt_saved)})`;
+                output += `<br/>Lost: ${usd(row.dollars_lost)} (${pct(row.pcnt_lost)})`;
+                return output;
+            }
+        }
+    }}
+/>
 
 ## All Income streams
 
