@@ -10,10 +10,10 @@ models:
         description: "NFCU generated label for the Merchant receiving payment in a given transaction."
         tests:
           - not_null
-      - name: merchant_category
+      - name: category
         data_type: text
         description: "General category for the given merchant."
-      - name: merchant_subcategory
+      - name: subcategory
         data_type: text
         description: "More specific category for the given merchant."
       - name: earliest_txn_at
@@ -25,13 +25,6 @@ models:
       - name: total_transactions
         data_type: bigint
         description: "The total count for transactions with a given payee."
-      - name: total_spend
-        data_type: decimal(38,2)
-        description: "Total currency spend on a merchant. Excludes any transaction where we received money from the merchant, and exludes interal transfers between my NFCU accounts."
-        tests:
-          - not_null:
-              config:
-                severity: warn
       - name: avg_spend_per_txn
         data_type: decimal(38,2)
         description: "Average currency spent on a merchant per each transaction. Excludes any transaction where we received money from the merchant, and exludes interal transfers between my NFCU accounts."
@@ -39,4 +32,26 @@ models:
           - not_null:
               config:
                 severity: warn
+      - name: total_spend
+        data_type: decimal(38,2)
+        description: "Total currency spend on a merchant. Excludes any transaction where we received money from the merchant, and exludes interal transfers between my NFCU accounts."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: past_day
+        data_type: decimal(38,2)
+        description: "Same as `total_spend`, but only for transactions in the last day."
+      - name: past_week
+        data_type: decimal(38,2)
+        description: "Same as `total_spend`, but only for transactions in the last week."
+      - name: past_month
+        data_type: decimal(38,2)
+        description: "Same as `total_spend`, but only for transactions in the last month."
+      - name: past_quarter
+        data_type: decimal(38,2)
+        description: "Same as `total_spend`, but only for transactions in the last quarter."
+      - name: past_year
+        data_type: decimal(38,2)
+        description: "Same as `total_spend`, but only for transactions in the last year."
       
