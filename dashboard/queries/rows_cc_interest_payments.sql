@@ -2,4 +2,8 @@ select posted_at_timestamp as posted_date, amount_spent, merchant_category as ca
 from pfc_bank.rpt_expenses_detail
 where account ilike '%cashreward%'
   and txn_description ilike '%interest%'
+  and date_trunc('month', posted_at_timestamp) 
+  -- trailing 6 months
+  between dateadd('month', -6, date_trunc('month', current_date()))
+      and date_trunc('month', current_date())
 order by posted_at_timestamp desc
