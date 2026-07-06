@@ -70,8 +70,16 @@ group by merchant_category_key, lower(payee), lower(txn_description)
 select s.merchant_category_key
       ,s.merchant_name
       ,s.txn_description
-      ,e.merchant_category
-      ,e.merchant_subcategory
+      ,case 
+         when e.txn_description ilike '%pos adjustment%'
+         then 'payments'
+         else e.merchant_category 
+       end as merchant_category
+      ,case 
+         when e.txn_description ilike '%pos adjustment%'
+         then 'refunds'
+         else e.merchant_subcategory 
+       end as merchant_subcategory
       ,s.first_txn_at_timestamp as earliest_txn_at
       ,s.last_txn_at_timestamp as latest_txn_at
       ,s.total_transactions
