@@ -28,6 +28,13 @@ COPY (
          regexp_replace(regexp_extract(file, '([^/]+)\.parquet$', 1), '[^a-zA-Z0-9_]', '_', 'g') ||
          ' AS SELECT * FROM read_parquet(''' || file || ''');' AS ddl
   FROM glob('s3://pfc-nfcu/dashboard_mart/*.parquet')
+  UNION ALL
+  SELECT 'CREATE OR REPLACE VIEW ' ||
+         regexp_replace(regexp_extract(file, '([^/]+)\.parquet$', 1), '[^a-zA-Z0-9_]', '_', 'g') ||
+         ' AS SELECT * FROM read_parquet(''' || file || ''');' AS ddl
+  FROM glob('s3://pfc-nfcu/dashboard_mart/kimball_star/*.parquet')
 ) TO '/home/pfc/.cache/duckdb/generated_views.sql' (HEADER false);
+
+-- REMEMBER TO ADJUST /home/pfc/ HOME-PATH AS NEEDED WHEN PORTING TO DIFFERENT MACHINES! 
 
 .read /home/pfc/.cache/duckdb/generated_views.sql
