@@ -8,7 +8,7 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,Transfer to Other,Transfer to Savings TRF TO OTHER,transfers,other-account
 2026-07-05 07:38:30 -04,Uber Eats,Pos Debit-    6158 6158 Uber * Eats Pendin San Francisco  *,cost-of-living,take-out
 2026-07-05 07:38:30 -04,T-Mobile,POS Debit - Visa Check Card 6158 - TMOBILE AUTO PAY 98556158 PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,utility - phone
-2026-07-05 07:38:30 -04,Asheville N Patrick F Callahan,POS Debit - Visa Check Card 6158 - TST YMAP LLC - MO ASHEVILLE N PATRICK F CALLAHAN POS TRANSACTION,going-out,restaurant
+2026-07-05 07:38:30 -04,Asheville N Patrick F Callahan,POS Debit - Visa Check Card 6158 - TST YMAP LLC - MO ASHEVILLE N PATRICK F CALLAHAN POS TRANSACTION,going-out,restaurants
 2026-07-05 07:38:30 -04,Zelle Debit,ZELLE HARD POST - ZELLE DB BRITTANY JONES ZELLE DB BRITTANY JONES ZELLE DEBIT,payments,peer-to-peer
 2026-07-05 07:38:30 -04,Culver's,Pos Debit-    6158 6158 Culvers Orderonline.c SC,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Spinx,"Pos Debit-    6158 6158 Spinx #359 Summerville  US",cost-of-living,gas
@@ -29,13 +29,13 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,Bold Fitness Sum Club Fees,ACH Transaction - BOLD FITNESS SUM CLUB FEES 0009100001 ACH DEBIT,subscription,gym
 2026-07-05 07:38:30 -04,ATM Withdrawal,ATM Withdrawal - PLUS EFT Chicago IL EFT Chicago ILUS ATM WITHDRAWAL,fees,atm
 2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL A81FO AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
-2026-07-05 07:38:30 -04,Katsubo North,Pos Debit-    6158 6158 Tst*katsubo North Charles SC,going-out,restaurant
+2026-07-05 07:38:30 -04,Katsubo North,Pos Debit-    6158 6158 Tst*katsubo North Charles SC,going-out,restaurants
 2026-07-05 07:38:30 -04,Uber,UBER   *TRIP             HELP.UBER.COMCA,travel,rideshare
 2026-07-05 07:38:30 -04,Wingstop,POS Debit - Visa Check Card 6158 - WINGSTOP TX PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Taco Bell,POS Debit - Visa Check Card 6158 - TACO BELL 3003050 SUMMERVILLE PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Microsoft,POS Debit - Visa Check Card 6158 - MICROSOFT G1635235 MSBILL INF PATRICK F CALLAHAN POS TRANSACTION,entertainment,video games
 2026-07-05 07:38:30 -04,Taco Bell,POS Debit - Visa Check Card 6158 - TACO BELL 004741 LADSON SC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
-2026-07-05 07:38:30 -04,Harleyville Liquor Harleyvill Patrick F Callahan,POS Debit - Visa Check Card 6158 - HARLEYVILLE LIQUOR HARLEYVILL PATRICK F CALLAHAN POS TRANSACTION,vice,liquor
+2026-07-05 07:38:30 -04,Harleyville Liquor Harleyvill Patrick F Callahan,POS Debit - Visa Check Card 6158 - HARLEYVILLE LIQUOR HARLEYVILL PATRICK F CALLAHAN POS TRANSACTION,vicealcohol
 2026-07-05 07:38:30 -04,Nintendo,Nintendo CD1656127905    800-2553700  WA,subscription,video games
 2026-07-05 07:38:30 -04,Netflix,POS Debit - Visa Check Card 6158 - NETFLIX COM LOS GATOS PATRICK F CALLAHAN POS TRANSACTION,subscription,streaming
 2026-07-05 07:38:30 -04,Py Core Pest Solu Patrick F Callahan,POS Debit - Visa Check Card 6158 - PY CORE PEST SOLU 556158 PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,home maintenance
@@ -69,7 +69,7 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,El Cafecito No Ladson Sc Patrick F Callahan,POS Debit - Visa Check Card 6158 - SQ EL CAFECITO NO LADSON SC PATRICK F CALLAHAN POS TRANSACTION,discretional,snacks & beverages
 2026-07-05 07:38:30 -04,Patrick F Callahan,POS Debit - Visa Check Card 6158 - 447 - INSOMNIA CO 556158 PATRICK F CALLAHAN POS TRANSACTION,vice,sweets
 2026-07-05 07:38:30 -04,Professional Monckscorner Sc via Cantaloupe,Pos Debit-    6158 6158 Ctlp*professional Monckscorner SC,**UNKNOWN**,**UNKNOWN**
-2026-07-05 07:38:30 -04,Northwoods Stadium North,Pos Debit-    6158 6158 Northwoods Stadium North Charles SC,entertainment,movie-theatre
+2026-07-05 07:38:30 -04,Northwoods Stadium North,Pos Debit-    6158 6158 Northwoods Stadium North Charles SC,entertainment,movie theatre
 2026-07-05 07:38:30 -04,Wells Fargo,ACH Transaction - WELLS FARGO AUTO DRAFT 0009100001 ACH DEBIT,cost-of-living,car-payment
 2026-07-05 07:38:30 -04,GPM Investments LLC,Pos Debit-    6158 6158 3884 Scotchman Ladson  US,cost-of-living,gas
 2026-07-05 07:38:30 -04,Cielo Mexican Summervill Patrick F Callahan,POS Debit - Visa Check Card 6158 - TST CIELO MEXICAN SUMMERVILL PATRICK F CALLAHAN POS TRANSACTION,going-out,restaurants
@@ -92,7 +92,7 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,Spo Bennymazzetto Patrick F Callahan,POS Debit - Visa Check Card 6158 - SPO BENNYMAZZETTO 556158 PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,GPM Investments LLC,POS Debit - Visa Check Card 6158 - 3884 SCOTCHMAN LADSON PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,gas
 2026-07-05 07:38:30 -04,International Transaction Fee,International Transaction fee Patreon Membershi Internet IE INTL TRANSACTION FEE,fees,international
-2026-07-05 07:38:30 -04,Uber,POS Debit - Visa Check Card 6158 - Uber Technologies Inc Wilmin PATRICK F CALLAHAN POS TRANSACTION,travel,ride-share
+2026-07-05 07:38:30 -04,Uber,POS Debit - Visa Check Card 6158 - Uber Technologies Inc Wilmin PATRICK F CALLAHAN POS TRANSACTION,travel,rideshare
 2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL 588T4 AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,Zaxby's,POS Debit - Visa Check Card 6158 - ZAXBY S 21101 SUMMERVILLE SC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Uber Eats,UBER   *EATS             HELP.UBER.COMCA,cost-of-living,take-out
@@ -103,9 +103,9 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,American Airlines,AMERICAN AI 0010283630864United StatesAZ,travel,airfare
 2026-07-05 07:38:30 -04,Enmarket,POS Debit - Visa Check Card 6158 - ENMARKET 1375 ASHEVILLE PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,gas
 2026-07-05 07:38:30 -04,Smoulder Chicago Il Patrick F Callahan,POS Debit - Visa Check Card 6158 - SMOULDER LLC CHICAGO IL PATRICK F CALLAHAN POS TRANSACTION,going-out,restaurants
-2026-07-05 07:38:30 -04,The Home Depot,POS Debit - Visa Check Card 6158 - THE HOME DEPOT 98556158 PATRICK F CALLAHAN POS TRANSACTION,home-goods,home-hardware
+2026-07-05 07:38:30 -04,The Home Depot,POS Debit - Visa Check Card 6158 - THE HOME DEPOT 98556158 PATRICK F CALLAHAN POS TRANSACTION,home-goods,home hardware
 2026-07-05 07:38:30 -04,Prod Theknotww Comny Patrick F Callahan,POS Debit - Visa Check Card 6158 - TK PROD THEKNOTWW COMNY PATRICK F CALLAHAN POS TRANSACTION,discretional,events
-2026-07-05 07:38:30 -04,Uber,POS Debit - Visa Check Card 6158 - UBER TECHNOLOGIES WILMINGTON PATRICK F CALLAHAN POS TRANSACTION,travel,ride-share
+2026-07-05 07:38:30 -04,Uber,POS Debit - Visa Check Card 6158 - UBER TECHNOLOGIES WILMINGTON PATRICK F CALLAHAN POS TRANSACTION,travel,rideshare
 2026-07-05 07:38:30 -04,Zelle Transfer,ZELLE HARD POST - ZELLE CR BRITTANY JONES ZELLE CR BRITTANY JONES ZELLE DEPOSIT,payments,peer-to-peer
 2026-07-05 07:38:30 -04,Patreon,POS Debit - Visa Check Card 6158 - PATREON MEMBERSHI INTERNET C PATRICK F CALLAHAN POS TRANSACTION,subscription,content-creators
 2026-07-05 07:38:30 -04,Atlantic Spirits,Pos Debit-    6158 6158 Atlantic Spirits Summerville SC,vice,alcohol
@@ -129,12 +129,12 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,Rusty Bull North Char Patrick F Callahan,POS Debit - Visa Check Card 6158 - TST RUSTY BULL BR NORTH CHAR PATRICK F CALLAHAN POS TRANSACTION,going-out,bars
 2026-07-05 07:38:30 -04,Transfer to Mortgage,Transfer To Mortgage,cost-of-living,housing
 2026-07-05 07:38:30 -04,Patreon,POS Debit - Visa Check Card 6158 - Patreon San Francisco PATRICK F CALLAHAN POS TRANSACTION,subscription,content-creators
-2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON RETA JY1WK WWW AMAZON PATRICK F CALLAHAN POS TRANSACTION,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON RETA JY1WK WWW AMAZON PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,HOA dues,ACH Transaction - DUNMEYER HILL ES Assn Dues 0012210598 ACH DEBIT,fees,HOA
 2026-07-05 07:38:30 -04,Patreon,Pos Debit-    6158 6158 Patreon* Membershi 833-9728766 CA,subscription,content-creators
 2026-07-05 07:38:30 -04,Transfer From Shares Other,Transfer from Shares TFR FR OTHER,transfers,other-account
 2026-07-05 07:38:30 -04,Furryland of Charles,FURRYLAND OF CHARLES     FURRYLAND.US/ID,pet-care,grooming
-2026-07-05 07:38:30 -04,Uber Pending Transaction,POS Debit - Visa Check Card 6158 - UBR PENDING UBER COM San Fra PATRICK F CALLAHAN POS TRANSACTION,travel,ride-share
+2026-07-05 07:38:30 -04,Uber Pending Transaction,POS Debit - Visa Check Card 6158 - UBR PENDING UBER COM San Fra PATRICK F CALLAHAN POS TRANSACTION,travel,rideshare
 2026-07-05 07:38:30 -04,Meals Com Sc Patrick F Callahan,POS Debit - Visa Check Card 6158 - SP 212MEALS 212MEALS COM SC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,grocery
 2026-07-05 07:38:30 -04,Domino's,POS Debit - Visa Check Card 6158 - DOMINO S SC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Cypress Gardens Moncks Corner Patrick F Callahan,POS Debit - Visa Check Card 6158 - CYPRESS GARDENS MONCKS CORNER PATRICK F CALLAHAN POS TRANSACTION,travel,attractions
@@ -145,57 +145,57 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,PetSmart,"Pos Debit-    6158 6158 Petsmart # 1251 Summerville SC US",pet-care,pet-food
 2026-07-05 07:38:30 -04,Hyatt Place Hotel,HYATT PLACE CHICAGO      CHICAGO      IL,travel,hotel
 2026-07-05 07:38:30 -04,CVS,POS Debit - Visa Check Card 6158 - CVS PHARMACY 0420 SUMMERVILL PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,healthcare
-2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BS28L AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,onilne-shopping
-2026-07-05 07:38:30 -04,The Home Depot,POS Debit - Visa Check Card 6158 - THE HOME DEPOT 1120 SUMMERVI PATRICK F CALLAHAN POS TRANSACTION,home-goods,home-hardware
+2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BS28L AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
+2026-07-05 07:38:30 -04,The Home Depot,POS Debit - Visa Check Card 6158 - THE HOME DEPOT 1120 SUMMERVI PATRICK F CALLAHAN POS TRANSACTION,home-goods,home hardware
 2026-07-05 07:38:30 -04,Subway,POS Debit - Visa Check Card 6158 - SUBWAY 27049 LADSON SC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
-2026-07-05 07:38:30 -04,Steam,POS Debit - Visa Check Card 6158 - WL STEAM PURCHASE 8556158 PATRICK F CALLAHAN POS TRANSACTION,entertainment,video-games
+2026-07-05 07:38:30 -04,Steam,POS Debit - Visa Check Card 6158 - WL STEAM PURCHASE 8556158 PATRICK F CALLAHAN POS TRANSACTION,entertainment,video games
 2026-07-05 07:38:30 -04,Netflix,POS Debit - Visa Check Card 6158 - NETFLIX COM NETFLIX COM CA PATRICK F CALLAHAN POS TRANSACTION,subscription,streaming
 2026-07-05 07:38:30 -04,City of Asheville,POS Debit - Visa Check Card 6158 - CITY OF ASHEVILLE 98556158 PATRICK F CALLAHAN POS TRANSACTION,fees,parking
 2026-07-05 07:38:30 -04,Target,TARGET        00018291   NORTH CHARLESSC,discretional,department-store
-2026-07-05 07:38:30 -04,Uber,"Pos Debit-    6158 6158 Uber Technologies, Wilmington  TE",travel,ride-share
+2026-07-05 07:38:30 -04,Uber,"Pos Debit-    6158 6158 Uber Technologies, Wilmington  TE",travel,rideshare
 2026-07-05 07:38:30 -04,Dividend,Dividend,payments,dividend
 2026-07-05 07:38:30 -04,Home Team Bbq Charleston Patrick F Callahan,POS Debit - Visa Check Card 6158 - TST HOME TEAM BBQ CHARLESTON PATRICK F CALLAHAN POS TRANSACTION,going-out,restaurants
 2026-07-05 07:38:30 -04,Spinx,"Pos Debit-    6158 6158 Spinx #354 Ladson  US",cost-of-living,gas
 2026-07-05 07:38:30 -04,Bottles,BOTTLES SUMMERVILLE      SUMMERVILLE  SC,vice,alcohol
-2026-07-05 07:38:30 -04,Nintendo,Nintendo CD1636673448    800-2553700  WA,subscription,video-games
-2026-07-05 07:38:30 -04,Microsoft G Patrick F Callahan,POS Debit - Visa Check Card 6158 - MICROSOFT G1575110 MICROSOFT PATRICK F CALLAHAN POS TRANSACTION,entertainment,video-games
+2026-07-05 07:38:30 -04,Nintendo,Nintendo CD1636673448    800-2553700  WA,subscription,video games
+2026-07-05 07:38:30 -04,Microsoft G Patrick F Callahan,POS Debit - Visa Check Card 6158 - MICROSOFT G1575110 MICROSOFT PATRICK F CALLAHAN POS TRANSACTION,entertainment,video games
 2026-07-05 07:38:30 -04,Twisted Laurel Avl Asheville Patrick F Callahan,POS Debit - Visa Check Card 6158 - TWISTED LAUREL AVL ASHEVILLE PATRICK F CALLAHAN POS TRANSACTION,going-out,restaurants
 2026-07-05 07:38:30 -04,ATM Fee,ATM Fee - Withdrawal EFT Chicago ILUS ATM FEE - WITHDRAWAL,fees,atm
 2026-07-05 07:38:30 -04,O Leary S Publ Chicago Il Patrick F Callahan,POS Debit - Visa Check Card 6158 - SQ O LEARY S PUBL CHICAGO IL PATRICK F CALLAHAN POS TRANSACTION,going-out,bars
-2026-07-05 07:38:30 -04,Tmbobzbhzjil Redmond Patrick F Callahan,POS Debit - Visa Check Card 6158 - WM2TMBOBZBHZJIL REDMOND PATRICK F CALLAHAN POS TRANSACTION,entertainment,video-games
+2026-07-05 07:38:30 -04,Tmbobzbhzjil Redmond Patrick F Callahan,POS Debit - Visa Check Card 6158 - WM2TMBOBZBHZJIL REDMOND PATRICK F CALLAHAN POS TRANSACTION,entertainment,video games
 2026-07-05 07:38:30 -04,Kingstide the Dime Daniel Islandsc,TST* KINGSTIDE-THE DIME  DANIEL ISLANDSC,going-out,bars
 2026-07-05 07:38:30 -04,Dominion Energy,ACH Transaction - DOMINION ENERGY DRAFT 0011100002 ACH DEBIT,cost-of-living,utility - electricity
-2026-07-05 07:38:30 -04,Nintendo,Nintendo CD1619000319    800-2553700  WA,subscription,video-games
+2026-07-05 07:38:30 -04,Nintendo,Nintendo CD1619000319    800-2553700  WA,subscription,video games
 2026-07-05 07:38:30 -04,Best Buy,POS Debit - Visa Check Card 6158 - BEST BUY 00014282 SUMMERVILLE PATRICK F CALLAHAN POS TRANSACTION,discretional,department-store
 2026-07-05 07:38:30 -04,China City Beyondmen Patrick F Callahan,POS Debit - Visa Check Card 6158 - BM CHINA CITY WWW BEYONDMEN PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Transfer to Checking,Transfer To Checking -6396,transfers,other-account
 2026-07-05 07:38:30 -04,Aldi,POS Debit - Visa Check Card 6158 - ALDI 66036 SUMMERVILLE PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,grocery
 2026-07-05 07:38:30 -04,Cracker Barrel,POS Debit - Visa Check Card 6158 - CRACKER BARREL 67 SUMMERVILL PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,ATM Withdrawal,ATM Withdrawal - FCVW NORTH SUMMERVILLE SC NORTH SUMMERVILLE SC 050626 ATM WITHDRAWAL,fees,atm
-2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BS9F7 AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BS9F7 AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,Ladson Vape,Pos Debit-    6158 6158 Ladson Vape Ladson SC,vice,kratom
 2026-07-05 07:38:30 -04,Py Primohoagies S Patrick F Callahan,POS Debit - Visa Check Card 6158 - PY PRIMOHOAGIES S 556158 PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Cal Patrick F Callahan,POS Debit - Visa Check Card 6158 - TST MI TIERRA CAL 556158 PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Atlantic Spirits Summerville Patrick F Callahan,POS Debit - Visa Check Card 6158 - ATLANTIC SPIRITS SUMMERVILLE PATRICK F CALLAHAN POS TRANSACTION,vice,alcohol
-2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL QY5O4 AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL QY5O4 AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,Leye Ema,TST* LEYE - EMA          CHICAGO      IL,going-out,bars
 2026-07-05 07:38:30 -04,Summerville Na Summervill Patrick F Callahan,POS Debit - Visa Check Card 6158 - SQ SUMMERVILLE NA SUMMERVILL PATRICK F CALLAHAN POS TRANSACTION,**UNKNOWN**,**UNKNOWN**
 2026-07-05 07:38:30 -04,Zelle Debit,ZELLE HARD POST - ZELLE DB EUNG KIM ZELLE DB EUNG KIM ZELLE DEBIT,payments,peer-to-peer
 2026-07-05 07:38:30 -04,Bath & Body Works,POS Debit - Visa Check Card 6158 - BATH AND BODY WORKS 59 SUMMER PATRICK F CALLAHAN POS TRANSACTION,home-goods,amenities
 2026-07-05 07:38:30 -04,Target,POS Debit - Visa Check Card 6158 - TARGET T-1493 Summerville PATRICK F CALLAHAN POS TRANSACTION,discretional,department-store
-2026-07-05 07:38:30 -04,Amazon,Pos Debit-    6158 6158 Amazon Mktpl*7c0nm Amzn.com/bill WA,discretional,onilne-shopping
-2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON RETA BG9PZ WWW AMAZON PATRICK F CALLAHAN POS TRANSACTION,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,Pos Debit-    6158 6158 Amazon Mktpl*7c0nm Amzn.com/bill WA,discretional,online-shopping
+2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON RETA BG9PZ WWW AMAZON PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,Zelle Debit,Zelle Debit,payments,peer-to-peer
-2026-07-05 07:38:30 -04,Lowe's,POS Debit - Visa Check Card 6158 - LOWE S 358 SUMMERVILLE SC PATRICK F CALLAHAN POS TRANSACTION,home-goods,home-hardware
+2026-07-05 07:38:30 -04,Lowe's,POS Debit - Visa Check Card 6158 - LOWE S 358 SUMMERVILLE SC PATRICK F CALLAHAN POS TRANSACTION,home-goods,home hardware
 2026-07-05 07:38:30 -04,Jim 'N Nick's,4025 JNN NCHARLESTON     NORTH CHARLESSC,going-out,restaurants
-2026-07-05 07:38:30 -04,Microsoft Game C Patrick F Callahan,POS Debit - Visa Check Card 6158 - MICROSOFT PC GAME MICROSOFT C PATRICK F CALLAHAN POS TRANSACTION,entertainment,video-games
+2026-07-05 07:38:30 -04,Microsoft Game C Patrick F Callahan,POS Debit - Visa Check Card 6158 - MICROSOFT PC GAME MICROSOFT C PATRICK F CALLAHAN POS TRANSACTION,entertainment,video games
 2026-07-05 07:38:30 -04,Walmart,POS Debit - Visa Check Card 6158 - WM SUPERCENTER 1037 SUMMERVI PATRICK F CALLAHAN POS TRANSACTION,discretional,department-store
 2026-07-05 07:38:30 -04,Dropps,POS Debit - Visa Check Card 6158 - SP DROPPS COM DROPPS COM IL PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,laundry
 2026-07-05 07:38:30 -04,Target,POS Debit - Visa Check Card 6158 - TARGET T-1829 7250 Riv North PATRICK F CALLAHAN POS TRANSACTION,discretional,department-store
-2026-07-05 07:38:30 -04,Steam,Pos Debit-    6158 6158 Wl *steam Purchase 425-889-9642 WA,entertainment,video-games
+2026-07-05 07:38:30 -04,Steam,Pos Debit-    6158 6158 Wl *steam Purchase 425-889-9642 WA,entertainment,video games
 2026-07-05 07:38:30 -04,Godwin S Summerville Sc Patrick F Callahan,POS Debit - Visa Check Card 6158 - TST GODWIN S SUMMERVILLE SC PATRICK F CALLAHAN POS TRANSACTION,going-out,bars
 2026-07-05 07:38:30 -04,Rubys Bagels Summerville Sc Patrick F Callahan,POS Debit - Visa Check Card 6158 - RUBYS BAGELS SUMMERVILLE SC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
-2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BC1A1 AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BC1A1 AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,Harris Teeter,POS Debit - Visa Check Card 6158 - HARRISTEETER 355 SUMMERVILLE PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,grocery
 2026-07-05 07:38:30 -04,The Kerryman,TST* THE KERRYMAN CHICAGOCHICAGO      IL,going-out,bars
 2026-07-05 07:38:30 -04,Wells Fargo,ACH Transaction - WELLS FARGO AUTO FEE PMTS 0009100001 ACH DEBIT,debt,car-payment
@@ -204,15 +204,15 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,McDonald's,POS Debit - Visa Check Card 6158 - MCDONALD S F2626 SUMMERVILLE PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Hudson News,POS Debit - Visa Check Card 6158 - HUDSONNEWS ST1291 DES PLAINES PATRICK F CALLAHAN POS TRANSACTION,discretional,snacks & beverages
 2026-07-05 07:38:30 -04,Spinx,"Pos Debit-    6158 6158 Spinx #356 Ladson  US",cost-of-living,gas
-2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON RETA BY9HP WWW AMAZON PATRICK F CALLAHAN POS TRANSACTION,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON RETA BY9HP WWW AMAZON PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,Transfer From Savings Other,Transfer from Savings TFR FR OTHER,transfers,other-accounts
 2026-07-05 07:38:30 -04,Lodi Coffee Charleston Patrick F Callahan,POS Debit - Visa Check Card 6158 - TST LODI COFFEE - CHARLESTON PATRICK F CALLAHAN POS TRANSACTION,discretional,snacks & beverages
-2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BS59G AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BS59G AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,Kohls Summerville Sc Patrick F Callahan,POS Debit - Visa Check Card 6158 - KOHLS 0747 SUMMERVILLE SC PATRICK F CALLAHAN POS TRANSACTION,home-goods,clothing
 2026-07-05 07:38:30 -04,Interest Charge,INTEREST CHARGE-PURCHASES,debt,credit-card
-2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BY57E AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,POS Debit - Visa Check Card 6158 - AMAZON MKTPL BY57E AMZN COM B PATRICK F CALLAHAN POS TRANSACTION,discretional,online-shopping
 2026-07-05 07:38:30 -04,Patreon,POS Debit - Visa Check Card 6158 - PATREON MEMBERSHI INTERNET PATRICK F CALLAHAN POS TRANSACTION,entertainment,content-creators
-2026-07-05 07:38:30 -04,Rita S Summerville Sc Patrick F Callahan,POS Debit - Visa Check Card 6158 - RITA S 1537 SUMMERVILLE SC PATRICK F CALLAHAN POS TRANSACTION,going-out,restaurant
+2026-07-05 07:38:30 -04,Rita S Summerville Sc Patrick F Callahan,POS Debit - Visa Check Card 6158 - RITA S 1537 SUMMERVILLE SC PATRICK F CALLAHAN POS TRANSACTION,going-out,restaurants
 2026-07-05 07:38:30 -04,Ingles Markets,POS Debit - Visa Check Card 6158 - INGLES MARKETS ASHEVILLE PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,grocery
 2026-07-05 07:38:30 -04,Transfer to Other,Transfer to Mortgage TRF TO OTHER,transfers,other-account
 2026-07-05 07:38:30 -04,Transfer From Checking,Transfer from Checking TFR FR OTHER,transfers,other-account
@@ -230,12 +230,12 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,Uber Eats,POS Debit - Visa Check Card 6158 - UBER EATS PENDIN SAN FRANCI PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Costco,POS Debit - Visa Check Card 6158 - COSTCO WHSE 0360 CHARLESTON PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,grocery
 2026-07-05 07:38:30 -04,Corner Liqour Stor Summervill Patrick F Callahan,POS Debit - Visa Check Card 6158 - CORNER LIQOUR STOR SUMMERVILL PATRICK F CALLAHAN POS TRANSACTION,vice,alcohol
-2026-07-05 07:38:30 -04,The Home Depot,"THE HOME DEPOT #1120     SUMMERVILLE  SC",home-goods,home-hardware
+2026-07-05 07:38:30 -04,The Home Depot,"THE HOME DEPOT #1120     SUMMERVILLE  SC",home-goods,home hardware
 2026-07-05 07:38:30 -04,Cook Out,POS Debit - Visa Check Card 6158 - COOK OUT SUMMERVIL SUMMERVILL PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Culver's,POS Debit - Visa Check Card 6158 - CULVERS ARDEN ARDEN NC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Kanji Sushi Hibachi,TST*KANJI SUSHI HIBACHI  843-900-5854 SC,cost-of-living,take-out
-2026-07-05 07:38:30 -04,Amazon,Pos Debit-    6158 6158 Amazon Mktpl*ys8mw Amzn.com/bill WA,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,Pos Debit-    6158 6158 Amazon Mktpl*ys8mw Amzn.com/bill WA,discretional,online-shopping
 2026-07-05 07:38:30 -04,Snickers Bar and G Chicago Il Patrick F Callahan,POS Debit - Visa Check Card 6158 - SNICKERS BAR AND G CHICAGO IL PATRICK F CALLAHAN POS TRANSACTION,going-out,bars
 2026-07-05 07:38:30 -04,Dutch Bros Coffee,POS Debit - Visa Check Card 6158 - DUTCH BROS SC0102 SUMMERVILLE PATRICK F CALLAHAN POS TRANSACTION,discretional,snacks & beverages
 2026-07-05 07:38:30 -04,Pack S Tavern,TST* PACK S TAVERN       ASHEVILLE    NC,going-out,bars
-2026-07-05 07:38:30 -04,Amazon,Pos Debit-    6158 6158 Amazon Mktpl*tb1ia Amzn.com/bill WA,discretional,onilne-shopping
+2026-07-05 07:38:30 -04,Amazon,Pos Debit-    6158 6158 Amazon Mktpl*tb1ia Amzn.com/bill WA,discretional,online-shopping
