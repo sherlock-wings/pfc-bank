@@ -1,4 +1,4 @@
-select posted_at_timestamp as posted_date
+select date_trunc('day', posted_at_timestamp)::date as posted_date
       ,amount_spent
       ,merchant
       ,merchant_category as category

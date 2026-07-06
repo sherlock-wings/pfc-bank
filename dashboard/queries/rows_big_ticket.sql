@@ -1,5 +1,10 @@
-select posted_at_timestamp as posted_date, txn_description as description, account, amount_spent, merchant_category as category, merchant_subcategory as subcategory
-from pfc_bank.rpt_expenses_detail
+select date_trunc('day', posted_at_timestamp)::date as posted_date
+      ,amount_spent
+      ,merchant_category as category
+      ,merchant_subcategory as subcategory
+      ,merchant
+      ,txn_description as description
+      ,accountfrom pfc_bank.rpt_expenses_detail
 where amount_spent >= 500.000
   and description not ilike '%mortgage%'
   and date_trunc('month', posted_at_timestamp) 
