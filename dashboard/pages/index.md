@@ -136,7 +136,50 @@ queries:
 
 # Income
 
-## Monthly Savings
+```sql savings_bounds
+select min(year_month) as start_month,
+       max(year_month) as end_month,
+       date_diff('month', min(year_month), max(year_month)) as month_span
+from pfc_bank.rpt_monthly_savings
+```
+
+```sql total_saved
+select sum(dollars_saved) as savings
+from pfc_bank.rpt_monthly_savings
+where year_month <= (
+    select min(year_month) + to_months(${inputs.dateSlider}::integer)
+    from pfc_bank.rpt_monthly_savings
+)
+```
+
+```sql cutoff_date
+select (
+    select min(year_month) + to_months(${inputs.dateSlider}::integer)
+    from pfc_bank.rpt_monthly_savings
+)::date as as_of
+```
+
+<BigValue 
+  data={total_saved} 
+  value=savings
+  fmt=usd2
+  title="Total Saved"
+/>
+
+<Slider
+    title='Filter by Month'
+    name='dateSlider'
+    size=large
+    data={savings_bounds}
+    min=0
+    maxColumn=month_span
+    defaultValue=month_span
+    step=1
+/>
+
+Cumulative savings from **<Value data={savings_bounds} column=start_month fmt="mmmm yyyy" />** through **<Value data={cutoff_date} column=as_of fmt="mmmm yyyy" />**
+
+## Savings, by Month
 
 <BarChart 
     data={chart_monthly_savings} 
