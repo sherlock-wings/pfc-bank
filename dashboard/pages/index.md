@@ -126,7 +126,42 @@ queries:
 
 ### By Line-Item
 
-<DataTable data={rows_all_expenses} totalRow=true>
+```sql expenses_detail_bounds 
+select min(posted_at_timestamp) as start_date,
+       date_diff('day', min(posted_at_timestamp), max(posted_at_timestamp)) as date_span
+from pfc_bank.rpt_expenses_detail
+```
+
+```sql flt_rows_all_expenses 
+select *
+from ${rows_all_expenses}
+where posted_date <= (
+    select min(posted_date) + interval ${inputs.expensesDateSlider} day
+    from ${rows_all_expenses}
+)
+```
+
+```sql expenses_cutoff_date 
+select (
+    select min(posted_at_timestamp) + interval ${inputs.expensesDateSlider} day
+    from pfc_bank.rpt_expenses_detail
+)::date as expenses_as_of
+```
+
+<Slider
+    title='Filter by Date'
+    name='expensesDateSlider'
+    size=large
+    data={expenses_detail_bounds}
+    min=0
+    maxColumn=date_span
+    defaultValue=date_span
+    step=1
+/>
+
+👇Cumulative savings from **<Value data={expenses_detail_bounds} column=start_date fmt="mmmm dd" />** through **<Value data={expenses_cutoff_date} column=expenses_as_of fmt="mmmm dd" />**
+
+<DataTable data={flt_rows_all_expenses} totalRow=true>
 <Column id=posted_date/>
 <Column id=amount_spent fmt=usd2/>
 <Column id=description/>
@@ -136,27 +171,26 @@ queries:
 
 # Income
 
-```sql savings_bounds
+```sql savings_bounds 
 select min(year_month) as start_month,
-       max(year_month) as end_month,
        date_diff('month', min(year_month), max(year_month)) as month_span
 from pfc_bank.rpt_monthly_savings
 ```
 
-```sql total_saved
+```sql total_saved 
 select sum(dollars_saved) as savings
 from pfc_bank.rpt_monthly_savings
 where year_month <= (
-    select min(year_month) + to_months(${inputs.dateSlider}::integer)
+    select min(year_month) + to_months(${inputs.savingsMonthSlider}::integer)
     from pfc_bank.rpt_monthly_savings
 )
 ```
 
-```sql cutoff_date
+```sql savings_cutoff_month 
 select (
-    select min(year_month) + to_months(${inputs.dateSlider}::integer)
+    select min(year_month) + to_months(${inputs.savingsMonthSlider}::integer)
     from pfc_bank.rpt_monthly_savings
-)::date as as_of
+)::date as savings_as_of
 ```
 
 <BigValue 
@@ -168,7 +202,7 @@ select (
 
 <Slider
     title='Filter by Month'
-    name='dateSlider'
+    name='savingsMonthSlider'
     size=large
     data={savings_bounds}
     min=0
@@ -177,7 +211,7 @@ select (
     step=1
 />
 
-Cumulative savings from **<Value data={savings_bounds} column=start_month fmt="mmmm yyyy" />** through **<Value data={cutoff_date} column=as_of fmt="mmmm yyyy" />**
+☝️Cumulative savings from **<Value data={savings_bounds} column=start_month fmt="mmmm yyyy" />** through **<Value data={savings_cutoff_month} column=savings_as_of fmt="mmmm yyyy" />**
 
 ## Savings, by Month
 
