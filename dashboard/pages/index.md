@@ -126,6 +126,11 @@ queries:
 
 ### By Line-Item
 
+```sql unique_merch_cats
+select distinct category from ${rows_all_expenses}
+order by category
+```
+
 ```sql expenses_detail_bounds 
 select min(posted_at_timestamp) as start_date,
        date_diff('day', min(posted_at_timestamp), max(posted_at_timestamp)) as date_span
@@ -139,6 +144,8 @@ where posted_date <= (
     select min(posted_date) + interval ${inputs.expensesDateSlider} day
     from ${rows_all_expenses}
 )
+and category in ${inputs.merch_cat_select.value}
+
 ```
 
 ```sql expenses_cutoff_date 
@@ -147,6 +154,8 @@ select (
     from pfc_bank.rpt_expenses_detail
 )::date as expenses_as_of
 ```
+
+👇Expenses from **<Value data={expenses_detail_bounds} column=start_date fmt="mmmm dd" />** through **<Value data={expenses_cutoff_date} column=expenses_as_of fmt="mmmm dd" />**
 
 <Slider
     title='Filter by Date'
@@ -159,7 +168,15 @@ select (
     step=1
 />
 
-👇Cumulative savings from **<Value data={expenses_detail_bounds} column=start_date fmt="mmmm dd" />** through **<Value data={expenses_cutoff_date} column=expenses_as_of fmt="mmmm dd" />**
+<Dropdown 
+    data={unique_merch_cats} 
+    title="Filter by category"
+    name=merch_cat_select 
+    value=category
+    multiple
+    defaultValue="cost-of-living"
+/>
+
 
 <DataTable data={flt_rows_all_expenses} totalRow=true>
 <Column id=posted_date/>
@@ -168,6 +185,7 @@ select (
 <Column id=category/>
 <Column id=subcategory/>
 </DataTable>
+
 
 # Income
 
@@ -193,6 +211,8 @@ select (
 )::date as savings_as_of
 ```
 
+👇Cumulative savings from **<Value data={savings_bounds} column=start_month fmt="mmmm yyyy" />** through **<Value data={savings_cutoff_month} column=savings_as_of fmt="mmmm yyyy" />**
+
 <BigValue 
   data={total_saved} 
   value=savings
@@ -211,7 +231,7 @@ select (
     step=1
 />
 
-☝️Cumulative savings from **<Value data={savings_bounds} column=start_month fmt="mmmm yyyy" />** through **<Value data={savings_cutoff_month} column=savings_as_of fmt="mmmm yyyy" />**
+
 
 ## Savings, by Month
 
