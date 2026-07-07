@@ -13,7 +13,14 @@ select merchant_name
       ,total_transactions
       ,try_cast(round(total_transactions/total_amount*-1 ,2) as decimal(38,2)) as avg_spend_per_txn
 from {{ ref('dim_merchant') }}
-where merchant_category not like '%transfer%'
-  and total_amount < 0 
-  and merchant_subcategory not ilike '%kratom%'
+where total_amount < 0 
+-- transfers to the Credit Card or to the Mortage are expenses
+-- transfers between checkings and savings accounts are not
+  and (
+    (txn_description ilike '%transfer%' and txn_description ilike '%credit card%')
+    or
+    (txn_description ilike '%transfer%' and txn_description ilike '%mortgage%')
+    or
+    txn_description not ilike '%transfer%'
+  ) 
 order by total_amount*-1 desc
