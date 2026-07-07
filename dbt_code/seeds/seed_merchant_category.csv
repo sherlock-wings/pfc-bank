@@ -35,7 +35,7 @@ last_updated_timestamp,merchant_name,description,merchant_category,merchant_subc
 2026-07-05 07:38:30 -04,Taco Bell,POS Debit - Visa Check Card 6158 - TACO BELL 3003050 SUMMERVILLE PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
 2026-07-05 07:38:30 -04,Microsoft,POS Debit - Visa Check Card 6158 - MICROSOFT G1635235 MSBILL INF PATRICK F CALLAHAN POS TRANSACTION,entertainment,video games
 2026-07-05 07:38:30 -04,Taco Bell,POS Debit - Visa Check Card 6158 - TACO BELL 004741 LADSON SC PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,take-out
-2026-07-05 07:38:30 -04,Harleyville Liquor Harleyvill Patrick F Callahan,POS Debit - Visa Check Card 6158 - HARLEYVILLE LIQUOR HARLEYVILL PATRICK F CALLAHAN POS TRANSACTION,vicealcohol
+2026-07-05 07:38:30 -04,Harleyville Liquor Harleyvill Patrick F Callahan,POS Debit - Visa Check Card 6158 - HARLEYVILLE LIQUOR HARLEYVILL PATRICK F CALLAHAN POS TRANSACTION,vice,alcohol
 2026-07-05 07:38:30 -04,Nintendo,Nintendo CD1656127905    800-2553700  WA,subscription,video games
 2026-07-05 07:38:30 -04,Netflix,POS Debit - Visa Check Card 6158 - NETFLIX COM LOS GATOS PATRICK F CALLAHAN POS TRANSACTION,subscription,streaming
 2026-07-05 07:38:30 -04,Py Core Pest Solu Patrick F Callahan,POS Debit - Visa Check Card 6158 - PY CORE PEST SOLU 556158 PATRICK F CALLAHAN POS TRANSACTION,cost-of-living,home maintenance
