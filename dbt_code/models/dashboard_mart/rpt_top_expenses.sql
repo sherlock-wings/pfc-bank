@@ -13,14 +13,8 @@ select merchant_name
       ,total_transactions
       ,try_cast(round(total_transactions/total_amount*-1 ,2) as decimal(38,2)) as avg_spend_per_txn
 from {{ ref('dim_merchant') }}
-where total_amount < 0 
--- transfers to the Credit Card or to the Mortage are expenses
--- transfers between checkings and savings accounts are not
-  and (
-    (txn_description ilike '%transfer%' and txn_description ilike '%credit card%')
-    or
-    (txn_description ilike '%transfer%' and txn_description ilike '%mortgage%')
-    or
-    txn_description not ilike '%transfer%'
-  ) 
+where total_amount < 0
+-- payments to the Credit Card / Mortgage are now categorized as debt and stay;
+-- internal transfers between checking & savings are net-zero and are excluded.
+  and merchant_category <> 'transfers'
 order by total_amount*-1 desc
