@@ -1,0 +1,44 @@
+name: deploy dashboard
+
+on:
+  workflow_dispatch:           # manual button
+  workflow_run:                # auto-run after new data is built
+    workflows: ["nfcu-pipe extract"]
+    types: [completed]
+
+permissions:
+  id-token: write              # assume the AWS role
+  contents: read
+
+jobs:
+  deploy:
+    # only when the upstream run succeeded (skips the "no new data" path too)
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment: dev
+    defaults:
+      run:
+        working-directory: dashboard
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4   # gives DuckDB S3 read via env creds
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: us-east-2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+      - run: npm run sources      # runs SQL against S3, writes parquet into the build
+      - run: npm run build        # produces dashboard/build/
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: dashboard
+          command: pages deploy build --project-name=pfc-finance --branch=main
