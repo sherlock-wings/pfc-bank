@@ -1,7 +1,7 @@
 select date_trunc('day', posted_at_timestamp)::date as posted_date
       ,amount_earned
       ,txn_description as income_source
-      ,merchant_category || ', ' || merchant_subcategory as income_type
+      ,merchant_category || ' | ' || merchant_subcategory as income_type
 from pfc_bank.rpt_income_detail 
 where date_trunc('month', posted_at_timestamp)
   -- trailing 6 months
