@@ -13,7 +13,6 @@ queries:
   - chart_coe_expenses: chart_coe_expenses_detail.sql
   - rows_all_expenses: rows_all_expenses.sql
   - rows_all_income: rows_income.sql
-  - chart_expenses_by_cat: chart_expenses_by_cat.sql
   - chart_monthly_savings: chart_monthly_savings.sql
 ---
 <BigValue 
@@ -96,8 +95,29 @@ queries:
 
 ### By Category
 
+```sql col_dollar_bounds
+select min(amount_spent) as least_spent, max(amount_spent) as most_spent
+from ${rows_all_expenses}
+```
+
+```sql flt_chart_col_expenses
+select category
+      ,subcategory
+      ,sum(amount_spent) as total_spend
+from ${rows_all_expenses}
+where amount_spent <= coalesce(try_cast('${inputs.COL_dollar_filter}' as decimal(36,2)), 999999999999.99)
+group by 1,2 order by all
+```
+Filter by Purchases under Dollar Amount
+
+<TextInput
+    name=COL_dollar_filter
+    placeholder="Enter Dollar Amount"
+/>
+
+
 <BarChart 
-    data={chart_expenses_by_cat}
+    data={flt_chart_col_expenses}
     x=category
     y=total_spend 
     yAxisTitle="Total Expense ($)"
