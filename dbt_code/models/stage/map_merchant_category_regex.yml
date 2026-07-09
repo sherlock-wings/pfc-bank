@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: map_merchant_category_regex
+    description: "Passthrough view over the regex merchant-category mapping seed. One row per merchant_subcategory; the regex_match_pat is matched against a transaction's txn_description to infer its subcategory (and, 1:1, its category)."
+
+    columns:
+
+      - name: merchant_category
+        data_type: text
+        description: "Category of purchase (home-goods, cost-of-living, etc.). 1:1 with merchant_subcategory."
+        tests:
+          - not_null:
+              config:
+                severity: warn
+
+      - name: merchant_subcategory
+        data_type: text
+        description: "Subcategory of purchase (gas, take out, etc.). The value this mapping infers."
+        tests:
+          - not_null
+          - unique
+
+      - name: regex_match_pat
+        data_type: text
+        description: "Lowercase multi-pattern regex matched against a lowercased txn_description to assign this subcategory."
+        tests:
+          - not_null
+
+      - name: match_priority
+        data_type: integer
+        description: "Tie-breaker when a description matches multiple patterns; the lowest priority wins (e.g. refunds/international overrides beat the underlying merchant)."
+        tests:
+          - not_null
