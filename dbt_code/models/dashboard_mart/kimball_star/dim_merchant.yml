@@ -16,16 +16,9 @@ models:
           - not_null:
               config:
                 severity: warn
-      - name: txn_description
-        data_type: text
-        description: "POS generated description for the given transaction."
-        tests:
-          - not_null:
-              config:
-                severity: warn
       - name: merchant_category
         data_type: text
-        description: "General category for the given merchant."
+        description: "General category for the given merchant, inferred by matching txn_description against map_merchant_category_regex."
       - name: merchant_subcategory
         data_type: text
         description: "More specific category for the given merchant."
@@ -60,9 +53,6 @@ models:
       - name: amount_past_year
         data_type: decimal(38,2)
         description: "Total currency exchanged with the given merchant in the past year."
-      - name: amount_past_year
-        data_type: decimal(38,2)
-        description: "Total currency exchanged with the given merchant overall."
       - name: record_updated_at
         data_type: timestamptz
         description: "Time at which the given record was last written to S3."
