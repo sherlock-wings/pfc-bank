@@ -262,6 +262,19 @@ select (
 
 ## All Income streams
 
+```sql unique_inc_types 
+select distinct income_type from ${rows_all_income}
+```
+
+<Dropdown 
+    data={unique_inc_types} 
+    title="Filter by Income Type"
+    name=inc_type_select 
+    value=income_type
+    multiple
+    defaultValue="payments | paycheck"
+/>
+
 <DataTable data={rows_all_income} totalRow=true>
 <Column id=posted_date/>
 <Column id=amount_earned fmt=usd2/>
