@@ -265,7 +265,10 @@ select (
 ```sql unique_inc_types 
 select distinct income_type from ${rows_all_income}
 ```
-
+```sql flt_rows_all_income
+select * from ${rows_all_income}
+where income_type in ${inputs.inc_type_select.value}
+```
 <Dropdown 
     data={unique_inc_types} 
     title="Filter by Income Type"
@@ -275,7 +278,7 @@ select distinct income_type from ${rows_all_income}
     defaultValue="payments | paycheck"
 />
 
-<DataTable data={rows_all_income} totalRow=true>
+<DataTable data={flt_rows_all_income} totalRow=true>
 <Column id=posted_date/>
 <Column id=amount_earned fmt=usd2/>
 <Column id=income_type/>
