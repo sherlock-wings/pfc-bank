@@ -14,10 +14,10 @@ where total_amount < 0
 -- transfers to the Credit Card or to the Mortage are expenses
 -- transfers between checkings and savings accounts are not
   and (
-    (txn_description ilike '%transfer%' and txn_description ilike '%credit card%')
+    (f.txn_description ilike '%transfer%' and f.txn_description ilike '%credit card%')
     or
-    (txn_description ilike '%transfer%' and txn_description ilike '%mortgage%')
+    (f.txn_description ilike '%transfer%' and f.txn_description ilike '%mortgage%')
     or
-    txn_description not ilike '%transfer%'
+    f.txn_description not ilike '%transfer%'
   ) 
 order by all
