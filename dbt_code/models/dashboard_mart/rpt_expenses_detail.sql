@@ -10,6 +10,14 @@ select f.posted_at_timestamp
 from {{ ref('fact_transactions') }} f
 left join {{ ref('dim_merchant')}} m
        on f.merchant_category_key = m.merchant_category_key
-where m.merchant_category not ilike '%transfer%'
-  and f.amount < 0
+where total_amount < 0 
+-- transfers to the Credit Card or to the Mortage are expenses
+-- transfers between checkings and savings accounts are not
+  and (
+    (txn_description ilike '%transfer%' and txn_description ilike '%credit card%')
+    or
+    (txn_description ilike '%transfer%' and txn_description ilike '%mortgage%')
+    or
+    txn_description not ilike '%transfer%'
+  ) 
 order by all
