@@ -15,7 +15,7 @@ discretional,cosmetics,^.*(ulta|diesel barbershop|sq summerville na summervill).
 discretional,snacks & beverages,^.*(lodi coffee|starbucks|dutch bros|hudsonnews|el cafecito).*$,10
 discretional,drinks & snacks,^.*(ctlp).*$,10
 discretional,holiday,^.*(tnt fireworks|fireworks).*$,10
-discretional,events,^.*(theknot|somethingborrowdb).*$,10
+discretional,events,^.*(theknot|somethingborrowedb).*$,10
 subscription,streaming,^.*(netflix).*$,10
 subscription,content creators,^.*(patreon).*$,10
 subscription,gym,^.*(bold fitness).*$,10
