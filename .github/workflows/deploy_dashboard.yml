@@ -49,7 +49,7 @@ jobs:
           for f in build-wasm-offload/*.wasm; do
             npx --yes wrangler@3.90.0 r2 object put \
               "${R2_BUCKET}/$(basename "$f")" \
-              --file="$f" --content-type=application/wasm --remote \
+              --file="$f" --content-type=application/wasm \
               --cache-control="public, max-age=31536000, immutable"
           done
 
