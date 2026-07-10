@@ -1,6 +1,6 @@
 # Deploy the finance dashboard to the web, behind a passkey guard
 
-Goal: serve the Evidence dashboard at `https://myfinance.patrick-f-callahan.net`, reachable only after you pass an email code **and** a passkey (Face ID / Touch ID) bound to your own devices.
+Goal: serve the Evidence dashboard at `https://bank.patrick-f-callahan.net`, reachable only after you pass an email code **and** a passkey (Face ID / Touch ID) bound to your own devices.
 
 ## How the pieces fit
 
@@ -14,7 +14,7 @@ Goal: serve the Evidence dashboard at `https://myfinance.patrick-f-callahan.net`
 
 Plain-language terms used below:
 
-- **Subdomain** — a prefix on your domain (`myfinance.` in front of `patrick-f-callahan.net`) that can point somewhere different from the root site. The landing page stays on GitHub Pages; only this subdomain is the dashboard.
+- **Subdomain** — a prefix on your domain (`bank.` in front of `patrick-f-callahan.net`) that can point somewhere different from the root site. The landing page stays on GitHub Pages; only this subdomain is the dashboard.
 - **DNS record** — the address-book entry that maps a hostname to where it lives. Cloudflare manages yours already.
 - **Static site** — Evidence runs all SQL at *build* time and bakes the results into plain files. The built site therefore *contains your transactions as downloadable files*. Whatever serves those files must be guarded.
 - **Origin** — the server actually holding the files (here, Cloudflare Pages).
@@ -114,12 +114,12 @@ Notes:
 ### A5. Point the subdomain at Pages
 
 1. Pages project `pfc-finance` → **Custom domains** → **Set up a custom domain**.
-2. Enter `myfinance.patrick-f-callahan.net`.
+2. Enter `bank.patrick-f-callahan.net`.
 3. Because Cloudflare already manages the domain, it auto-creates the DNS record and TLS certificate. Wait for **Active** (usually minutes).
 
 ### A6. First deploy
 
-Repo → Actions → **deploy dashboard** → **Run workflow**. When green, `https://myfinance.patrick-f-callahan.net` should load the dashboard — **still unguarded**. Do not share it yet; Part B locks it.
+Repo → Actions → **deploy dashboard** → **Run workflow**. When green, `https://bank.patrick-f-callahan.net` should load the dashboard — **still unguarded**. Do not share it yet; Part B locks it.
 
 ---
 
@@ -135,26 +135,33 @@ Repo → Actions → **deploy dashboard** → **Run workflow**. When green, `htt
 
 This makes Cloudflare enforce the passkey itself, so the login does not depend on Google or any outside account.
 
-1. Zero Trust → **Settings** → **Authentication**.
-2. Confirm **One-time PIN** is present under login methods (it is on by default — this emails you a code).
-3. Enable **Independent MFA** and allow **WebAuthn / security keys & biometric authenticators** (Touch ID, Face ID, Windows Hello).
-   - Reference for exact current UI: <https://developers.cloudflare.com/cloudflare-one/access-controls/access-settings/independent-mfa/>
+> **Note on menus:** Cloudflare split the old single "Settings → Authentication" page into two places. Login methods and MFA now live in different spots (below). If a path looks wrong, the Independent MFA doc tracks the current UI: <https://developers.cloudflare.com/cloudflare-one/access-controls/access-settings/independent-mfa/>
+
+1. **Confirm the One-time PIN login method exists** (this is what emails you a code):
+   Zero Trust → **Integrations** → **Identity providers**. Under *Your identity providers*, confirm **One-time PIN** is listed. If it is not, **Add new identity provider → One-time PIN**.
+2. **Enable Independent MFA and require a passkey:**
+   Zero Trust → **Access controls** → **Access settings** → section **"Allow multi-factor authentication (MFA)"**. Enable it and allow **Security keys / WebAuthn (biometric authenticators)** — Touch ID, Face ID, Windows Hello.
+
+This is the *only* correct place to enforce the passkey. Independent MFA prompts for the passkey as a **second step after the OTP login**, regardless of login method. Do **not** try to enforce the passkey with a policy `Require` rule instead — see the warning in B4.
 
 ### B3. Create the Access application
 
 1. Zero Trust → **Access** → **Applications** → **Add an application** → **Self-hosted**.
-2. **Application domain:** `myfinance.patrick-f-callahan.net`.
+2. **Application domain:** `bank.patrick-f-callahan.net`.
 3. Session duration: pick something like **24 hours** (how long between re-logins).
 
-### B4. Policy — only you, with a passkey
+### B4. Policy — only you (passkey comes from B2, not from here)
 
 Add one policy on the application:
 
 - **Action:** Allow.
-- **Include:** *Emails* → your email address (only this address can request a code).
-- **Require:** *Authentication method / MFA* → **passkey / WebAuthn** (the authenticator you enabled in B2). This rejects the email code alone — the passkey is mandatory.
+- **Include:** *Emails* → your email address (only this address can request a code). You may list more than one address here (comma-separated) if you want several of your own inboxes to work.
 
-Save.
+Save. **That's it — do not add a `Require` rule.**
+
+> ⚠️ **Do not add `Require → Authentication method` to this policy.** It is tempting to set `Require: Authentication method → passkey` (or `otp`) here to force MFA, but this **silently locks you out**. The "Authentication method" selector matches the AMR claim from an *external* identity provider; the built-in One-time PIN login asserts no such claim, so the Require can *never* be satisfied. Every login — even an allowed email — then fails the policy and is **blocked**. And because blocked users are never sent a code (the login page still says "A code has been emailed to you" — that message is fake, anti-enumeration), you get *no email and no way in*, with only a `blocked` entry in Zero Trust → **Logs → Access** to show for it.
+>
+> The passkey requirement is enforced by **Independent MFA (B2)**, which sits *on top of* this Allow policy — that is what makes the email code alone insufficient. Get OTP login working with just the email Include first, then confirm B2's Independent MFA adds the passkey prompt.
 
 ### B5. Close the `*.pages.dev` bypass
 
@@ -170,12 +177,12 @@ Now every route to the files — custom domain, production `pages.dev`, and prev
 
 ## Part C — Verify
 
-1. Open an **incognito window** → `https://myfinance.patrick-f-callahan.net`.
+1. Open an **incognito window** → `https://bank.patrick-f-callahan.net`.
    - You should be redirected to the Cloudflare login (`pfc.cloudflareaccess.com`), enter your email, get a code, then be prompted to **register a passkey** (first time) or **use** it. Register with Face ID / Touch ID on the device you want enrolled.
    - After the passkey, the dashboard loads.
 2. In incognito, open `https://pfc-finance.pages.dev` → same guard appears (no direct file access).
 3. From a device with **no** passkey registered, confirm the email code alone does **not** let you in.
-4. Optional: `curl -I https://myfinance.patrick-f-callahan.net` → expect a redirect to the Access login, not the dashboard HTML.
+4. Optional: `curl -I https://bank.patrick-f-callahan.net` → expect a redirect to the Access login, not the dashboard HTML.
 
 Enroll each device you want (phone, laptop) by logging in once from it and registering its passkey.
 
@@ -198,7 +205,7 @@ Enroll each device you want (phone, laptop) by logging in once from it and regis
 
 ## Don't forget!
 
-1. **Guard the `*.pages.dev` URL too (Part B5), not just the custom domain.** If you only protect `myfinance.patrick-f-callahan.net`, the raw `pfc-finance.pages.dev` still serves your transactions to anyone who finds it. Both must sit behind the same policy or the guard is pointless.
+1. **Guard the `*.pages.dev` URL too (Part B5), not just the custom domain.** If you only protect `bank.patrick-f-callahan.net`, the raw `pfc-finance.pages.dev` still serves your transactions to anyone who finds it. Both must sit behind the same policy or the guard is pointless.
 2. **Cloudflare's Zero Trust menus move around.** The exact labels in Part B may have shifted since this was written. The steps' *intent* is stable — allow only your email, require a WebAuthn passkey. If a menu path is wrong, follow the linked Independent MFA doc, which tracks the current UI.
 
 ## Appendix — Harden the Cloudflare account
