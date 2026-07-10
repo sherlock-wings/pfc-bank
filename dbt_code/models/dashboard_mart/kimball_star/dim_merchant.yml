@@ -18,6 +18,10 @@ models:
                 severity: warn
       - name: merchant_category
         data_type: text
+        tests:
+          - not_null:
+              config:
+                severity: warn
         description: "General category for the given merchant, inferred by matching txn_description against map_merchant_category_regex."
       - name: merchant_subcategory
         data_type: text
