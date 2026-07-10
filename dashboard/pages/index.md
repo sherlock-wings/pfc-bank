@@ -160,12 +160,10 @@ from pfc_bank.rpt_expenses_detail
 ```sql flt_rows_all_expenses 
 select *
 from ${rows_all_expenses}
-where posted_date <= (
-    select min(posted_date) + interval ${inputs.expensesDateSlider} day
-    from ${rows_all_expenses}
-)
-and category in ${inputs.merch_cat_select.value}
-
+where posted_date between 
+nvl(try_cast('${inputs.exp_lower_bound}' as date), '1900-01-01'::date)
+and 
+nvl(try_cast('${inputs.exp_upper_bound}' as date), '9999-12-31'::date)
 ```
 
 ```sql expenses_cutoff_date 
@@ -174,19 +172,6 @@ select (
     from pfc_bank.rpt_expenses_detail
 )::date as expenses_as_of
 ```
-
-👇Expenses from **<Value data={expenses_detail_bounds} column=start_date fmt="mmmm dd" />** through **<Value data={expenses_cutoff_date} column=expenses_as_of fmt="mmmm dd" />**
-
-<Slider
-    title='Filter by Date'
-    name='expensesDateSlider'
-    size=large
-    data={expenses_detail_bounds}
-    min=0
-    maxColumn=date_span
-    defaultValue=date_span
-    step=1
-/>
 
 <Dropdown 
     data={unique_merch_cats} 
@@ -197,6 +182,14 @@ select (
     defaultValue="cost-of-living"
 />
 
+<TextInput
+    name=exp_lower_bound
+    placeholder="Enter Start Date (YYYY-MM-DD)"
+/>
+<TextInput
+    name=exp_upper_bound
+    placeholder="Enter End Date (YYYY-MM-DD)"
+/>
 
 <DataTable data={flt_rows_all_expenses} totalRow=true>
 <Column id=posted_date/>
