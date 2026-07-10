@@ -5,16 +5,17 @@ going-out,bars,^.*(kickin chick|kerryman|agave cantina|pinky & clydes|leye|pack 
 vice,alcohol,^.*(bottles|atlantic spirits|corner liqour|abc stor|harleyville liquor|palmetto wine).*$,10
 vice,sweets,^.*(swank desserts|insomnia).*$,10
 vice,kratom,^.*(ladson vape).*$,10
+vice,cannabis,^.*(blncd naturals).*$,10
 entertainment,video games,^.*(microsoft|steam|nintendo|redmond|xbox).*$,10
 entertainment,programming,^.*(amazon web service|aws|link\.com).*$,10
 entertainment,movie theatre,^.*(northwoods stadium).*$,10
 discretional,online shopping,^.*(amazon mktpl|amazon reta|amzn).*$,10
 discretional,department store,^.*(target|best buy|wm supercenter|wal.?mart).*$,10
-discretional,cosmetics,^.*(ulta|diesel barbershop).*$,10
+discretional,cosmetics,^.*(ulta|diesel barbershop|sq summerville na summervill).*$,10
 discretional,snacks & beverages,^.*(lodi coffee|starbucks|dutch bros|hudsonnews|el cafecito).*$,10
 discretional,drinks & snacks,^.*(ctlp).*$,10
 discretional,holiday,^.*(tnt fireworks|fireworks).*$,10
-discretional,events,^.*(theknot).*$,10
+discretional,events,^.*(theknot|somethingborrowdb).*$,10
 subscription,streaming,^.*(netflix).*$,10
 subscription,content creators,^.*(patreon).*$,10
 subscription,gym,^.*(bold fitness).*$,10
