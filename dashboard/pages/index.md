@@ -113,6 +113,7 @@ Filter by Purchases under Dollar Amount
 <TextInput
     name=COL_dollar_filter
     placeholder="Enter Dollar Amount"
+    defaultValue="9999999999999"
 />
 
 
@@ -161,9 +162,10 @@ from pfc_bank.rpt_expenses_detail
 select *
 from ${rows_all_expenses}
 where posted_date between 
-nvl(try_cast('${inputs.exp_lower_bound}' as date), '1900-01-01'::date)
+coalesce(try_cast('${inputs.exp_lower_bound}' as date), '1900-01-01'::date)
 and 
-nvl(try_cast('${inputs.exp_upper_bound}' as date), '9999-12-31'::date)
+coalesce(try_cast('${inputs.exp_upper_bound}' as date), '9999-12-31'::date)
+and category in  ${inputs.merch_cat_select.value}
 ```
 
 ```sql expenses_cutoff_date 
@@ -185,10 +187,12 @@ select (
 <TextInput
     name=exp_lower_bound
     placeholder="Enter Start Date (YYYY-MM-DD)"
+    defaultValue="1900-01-01"
 />
 <TextInput
     name=exp_upper_bound
     placeholder="Enter End Date (YYYY-MM-DD)"
+    defaultValue="9999-12-31"
 />
 
 <DataTable data={flt_rows_all_expenses} totalRow=true>
