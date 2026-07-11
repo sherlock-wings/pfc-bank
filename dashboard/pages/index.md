@@ -1,7 +1,6 @@
 ---
-title: Callahan Family Finances :)
-
 queries:
+  - persona: persona_info.sql
   - total_accounts_balance: total_assets_minus_mortgage.sql
   - savings1_balance: total_savings1.sql
   - savings2_balance: total_savings2.sql
@@ -15,6 +14,9 @@ queries:
   - rows_all_income: rows_income.sql
   - chart_monthly_savings: chart_monthly_savings.sql
 ---
+
+# {persona[0]?.family_name} Family Finances :)
+
 <BigValue 
   data={total_accounts_balance} 
   value=balance
@@ -47,7 +49,7 @@ queries:
 <BigValue 
   data={mortgage} 
   value=balance
-  title="Mortgage on 1047 Berry Patch Cir"
+  title="Mortgage on {persona[0]?.home_address}"
   fmt=usd2
 />
 
