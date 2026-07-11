@@ -1,25 +1,26 @@
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "BucketLevelActions",
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket"
-            ],
-            "Resource": [
-                "arn:aws:s3:::pfc-nfcu",
-                "arn:aws:s3:::pfc-nfcu/"
-            ]
-        },
-        {
-            "Sid": "ObjectLevelActions",
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:PutObject"
-            ],
-            "Resource": "arn:aws:s3:::pfc-nfcu/*"
-        }
-    ]
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "BucketLevelActions",
+			"Effect": "Allow",
+			"Action": [
+				"s3:ListBucket"
+			],
+			"Resource": [
+				"arn:aws:s3:::pfc-nfcu",
+				"arn:aws:s3:::pfc-nfcu/"
+			]
+		},
+		{
+			"Sid": "ObjectLevelActions",
+			"Effect": "Allow",
+			"Action": [
+				"s3:GetObject",
+				"s3:PutObject",
+				"s3:DeleteObject"
+			],
+			"Resource": "arn:aws:s3:::pfc-nfcu/*"
+		}
+	]
 }
