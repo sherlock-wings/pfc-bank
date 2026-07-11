@@ -30,6 +30,7 @@ import argparse
 import csv
 import json
 import random
+import shutil
 import sys
 import uuid
 from calendar import monthrange
@@ -419,6 +420,16 @@ class Generator:
         }
 
     def emit_snapshots(self, out_dir: Path):
+        # Rebuild transactions/ from scratch each run. Snapshot dates are derived
+        # from the current timeline, so shrinking the range (e.g. a later
+        # start_date) simply emits fewer files — but the now-out-of-range files
+        # from a previous, wider run would otherwise linger here. `run-demo.sh`
+        # uploads with `aws s3 sync --delete`, which only prunes S3 files that
+        # are ALSO gone locally; leftover stale partitions here get re-uploaded
+        # and the dashboard keeps showing data from before the new start_date.
+        txns_root = out_dir / "transactions"
+        if txns_root.exists():
+            shutil.rmtree(txns_root)
         window = self.p["timeline"]["pull_window_days"]
         org = self.p["identity"]["org"]
         org_block = {
