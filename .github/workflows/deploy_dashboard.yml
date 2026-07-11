@@ -32,6 +32,21 @@ jobs:
           node-version: 20
 
       - run: npm ci
+
+      # Inject the real dashboard identity (name + address) from GitHub dev-env
+      # variables into .env.local, which wins over the committed placeholder
+      # .env. Keeps the real values out of git while the live site still shows
+      # them. Set DASHBOARD_FAMILY_NAME / DASHBOARD_HOME_ADDRESS as `dev`
+      # environment variables; if unset, the committed .env placeholders apply.
+      - name: Inject real dashboard identity (kept out of git)
+        env:
+          FAM: ${{ vars.DASHBOARD_FAMILY_NAME }}
+          ADDR: ${{ vars.DASHBOARD_HOME_ADDRESS }}
+        run: |
+          : > .env.local
+          if [ -n "$FAM" ];  then echo "EVIDENCE_VAR__family_name=$FAM"   >> .env.local; fi
+          if [ -n "$ADDR" ]; then echo "EVIDENCE_VAR__home_address=$ADDR" >> .env.local; fi
+
       - run: npm run sources      # runs SQL against S3, writes parquet into the build
       - run: npm run build        # produces dashboard/build/
 
