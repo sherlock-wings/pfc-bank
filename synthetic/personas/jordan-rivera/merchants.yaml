@@ -41,7 +41,7 @@ merchants:
   - {name: "Wellspring Pharmacy", token: "wellspring pharm", category: cost-of-living, subcategory: healthcare, account: checking, amount: [6, 48], weight: 4}
   - {name: "ShieldPest Solutions", token: "shieldpest", category: cost-of-living, subcategory: home maintenance, account: checking, amount: [95, 145], weight: 1}
   - {name: "FreshFold Supply",  token: "freshfold",     category: cost-of-living, subcategory: laundry,  account: credit,   amount: [18, 42],  weight: 1}
-  - {name: "Brightwater Power", token: "brightwater power", category: cost-of-living, subcategory: utility electricity, account: checking, amount: [120, 240], weight: 0, format: ach}
+  - {name: "Bozeman Power",     token: "bozeman power",     category: cost-of-living, subcategory: utility electricity, account: checking, amount: [120, 240], weight: 0, format: ach}
   - {name: "Nimbus Fiber",      token: "nimbus fiber",  category: cost-of-living, subcategory: utility internet, account: checking, amount: [89, 90], weight: 0, format: ach}
   - {name: "Cobalt Mobile",     token: "cobalt mobile", category: cost-of-living, subcategory: utility phone, account: checking, amount: [98, 98], weight: 0, format: pos_debit}
   - {name: "AquaCivic",         token: "aquacivic",     category: cost-of-living, subcategory: utility water, account: checking, amount: [45, 95], weight: 0, format: ach}
@@ -112,7 +112,7 @@ merchants:
 
   # ---- fees (merchant portion; structural below) -----------------------
   - {name: "Kestrel Ridge HOA", token: "kestrel ridge", category: fees, subcategory: HOA, account: checking, amount: [220, 220], weight: 0}
-  - {name: "City Of Brightwater", token: "city of brightwater", category: fees, subcategory: parking, account: credit, amount: [2, 18], weight: 1}
+  - {name: "City Of Bozeman", token: "city of bozeman", category: fees, subcategory: parking, account: credit, amount: [2, 18], weight: 1}
 
 # ---------------------------------------------------------------------------
 # Structural seed rows. These are NOT merchants — they are the bank's own

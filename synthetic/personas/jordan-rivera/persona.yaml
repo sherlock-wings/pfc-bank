@@ -15,6 +15,13 @@ seed: 20260711            # fixed RNG seed -> byte-identical output every run
 identity:
   # Name as it appears embedded in POS transaction descriptions.
   display_name: "JORDAN A RIVERA"
+  # Surname for the dashboard title ("{family_name} Family Finances :)").
+  # Optional — omit to derive it from the last word of display_name.
+  family_name: "Rivera"
+  # Home address shown on the dashboard's Housing card. Entirely invented.
+  # Optional — omit to auto-generate a realistic one from `seed` (see
+  # synthetic/persona_meta.py).
+  home_address: "6779 Windrow Dr"
   # Fictional financial institution (SimpleFIN `org` block). Not a real CU.
   org:
     domain: "www.anchorfederal.example"
@@ -25,15 +32,15 @@ identity:
 
 # Invented towns used to decorate merchant descriptions. No real geography.
 region:
-  home_town: "BRIGHTWATER"
-  state: "SC"                     # a generic 2-letter code; not identifying
+  home_town: "BOZEMAN"
+  state: "MT"                     # a generic 2-letter code; not identifying
   towns:
-    - "BRIGHTWATER"
-    - "KESTREL BAY"
-    - "MARIBEL"
-    - "OAKMONT"
+    - "BOZEMAN"
+    - "THREE FORKS"
+    - "BELGRADE"
+    - "MANHATTAN"
     - "FENWICK"
-    - "VIREO SPRINGS"
+    - "BIG TIMBER"
 
 # ---------------------------------------------------------------------------
 # Timeline. Snapshots emulate SimpleFIN pulls: each file carries a trailing
@@ -95,7 +102,7 @@ income:
 recurring:
   # Bills auto-drafted from checking (ACH) on a monthly day-of-month.
   ach_bills:
-    - {merchant: "brightwater power", day: 6,  amount: 172.0, jitter: 45.0}
+    - {merchant: "bozeman power", day: 6,  amount: 172.0, jitter: 45.0}
     - {merchant: "nimbus fiber",      day: 9,  amount: 89.99, jitter: 0.0}
     - {merchant: "ironoak",           day: 3,  amount: 42.0,  jitter: 0.0}
     - {merchant: "aquacivic",         day: 14, amount: 61.0,  jitter: 18.0}

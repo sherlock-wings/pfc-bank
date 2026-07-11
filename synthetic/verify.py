@@ -5,12 +5,21 @@ Replicates dim_merchant's regex categorisation against synthetic/out and
 asserts zero **UNKNOWN** merchants (the condition assert_no_unknown_merchants
 enforces), then prints the category/subcategory shape.
 """
+import argparse
 from pathlib import Path
 
 import duckdb
 
 HERE = Path(__file__).resolve().parent
-OUT = HERE / "out"
+
+ap = argparse.ArgumentParser(description=__doc__)
+ap.add_argument("--out", default=None,
+                help="generated output dir to verify (default: synthetic/out/<persona>)")
+ap.add_argument("--persona", default="jordan-rivera",
+                help="persona slug, used to locate the default output dir")
+args = ap.parse_args()
+
+OUT = Path(args.out) if args.out else HERE / "out" / args.persona
 GLOB = str(OUT / "transactions" / "*" / "*" / "*" / "*.json")
 SEED = str(OUT / "seed_merchant_category_regex_mapping.csv")
 

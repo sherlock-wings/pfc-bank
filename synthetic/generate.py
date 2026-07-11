@@ -13,10 +13,14 @@ output. A single master ledger of transactions (with stable TRN ids) is built
 once; each snapshot is just the trailing window of that ledger, so the dbt
 dedup (partition by txn_id) sees real overlap to collapse.
 
+Personas live under synthetic/personas/<slug>/{persona,merchants}.yaml. Pick one
+with --persona; output defaults to synthetic/out/<slug>.
+
 Usage:
-    uv run python synthetic/generate.py                 # write to synthetic/out
-    uv run python synthetic/generate.py --out /tmp/demo  # custom output dir
-    uv run python synthetic/generate.py --write-dbt-seed # also overwrite the
+    uv run python synthetic/generate.py                        # persona jordan-rivera
+    uv run python synthetic/generate.py --persona casey-brooks # a different persona
+    uv run python synthetic/generate.py --out /tmp/demo        # custom output dir
+    uv run python synthetic/generate.py --write-dbt-seed       # also overwrite the
         # committed dbt seed (only do this when publishing the demo, NOT on the
         # machine that runs your real pipeline).
 """
@@ -26,6 +30,7 @@ import argparse
 import csv
 import json
 import random
+import sys
 import uuid
 from calendar import monthrange
 from datetime import datetime, timedelta, timezone
@@ -34,16 +39,17 @@ from pathlib import Path
 import yaml
 
 HERE = Path(__file__).resolve().parent
+PERSONAS = HERE / "personas"
 UTC = timezone.utc
 
 
 # --------------------------------------------------------------------------- #
 # config loading
 # --------------------------------------------------------------------------- #
-def load_configs():
-    with open(HERE / "persona.yaml") as f:
+def load_configs(persona_dir: Path):
+    with open(persona_dir / "persona.yaml") as f:
         persona = yaml.safe_load(f)
-    with open(HERE / "merchants.yaml") as f:
+    with open(persona_dir / "merchants.yaml") as f:
         catalog = yaml.safe_load(f)
     return persona, catalog
 
@@ -54,7 +60,7 @@ def parse_date(s: str) -> datetime:
 
 # ACH descriptor words keyed by merchant token (bank-style memo fragments).
 ACH_DESCRIPTORS = {
-    "brightwater power": "DRAFT",
+    "bozeman power": "DRAFT",
     "nimbus fiber": "CABLE SVCS",
     "ironoak": "CLUB FEES",
     "aquacivic": "UTILITY DRAFT",
@@ -477,23 +483,46 @@ class Generator:
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--out", default=str(HERE / "out"), help="output directory")
+    ap.add_argument("--persona", default="jordan-rivera",
+                    help="persona slug under synthetic/personas/ (default: jordan-rivera)")
+    ap.add_argument("--out", default=None,
+                    help="output directory (default: synthetic/out/<persona>)")
     ap.add_argument("--write-dbt-seed", action="store_true",
                     help="also overwrite dbt_code/seeds/seed_merchant_category_regex_mapping.csv "
                          "(only when publishing the demo, never on the real-pipeline machine)")
     args = ap.parse_args()
 
-    persona, catalog = load_configs()
+    persona_dir = PERSONAS / args.persona
+    if not persona_dir.is_dir():
+        available = ", ".join(sorted(p.name for p in PERSONAS.iterdir() if p.is_dir())) or "(none)"
+        ap.error(f"no persona '{args.persona}' under {PERSONAS} — available: {available}")
+
+    # Preflight: fail with a clear, file-scoped message instead of a KeyError
+    # traceback (or silently emitting undemoable data) if the YAML contract is
+    # broken. See validate.py for the full contract.
+    from validate import validate_persona_dir
+    errors, warnings = validate_persona_dir(persona_dir)
+    for w in warnings:
+        print(f"warning: {w}")
+    if errors:
+        for e in errors:
+            print(f"error: {e}", file=sys.stderr)
+        ap.error(f"persona '{args.persona}' can't be demoed — fix the "
+                 f"{len(errors)} error(s) above (run: uv run python "
+                 f"synthetic/validate.py --persona {args.persona})")
+
+    persona, catalog = load_configs(persona_dir)
     gen = Generator(persona, catalog)
     gen.build_ledger()
 
-    out_dir = Path(args.out)
+    out_dir = Path(args.out) if args.out else HERE / "out" / args.persona
     out_dir.mkdir(parents=True, exist_ok=True)
     files, rows = gen.emit_snapshots(out_dir)
     seed_rows = gen.emit_seed(out_dir / "seed_merchant_category_regex_mapping.csv")
     if args.write_dbt_seed:
         gen.emit_seed(HERE.parent / "dbt_code" / "seeds" / "seed_merchant_category_regex_mapping.csv")
 
+    print(f"persona       : {args.persona}")
     print(f"master ledger : {len(gen.ledger):,} unique transactions")
     print(f"snapshots     : {files} files, {rows:,} transaction rows total")
     print(f"regex seed    : {seed_rows} rows -> {out_dir / 'seed_merchant_category_regex_mapping.csv'}")
