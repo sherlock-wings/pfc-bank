@@ -64,13 +64,30 @@ queries:
 
 ## Credit Card Debt
 
+```sql rows_cc_spend 
+select * from ${rows_all_expenses}
+where account ilike '%cashreward%'
+order by posted_date desc
+```
+
 <BigValue 
   data={cc_debt} 
   value=balance
-  title="Credit Card Debt"
+  title="Current Credit Card Balance"
   fmt=usd2
 />
 
+### Spend on Purchases
+<DataTable data={rows_cc_spend} totalRow=true>
+<Column id=posted_date/>
+<Column id=amount_spent fmt=usd2/>
+<Column id=category/>
+<Column id=subcategory/>
+<Column id=merchant/>
+<Column id=description/>
+</DataTable>
+
+### Spend on Interest
 <DataTable data={rows_interest} totalRow=true>
 <Column id=posted_date/>
 <Column id=amount_spent fmt=usd2/>
