@@ -1,0 +1,137 @@
+# ---------------------------------------------------------------------------
+# merchants.yaml — the SINGLE SOURCE OF TRUTH for the demo.
+#
+# Every merchant here is invented. Each entry drives TWO things at once:
+#   1. the `description`/`payee` strings written into the fake JSON, and
+#   2. a regenerated seed_merchant_category_regex_mapping.csv row, so the dbt
+#      regex categorizer keeps matching 100% of the demo data (no **UNKNOWN**,
+#      assert_no_unknown_merchants stays green).
+# That coupling is the whole point: change a merchant here and both sides move
+# together.
+#
+# Fields per merchant:
+#   name        display / title-case brand
+#   token       lowercase substring embedded in the description AND used as the
+#               regex alternate. Keep it distinctive (it must not accidentally
+#               match another category).
+#   category / subcategory   must exist in the taxonomy the dashboards expect.
+#   account     "checking" (debit POS / ACH) or "credit" (Visa Signature card)
+#   amount      [min, max] typical absolute charge (generator applies sign)
+#   weight      relative draw frequency for discretionary purchases (0 = never
+#               drawn randomly; used only for recurring/irregular flows)
+#   format      optional description style override:
+#                 pos_debit | pos_alt | ach | cc_purchase | cc_tst
+#               (defaults: checking -> pos_debit, credit -> cc_purchase)
+#   priority    optional regex match_priority (default 10; lower wins)
+# ---------------------------------------------------------------------------
+
+merchants:
+  # ---- cost-of-living --------------------------------------------------
+  - {name: "Cluck Hut",         token: "cluck hut",     category: cost-of-living, subcategory: take out, account: credit,   amount: [9, 24],   weight: 9}
+  - {name: "Byte Burgers",      token: "byte burgers",  category: cost-of-living, subcategory: take out, account: credit,   amount: [8, 22],   weight: 8}
+  - {name: "Noodle Nook",       token: "noodle nook",   category: cost-of-living, subcategory: take out, account: credit,   amount: [11, 30],  weight: 6}
+  - {name: "Sol Taqueria",      token: "sol taqueria",  category: cost-of-living, subcategory: take out, account: checking, amount: [10, 26],  weight: 6}
+  - {name: "Piedra Pizza",      token: "piedra pizza",  category: cost-of-living, subcategory: take out, account: credit,   amount: [14, 38],  weight: 5}
+  - {name: "Greenrow Market",   token: "greenrow",      category: cost-of-living, subcategory: grocery,  account: checking, amount: [22, 140], weight: 11}
+  - {name: "Harvest Barn",      token: "harvest barn",  category: cost-of-living, subcategory: grocery,  account: checking, amount: [18, 120], weight: 9}
+  - {name: "Piglet Grocers",    token: "piglet groc",   category: cost-of-living, subcategory: grocery,  account: checking, amount: [12, 70],  weight: 7}
+  - {name: "Firefly Fuel",      token: "firefly fuel",  category: cost-of-living, subcategory: gas,      account: checking, amount: [28, 66],  weight: 12, format: pos_debit}
+  - {name: "Corner Gas Co",     token: "corner gas",    category: cost-of-living, subcategory: gas,      account: checking, amount: [25, 60],  weight: 10}
+  - {name: "Trailhead Petro",   token: "trailhead petro", category: cost-of-living, subcategory: gas,    account: checking, amount: [3, 55],   weight: 8}
+  - {name: "Wellspring Pharmacy", token: "wellspring pharm", category: cost-of-living, subcategory: healthcare, account: checking, amount: [6, 48], weight: 4}
+  - {name: "ShieldPest Solutions", token: "shieldpest", category: cost-of-living, subcategory: home maintenance, account: checking, amount: [95, 145], weight: 1}
+  - {name: "FreshFold Supply",  token: "freshfold",     category: cost-of-living, subcategory: laundry,  account: credit,   amount: [18, 42],  weight: 1}
+  - {name: "Brightwater Power", token: "brightwater power", category: cost-of-living, subcategory: utility electricity, account: checking, amount: [120, 240], weight: 0, format: ach}
+  - {name: "Nimbus Fiber",      token: "nimbus fiber",  category: cost-of-living, subcategory: utility internet, account: checking, amount: [89, 90], weight: 0, format: ach}
+  - {name: "Cobalt Mobile",     token: "cobalt mobile", category: cost-of-living, subcategory: utility phone, account: checking, amount: [98, 98], weight: 0, format: pos_debit}
+  - {name: "AquaCivic",         token: "aquacivic",     category: cost-of-living, subcategory: utility water, account: checking, amount: [45, 95], weight: 0, format: ach}
+
+  # ---- going-out -------------------------------------------------------
+  - {name: "The Copper Fork",   token: "copper fork",   category: going-out, subcategory: restaurants, account: credit, amount: [28, 92],  weight: 6}
+  - {name: "Marisol Cantina",   token: "marisol cantina", category: going-out, subcategory: restaurants, account: credit, amount: [24, 78], weight: 5, format: cc_tst}
+  - {name: "Harbor Table",      token: "harbor table",  category: going-out, subcategory: restaurants, account: credit, amount: [32, 110], weight: 4}
+  - {name: "Rusty Anchor Pub",  token: "rusty anchor",  category: going-out, subcategory: bars, account: credit, amount: [18, 70], weight: 6, format: cc_tst}
+  - {name: "Neon Owl Bar",      token: "neon owl",      category: going-out, subcategory: bars, account: credit, amount: [16, 58], weight: 5}
+  - {name: "Tidewater Taproom", token: "tidewater tap", category: going-out, subcategory: bars, account: credit, amount: [14, 52], weight: 4}
+
+  # ---- vice ------------------------------------------------------------
+  - {name: "Vity Bottle Shop",  token: "vity bottle",   category: vice, subcategory: alcohol, account: checking, amount: [12, 68], weight: 11, format: pos_debit}
+  - {name: "Cellar Door Spirits", token: "cellar door", category: vice, subcategory: alcohol, account: checking, amount: [15, 74], weight: 8}
+  - {name: "Sugar Comet",       token: "sugar comet",   category: vice, subcategory: sweets, account: credit, amount: [7, 26], weight: 3}
+  - {name: "Green Leaf Vapor",  token: "green leaf vapor", category: vice, subcategory: kratom, account: checking, amount: [9, 38], weight: 7, format: pos_debit}
+  - {name: "Balanced Botanica", token: "balanced botanica", category: vice, subcategory: cannabis, account: credit, amount: [20, 65], weight: 2}
+
+  # ---- entertainment ---------------------------------------------------
+  - {name: "Pixelforge",        token: "pixelforge",    category: entertainment, subcategory: video games, account: credit, amount: [5, 60], weight: 4}
+  - {name: "Voxel Store",       token: "voxel store",   category: entertainment, subcategory: video games, account: checking, amount: [3, 40], weight: 3, format: pos_debit}
+  - {name: "NovaPlay",          token: "novaplay",      category: entertainment, subcategory: video games, account: credit, amount: [1, 25], weight: 3}
+  - {name: "Nimbus Cloud Services", token: "nimbus cloud", category: entertainment, subcategory: programming, account: checking, amount: [2, 34], weight: 3, format: pos_debit}
+  - {name: "Starlight Cinema",  token: "starlight cinema", category: entertainment, subcategory: movie theatre, account: credit, amount: [12, 48], weight: 2}
+
+  # ---- discretional ----------------------------------------------------
+  - {name: "Evermart",          token: "evermart",      category: discretional, subcategory: online shopping, account: credit, amount: [6, 130], weight: 10}
+  - {name: "ValueMart Supercenter", token: "valuemart", category: discretional, subcategory: department store, account: checking, amount: [15, 160], weight: 6}
+  - {name: "MegaBullseye",      token: "megabullseye",  category: discretional, subcategory: department store, account: credit, amount: [18, 140], weight: 5}
+  - {name: "Lumen Beauty",      token: "lumen beauty",  category: discretional, subcategory: cosmetics, account: credit, amount: [14, 78], weight: 3}
+  - {name: "Sharp Fade Barber", token: "sharp fade",    category: discretional, subcategory: cosmetics, account: credit, amount: [25, 45], weight: 2}
+  - {name: "Brew Lantern Coffee", token: "brew lantern", category: discretional, subcategory: snacks & beverages, account: credit, amount: [4, 16], weight: 9}
+  - {name: "Dawn Bros Coffee",  token: "dawn bros",     category: discretional, subcategory: snacks & beverages, account: checking, amount: [4, 14], weight: 7, format: pos_debit}
+  - {name: "SnackVend Co",      token: "snackvend",     category: discretional, subcategory: drinks & snacks, account: checking, amount: [1, 8], weight: 5, format: pos_debit}
+  - {name: "Boom City Fireworks", token: "boom city",   category: discretional, subcategory: holiday, account: credit, amount: [20, 120], weight: 0}
+  - {name: "The Vow Co",        token: "the vow",       category: discretional, subcategory: events, account: credit, amount: [40, 300], weight: 0}
+
+  # ---- subscription ----------------------------------------------------
+  - {name: "Streamly",          token: "streamly",      category: subscription, subcategory: streaming, account: credit, amount: [15.49, 15.49], weight: 0}
+  - {name: "Patronual",         token: "patronual",     category: subscription, subcategory: content creators, account: checking, amount: [6, 22], weight: 0, format: pos_debit}
+  - {name: "IronOak Fitness",   token: "ironoak",       category: subscription, subcategory: gym, account: checking, amount: [42, 42], weight: 0, format: ach}
+
+  # ---- home-goods ------------------------------------------------------
+  - {name: "Northloop Apparel", token: "northloop",     category: home-goods, subcategory: clothing, account: credit, amount: [22, 120], weight: 3}
+  - {name: "Urban Thread",      token: "urban thread",  category: home-goods, subcategory: clothing, account: credit, amount: [18, 90], weight: 2}
+  - {name: "BuildRite Depot",   token: "buildrite",     category: home-goods, subcategory: home hardware, account: checking, amount: [8, 210], weight: 3}
+  - {name: "HomeForge",         token: "homeforge",     category: home-goods, subcategory: home hardware, account: credit, amount: [10, 180], weight: 2}
+  - {name: "Bath & Bloom",      token: "bath & bloom",  category: home-goods, subcategory: amenities, account: credit, amount: [12, 55], weight: 2}
+  - {name: "Espresso Bean Co",  token: "espresso bean", category: home-goods, subcategory: coffee, account: credit, amount: [18, 65], weight: 1}
+
+  # ---- pet-care --------------------------------------------------------
+  - {name: "PetNest",           token: "petnest",       category: pet-care, subcategory: pet food, account: credit, amount: [18, 95], weight: 4}
+  - {name: "Furry Tails Grooming", token: "furry tails", category: pet-care, subcategory: grooming, account: credit, amount: [45, 90], weight: 1}
+  - {name: "BlueHaven Pet Hospital", token: "bluehaven pet", category: pet-care, subcategory: emergency care, account: credit, amount: [120, 2400], weight: 0}
+
+  # ---- travel ----------------------------------------------------------
+  - {name: "Skyward Air",       token: "skyward air",   category: travel, subcategory: airfare, account: credit, amount: [140, 620], weight: 0}
+  - {name: "Summit Airlines",   token: "summit airlines", category: travel, subcategory: airfare, account: credit, amount: [120, 540], weight: 0}
+  - {name: "Wildwood Gardens",  token: "wildwood gardens", category: travel, subcategory: attractions, account: credit, amount: [18, 85], weight: 0}
+  - {name: "Grand Cove Inn",    token: "grand cove",    category: travel, subcategory: hotel, account: credit, amount: [110, 340], weight: 0}
+  - {name: "Loft Suites",       token: "loft suites",   category: travel, subcategory: hotel, account: credit, amount: [95, 280], weight: 0}
+  - {name: "Willow Dream Boutique", token: "willow dream", category: travel, subcategory: boutique/gift shop, account: credit, amount: [22, 88], weight: 0}
+  - {name: "Zephyr Rides",      token: "zephyr rides",  category: travel, subcategory: rideshare, account: credit, amount: [8, 44], weight: 8, format: cc_purchase}
+
+  # ---- debt (merchant portion; structural transfers below) -------------
+  - {name: "Cascade Auto Finance", token: "cascade auto", category: debt, subcategory: car payment, account: checking, amount: [431, 431], weight: 0}
+
+  # ---- fees (merchant portion; structural below) -----------------------
+  - {name: "Kestrel Ridge HOA", token: "kestrel ridge", category: fees, subcategory: HOA, account: checking, amount: [220, 220], weight: 0}
+  - {name: "City Of Brightwater", token: "city of brightwater", category: fees, subcategory: parking, account: credit, amount: [2, 18], weight: 1}
+
+# ---------------------------------------------------------------------------
+# Structural seed rows. These are NOT merchants — they are the bank's own
+# machine-generated descriptors (transfers, dividends, payroll, tax, interest,
+# atm, p2p, etc). They are regenerated verbatim into the seed CSV with their
+# original match priorities so category precedence is preserved. The generator
+# emits transactions whose descriptions contain these tokens.
+# ---------------------------------------------------------------------------
+structural_seed_rows:
+  - {category: debt,      subcategory: credit card interest,  regex: "interest charge",                    priority: 10}
+  - {category: debt,      subcategory: credit card payment,   regex: "transfer to credit card",            priority: 5}
+  - {category: debt,      subcategory: mortgage,              regex: "transfer to mortgage",               priority: 5}
+  - {category: fees,      subcategory: atm,                   regex: "atm withdrawal|atm fee",             priority: 10}
+  - {category: fees,      subcategory: taxes,                 regex: "federal tax|fed tax",                priority: 10}
+  - {category: fees,      subcategory: international,         regex: "international transaction fee|intl transaction", priority: 1}
+  - {category: payments,  subcategory: peer to peer,          regex: "zelle|venmo",                        priority: 10}
+  - {category: payments,  subcategory: paycheck,              regex: "meridian|northstar peo",             priority: 10}
+  - {category: payments,  subcategory: dividend,              regex: "dividend",                           priority: 10}
+  - {category: payments,  subcategory: online payment,        regex: "nfo payment",                        priority: 10}
+  - {category: payments,  subcategory: rewards,               regex: "reward redemption|atm rebate",       priority: 10}
+  - {category: payments,  subcategory: refunds,               regex: "pos adjustment",                     priority: 1}
+  - {category: transfers, subcategory: other account,         regex: "transfer to|transfer from",          priority: 10}

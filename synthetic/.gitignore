@@ -1,0 +1,4 @@
+# Generated demo data — deterministic, regenerate with generate.py.
+# Remove this line if you'd rather commit the dataset so reviewers can browse
+# it without running anything.
+out/
