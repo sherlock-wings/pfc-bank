@@ -19,5 +19,17 @@ where total_amount < 0
     (f.txn_description ilike '%transfer%' and f.txn_description ilike '%mortgage%')
     or
     f.txn_description not ilike '%transfer%'
-  ) 
+  )
+-- When two transactions have different transaction IDs, but the same Account, 
+-- description, payee, amount, and time of posting, assume they are NOT in fact 
+-- two distinct transactions. Take whichever record was posted latest and call that
+-- the *SOLE* transaction
+qualify row_number() over (
+        partition by f.bank_account_id
+                    ,f.txn_description
+                    ,f.payee
+                    ,f.posted_at_timestamp
+                    ,f.amount
+        order     by f.record_loaded_at_timestamp             
+) = 1
 order by all
