@@ -4,7 +4,7 @@
 # real bank data. Everything a persona touches lives under a per-persona S3 root
 # (s3://<bucket>/<demo-prefix>/<slug>/), so your real pipeline is never touched.
 #
-#   ./persona.sh list                 # personas you can run
+#   ./persona.sh ls-persona           # personas you can run
 #   ./persona.sh new <slug> [--from <existing>]   # scaffold a new persona to edit
 #   ./persona.sh <slug> [--no-serve]  # generate -> upload -> dbt -> dashboard
 #   ./persona.sh reset <slug> [--yes] # wipe the persona's S3 + local data, then rebuild
@@ -137,7 +137,7 @@ main() {
   local verb="${1:-}"
   case "$verb" in
     ""|-h|--help) grep '^#' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' | tail -n +2 | head -n 11 ;;
-    list) cmd_list ;;
+    ls-persona) cmd_list ;;
     new)  shift; cmd_new "$@" ;;
     check) shift; cmd_check "$@" ;;
     reset) shift; cmd_run "$@" --reset ;;
