@@ -7,6 +7,13 @@ version: '1.0.0'
 
 profile: 'dbt_code'
 
+# Root prefix for every S3 read/write path in the project. Override per demo to
+# point the whole pipeline at a persona, e.g.
+#   dbt build --vars '{data_root: s3://pfc-nfcu/demo/jordan-rivera}'
+# See macros/data_path.sql.
+vars:
+  data_root: 's3://pfc-nfcu'
+
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
