@@ -1,4 +1,4 @@
-{{ config(location='s3://pfc-nfcu/dashboard_mart/kimball_star/dim_merchant.parquet') }}
+{{ config(location=data_path('dashboard_mart/kimball_star/dim_merchant.parquet')) }}
 
 with latest_day_in_data as (
       select max(posted_at_timestamp) as _end

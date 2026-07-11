@@ -1,4 +1,4 @@
-{{ config(location='s3://pfc-nfcu/dashboard_mart/rpt_monthly_savings.parquet') }}
+{{ config(location=data_path('dashboard_mart/rpt_monthly_savings.parquet')) }}
 
 with cost as (
 select date_trunc('month', posted_at_timestamp)::date as year_month

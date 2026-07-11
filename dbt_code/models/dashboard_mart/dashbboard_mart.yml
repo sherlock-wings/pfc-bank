@@ -5,10 +5,10 @@ sources:
     tables:
       - name: dim_accounts
         config:
-          external_location: "s3://pfc-nfcu/dashboard_mart/dim_accounts.parquet"
+          external_location: "{{ var('data_root') }}/dashboard_mart/dim_accounts.parquet"
       - name: fact_transactions
         config:
-          external_location: "s3://pfc-nfcu/dashboard_mart/fact_transactions.parquet"
+          external_location: "{{ var('data_root') }}/dashboard_mart/fact_transactions.parquet"
       - name: dim_merchant
         config:
-          external_location: "s3://pfc-nfcu/dashboard_mart/dim_merchant.parquet" 
+          external_location: "{{ var('data_root') }}/dashboard_mart/dim_merchant.parquet"

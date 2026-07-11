@@ -1,4 +1,4 @@
-{{ config(location='s3://pfc-nfcu/dashboard_mart/rpt_top_expenses.parquet') }}
+{{ config(location=data_path('dashboard_mart/rpt_top_expenses.parquet')) }}
 select merchant_name
       ,merchant_category as category
       ,merchant_subcategory as subcategory

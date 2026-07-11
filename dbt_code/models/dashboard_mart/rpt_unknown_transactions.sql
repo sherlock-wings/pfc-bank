@@ -1,4 +1,4 @@
-{{ config(location='s3://pfc-nfcu/dashboard_mart/rpt_unknown_transactions.parquet') }}
+{{ config(location=data_path('dashboard_mart/rpt_unknown_transactions.parquet')) }}
 
 select a.amount, a.posted_at_timestamp, a.payee, a.txn_description, b.merchant_category
 from {{ ref('fact_transactions') }} a 
