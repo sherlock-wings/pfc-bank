@@ -234,10 +234,6 @@ from pfc_bank.rpt_monthly_savings
 ```sql total_saved 
 select sum(dollars_saved) as savings
 from pfc_bank.rpt_monthly_savings
-where year_month <= (
-    select min(year_month) + to_months(${inputs.savingsMonthSlider}::integer)
-    from pfc_bank.rpt_monthly_savings
-)
 ```
 
 ```sql savings_cutoff_month 
@@ -255,19 +251,6 @@ select (
   fmt=usd2
   title="Total Saved"
 />
-
-<Slider
-    title='Filter by Month'
-    name='savingsMonthSlider'
-    size=large
-    data={savings_bounds}
-    min=0
-    maxColumn=month_span
-    defaultValue=month_span
-    step=1
-/>
-
-
 
 ## Savings, by Month
 
