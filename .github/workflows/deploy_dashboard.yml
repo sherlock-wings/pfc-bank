@@ -33,19 +33,30 @@ jobs:
 
       - run: npm ci
 
-      # Inject the real dashboard identity (name + address) from GitHub dev-env
-      # variables into .env.local, which wins over the committed placeholder
-      # .env. Keeps the real values out of git while the live site still shows
-      # them. Set DASHBOARD_FAMILY_NAME / DASHBOARD_HOME_ADDRESS as `dev`
-      # environment variables; if unset, the committed .env placeholders apply.
-      - name: Inject real dashboard identity (kept out of git)
+      # Build the dashboard's runtime config in .env.local (git-ignored), which
+      # Evidence loads. The committed .env.example is a template only — Evidence
+      # does NOT auto-load *.example — so CI must materialize these values here.
+      #   - data_root: the S3 prefix DuckDB reads dashboard_mart parquet from.
+      #     Without it, sources render read_parquet('${data_root}/...') literally,
+      #     no parquet is built, and every tile fails "Table ... does not exist".
+      #     Set DASHBOARD_DATA_ROOT as a `dev` env var; falls back to the same
+      #     default committed in .env.example so the build never silently breaks.
+      #   - family_name / home_address: display labels kept out of git. Set
+      #     DASHBOARD_FAMILY_NAME / DASHBOARD_HOME_ADDRESS as `dev` env vars to
+      #     show real values; if unset they fall back to the same generic
+      #     placeholders committed in .env.example (Evidence never loads that
+      #     template, so without these fallbacks an unset var would render the
+      #     raw "${family_name}" / "${home_address}" string on the live site).
+      - name: Build dashboard runtime config (kept out of git)
         env:
+          DATA_ROOT: ${{ vars.DASHBOARD_DATA_ROOT }}
           FAM: ${{ vars.DASHBOARD_FAMILY_NAME }}
           ADDR: ${{ vars.DASHBOARD_HOME_ADDRESS }}
         run: |
           : > .env.local
-          if [ -n "$FAM" ];  then echo "EVIDENCE_VAR__family_name=$FAM"   >> .env.local; fi
-          if [ -n "$ADDR" ]; then echo "EVIDENCE_VAR__home_address=$ADDR" >> .env.local; fi
+          echo "EVIDENCE_VAR__data_root=${DATA_ROOT:-s3://pfc-nfcu}"    >> .env.local
+          echo "EVIDENCE_VAR__family_name=${FAM:-Sample}"              >> .env.local
+          echo "EVIDENCE_VAR__home_address=${ADDR:-123 Example St}"    >> .env.local
 
       - run: npm run sources      # runs SQL against S3, writes parquet into the build
       - run: npm run build        # produces dashboard/build/

@@ -7,7 +7,9 @@
 # persona.sh writes persona values there; this restores your real values from
 # dashboard/.env.real (also git-ignored, never committed) so the page shows your
 # real name/address and reads your real S3 data_root. If .env.real is absent it
-# just clears .env.local, falling back to the committed (placeholder) .env.
+# seeds .env.local from the committed dashboard/.env.example template — Evidence
+# only auto-loads .env/.env.local, never *.example, so a bare "fall back to the
+# committed defaults" would leave ${data_root} unresolved and the build empty.
 #
 # Chaining with && is intentional: if any step fails, the rest don't run.
 set -euo pipefail
@@ -17,8 +19,8 @@ if [ -f "$ROOT/dashboard/.env.real" ]; then
   cp "$ROOT/dashboard/.env.real" "$ROOT/dashboard/.env.local"
   echo "run: restored real dashboard config from dashboard/.env.real"
 else
-  rm -f "$ROOT/dashboard/.env.local"
-  echo "run: no dashboard/.env.real found — cleared .env.local, using committed .env defaults"
+  cp "$ROOT/dashboard/.env.example" "$ROOT/dashboard/.env.local"
+  echo "run: no dashboard/.env.real found — seeded .env.local from committed dashboard/.env.example defaults"
   echo "run: (create dashboard/.env.real with your real EVIDENCE_VAR__* values to show them)"
 fi
 
