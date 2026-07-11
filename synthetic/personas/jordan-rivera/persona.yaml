@@ -48,7 +48,7 @@ region:
 # so the dbt dedup (partition by txn_id) has real overlap to collapse.
 # ---------------------------------------------------------------------------
 timeline:
-  start_date: "2024-01-01"       # first transaction in the master ledger
+  start_date: "2026-01-01"       # first transaction in the master ledger
   as_of_date: "2026-07-10"       # newest snapshot / latest balance-date
   snapshot_cadence_days: 30      # emit one file every ~30 days
   pull_window_days: 88           # trailing span each snapshot carries (matches extract.py)
