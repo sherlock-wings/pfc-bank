@@ -1,0 +1,135 @@
+# ---------------------------------------------------------------------------
+# persona.yaml — the imaginary person the demo dataset belongs to.
+#
+# Everything here is invented. It mirrors the *shape* of the real financial
+# profile (a five-account credit-union household with a jumbo mortgage, a
+# rewards card, a steady biweekly owner's draw, and wealthy cost-of-living
+# spend) without exposing any real identity, employer, merchant, or location.
+#
+# generate.py reads this file plus merchants.yaml and emits SimpleFIN-shaped
+# JSON snapshots. Tune the numbers here to reshape the demo.
+# ---------------------------------------------------------------------------
+
+seed: 20260711            # fixed RNG seed -> byte-identical output every run
+
+identity:
+  # Name as it appears embedded in POS transaction descriptions.
+  display_name: "ADOLPH R THORNTON"
+  # Surname for the dashboard title ("{family_name} Family Finances :)").
+  # Optional — omit to derive it from the last word of display_name.
+  family_name: "Thornton"
+  # Home address shown on the dashboard's Housing card. Entirely invented —
+  # an upscale gated community in the Memphis metro.
+  home_address: "9420 Massey Farms Cv"
+  # Fictional financial institution (SimpleFIN `org` block). Not a real CU.
+  org:
+    domain: "www.bluffcityfcu.example"
+    name: "Bluff City Federal Credit Union"
+    sfin_url: "https://beta-bridge.simplefin.org/simplefin"
+    url: "https://www.bluffcityfcu.example"
+    id: "www.bluffcityfcu.example"
+
+# Memphis-metro towns used to decorate merchant descriptions.
+region:
+  home_town: "MEMPHIS"
+  state: "TN"
+  towns:
+    - "MEMPHIS"
+    - "GERMANTOWN"
+    - "COLLIERVILLE"
+    - "BARTLETT"
+    - "CORDOVA"
+    - "EAST MEMPHIS"
+
+# ---------------------------------------------------------------------------
+# Timeline. Snapshots emulate SimpleFIN pulls: each file carries a trailing
+# window of transactions and a balance-date. IDs are stable across snapshots
+# so the dbt dedup (partition by txn_id) has real overlap to collapse.
+# ---------------------------------------------------------------------------
+timeline:
+  start_date: "2024-01-01"       # first transaction in the master ledger
+  as_of_date: "2026-07-10"       # newest snapshot / latest balance-date
+  snapshot_cadence_days: 30      # emit one file every ~30 days
+  pull_window_days: 88           # trailing span each snapshot carries (matches extract.py)
+
+# ---------------------------------------------------------------------------
+# Accounts. Names deliberately keep the product-type substrings the dashboard
+# filters on (check / market savings / share savings / cashrewards / mortgage).
+# `end_balance` is the balance on the newest snapshot (the only one dim_accounts
+# keeps, since it takes the latest balance-date per account name).
+# `role` wires each account into the generator's cash-flow logic.
+# ---------------------------------------------------------------------------
+accounts:
+  - role: checking
+    name: "Premier Checking - 4021 (4021)"
+    card_last4: "3390"           # debit card number shown in POS descriptions
+    end_balance: 184320.55
+    end_available: 186050.10
+  - role: money_market
+    name: "Money Market Savings - 8810 (8810)"
+    end_balance: 862540.00
+    end_available: 862540.00
+  - role: share_savings
+    name: "Membership Share Savings - 2299 (2299)"
+    end_balance: 44210.75
+    end_available: 44205.75
+  - role: credit_card
+    name: "Visa Signature cashRewards Plus - 5107 (5107)"
+    end_balance: -18470.35       # revolving balance (negative = owed)
+    end_available: 0.00
+  - role: mortgage
+    name: "Home Mortgage - 7043 (7043)"
+    end_balance: -1742000.00     # jumbo loan; declines ~principal each month
+    end_available: 0.00
+    monthly_principal: 3200.00   # balance improvement per month going back in time
+
+# ---------------------------------------------------------------------------
+# Income. A wealthy business owner's lumpy monthly distributions from his
+# company, deposited to checking. ~3.5M / year, but the month-to-month size
+# swings hard (big jitter) the way real owner draws do. Reuses the generator's
+# paycheck plumbing: `period_days: 30` -> ~monthly, `paycheck_jitter` -> lumpy.
+# ---------------------------------------------------------------------------
+income:
+  employer_display: "THORNTON LOGISTICS GROUP"
+  peo_display: "THORNTON LOGISTICS MBR DISTRIBUTION"
+  net_paycheck: 287500.00        # per-distribution mean (~3.5M / ~12 periods)
+  paycheck_jitter: 135000.00     # +/- swing; owner draws are lumpy
+  first_payday: "2024-01-05"
+  period_days: 30
+
+# ---------------------------------------------------------------------------
+# Recurring monthly flows the generator schedules explicitly. Merchant tokens
+# refer to entries in merchants.yaml so descriptions + regex seed stay coupled.
+# ---------------------------------------------------------------------------
+recurring:
+  # Bills auto-drafted from checking (ACH) on a monthly day-of-month.
+  ach_bills:
+    - {merchant: "delta electric",  day: 6,  amount: 385.0,  jitter: 140.0}
+    - {merchant: "nimbus fiber",    day: 9,  amount: 129.99, jitter: 0.0}
+    - {merchant: "chickasaw club",  day: 3,  amount: 850.0,  jitter: 0.0}
+    - {merchant: "aquacivic",       day: 14, amount: 115.0,  jitter: 40.0}
+  # Card autopays / phone billed to the debit card (POS) monthly.
+  card_bills:
+    - {merchant: "cobalt mobile",   day: 22, amount: 145.0,  jitter: 0.0}
+  # Fixed obligations paid from checking as labeled transfers / drafts.
+  car_payment:  {merchant: "vantage motorwerks", day: 17, amount: 1850.00}
+  hoa:          {merchant: "massey farms", day: 1, amount: 650.0}
+  # Structural transfers (see structural_seed_rows in merchants.yaml).
+  mortgage_transfer:    {day: 2,  amount: 15800.00}   # checking -> mortgage
+  credit_card_payment:  {day: 24}                      # checking -> card (pays prior balance)
+  savings_transfer:     {day: 5,  amount: 15000.00}    # checking -> money market
+  # Dividends credited to savings accounts (monthly-ish).
+  dividends:
+    money_market: {day: 27, amount: 2500.0, jitter: 400.0}
+    share_savings: {day: 27, amount: 120.0, jitter: 30.0}
+
+# ---------------------------------------------------------------------------
+# Discretionary spend. The generator draws this many card/debit purchases per
+# week, choosing merchants weighted by merchants.yaml `weight`. This is the
+# "shape" knob: category mix follows the weights of the eligible merchants.
+# ---------------------------------------------------------------------------
+discretionary:
+  purchases_per_week_mean: 14
+  purchases_per_week_sd: 4
+  # Occasional larger irregular events (travel, charter, galas, vet bills).
+  irregular_events_per_year: 20
