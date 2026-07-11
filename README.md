@@ -6,7 +6,7 @@ Get a mobile-friendly, AI-ready, 360-degree view of your personal finances and b
 
 # The Details
 
-What if you could get all the benefits of a highly customized data pipeline and a analytics dashboard applied to your Finances, with minimal setup? This project attempts to answer how you might do that. The idea is to have no persisted footprint-- your data lives only as files, not in a persisted database. 
+What if you could get all the benefits of a highly customized data pipeline and a analytics dashboard applied to your Finances, with minimal setup, for pennies a day? This project attempts to answer how you might do that. The idea is to have no persisted footprint-- your data lives only as files, not in a persisted database. 
 
 By using SimpleFIN, we can pull aggregated bank data produced by Navy Federal via MX, an affiliate firm that provides a secure source of financial records. SimpleFIN allows us to use python to extract those records, which then get stored in S3 in their raw form. Then, using DuckDB as a query engine, we spin up a dbt project to consolidate, clean, and serve that data in an output reporting layer. That layer can then be visualized with free dashboarding tools like evidence.dev, which offers a brilliant Business-Intelligence as Code solution. This platform is mobile-first and AI compatible, so it can easily deliver insights to humans and AI agents alike.
 
