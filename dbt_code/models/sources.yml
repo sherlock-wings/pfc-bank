@@ -8,4 +8,6 @@ sources:
         description: "Raw transaction data streamed from S3"
         config:
           # The exact S3 path where DuckDB should look
-          external_location: 's3://pfc-nfcu/transactions/*/*/*/*.json'
+          # yaml rendering can't see project macros, only var()/env_var(); the
+          # SQL layer uses the data_path() macro for the same data_root anchor.
+          external_location: "{{ var('data_root') }}/transactions/*/*/*/*.json"

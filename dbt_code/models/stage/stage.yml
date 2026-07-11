@@ -5,4 +5,4 @@ sources:
     tables:
       - name: stg_merchant_category
         config:
-          external_location: "s3://pfc-nfcu/stage/stg_merchant_category.parquet"
+          external_location: "{{ var('data_root') }}/stage/stg_merchant_category.parquet"
