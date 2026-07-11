@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 #
-# persona.sh — run the demo pipeline against a fictional persona instead of your
+# run-demo.sh — run the demo pipeline against a fictional persona instead of your
 # real bank data. Everything a persona touches lives under a per-persona S3 root
 # (s3://<bucket>/<demo-prefix>/<slug>/), so your real pipeline is never touched.
 #
-#   ./persona.sh ls-persona           # personas you can run
-#   ./persona.sh new <slug> [--from <existing>]   # scaffold a new persona to edit
-#   ./persona.sh <slug> [--no-serve]  # generate -> upload -> dbt -> dashboard
-#   ./persona.sh reset <slug> [--yes] # wipe the persona's S3 + local data, then rebuild
-#   ./persona.sh check <slug>         # validate the persona's YAML without running
+#   ./run-demo.sh ls-persona           # personas you can run
+#   ./run-demo.sh new <slug> [--from <existing>]   # scaffold a new persona to edit
+#   ./run-demo.sh <slug> [--no-serve]  # generate -> upload -> dbt -> dashboard
+#   ./run-demo.sh reset <slug> [--yes] # wipe the persona's S3 + local data, then rebuild
+#   ./run-demo.sh check <slug>         # validate the persona's YAML without running
 #
 # Overridable env: PFC_BUCKET (default pfc-nfcu), PFC_DEMO_PREFIX (default demo).
 set -euo pipefail
@@ -39,7 +39,7 @@ cmd_new() {
       *) die "unknown option for 'new': $1" ;;
     esac
   done
-  [ -n "$slug" ] || die "usage: ./persona.sh new <slug> [--from <existing>]"
+  [ -n "$slug" ] || die "usage: ./run-demo.sh new <slug> [--from <existing>]"
   [ -d "$PERSONAS_DIR/$from" ] || die "no template persona '$from' (have: $(available))"
   local dest="$PERSONAS_DIR/$slug"
   [ -e "$dest" ] && die "persona '$slug' already exists at $dest"
@@ -48,12 +48,12 @@ cmd_new() {
   echo "Now edit the identity so it's nobody real, and change 'seed:' for a fresh draw:"
   echo "  $dest/persona.yaml"
   echo "  $dest/merchants.yaml"
-  echo "Then run it with:  ./persona.sh $slug"
+  echo "Then run it with:  ./run-demo.sh $slug"
 }
 
 cmd_check() {
   local slug="${1:-}"
-  [ -n "$slug" ] || die "usage: ./persona.sh check <slug>"
+  [ -n "$slug" ] || die "usage: ./run-demo.sh check <slug>"
   [ -d "$PERSONAS_DIR/$slug" ] || die "no persona '$slug' (have: $(available))"
   uv run python "$ROOT/synthetic/validate.py" --persona "$slug"
 }
@@ -69,7 +69,7 @@ cmd_run() {
       *) die "unknown option: $1" ;;
     esac
   done
-  [ -n "$slug" ] || die "usage: ./persona.sh <slug> [--no-serve]"
+  [ -n "$slug" ] || die "usage: ./run-demo.sh <slug> [--no-serve]"
   [ -d "$PERSONAS_DIR/$slug" ] || die "no persona '$slug' (have: $(available))"
 
   local data_root="s3://$BUCKET/$DEMO_PREFIX/$slug"

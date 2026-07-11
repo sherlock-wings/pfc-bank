@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# rfr.sh — "run for real": rebuild + serve the Evidence dashboard on YOUR real
+# run.sh — "run for real": rebuild + serve the Evidence dashboard on YOUR real
 # bank data, undoing any persona override that persona.sh left behind.
 #
 # The dashboard's active config lives in dashboard/.env.local (git-ignored).
@@ -15,11 +15,11 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [ -f "$ROOT/dashboard/.env.real" ]; then
   cp "$ROOT/dashboard/.env.real" "$ROOT/dashboard/.env.local"
-  echo "rfr: restored real dashboard config from dashboard/.env.real"
+  echo "run: restored real dashboard config from dashboard/.env.real"
 else
   rm -f "$ROOT/dashboard/.env.local"
-  echo "rfr: no dashboard/.env.real found — cleared .env.local, using committed .env defaults"
-  echo "rfr: (create dashboard/.env.real with your real EVIDENCE_VAR__* values to show them)"
+  echo "run: no dashboard/.env.real found — cleared .env.local, using committed .env defaults"
+  echo "run: (create dashboard/.env.real with your real EVIDENCE_VAR__* values to show them)"
 fi
 
 cd "$ROOT/dbt_code" && uv run dbt build \
