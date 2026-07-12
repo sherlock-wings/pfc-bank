@@ -5,6 +5,11 @@ on:
   workflow_run:                # auto-run after new data is built
     workflows: ["nfcu-pipe extract"]
     types: [completed]
+  push:                        # UI changes go live now, not on the next data refresh
+    branches: [main]
+    paths:
+      - 'dashboard/**'
+      - '.github/workflows/deploy_dashboard.yml'
 
 permissions:
   id-token: write              # assume the AWS role
@@ -12,8 +17,9 @@ permissions:
 
 jobs:
   deploy:
-    # only when the upstream run succeeded (skips the "no new data" path too)
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    # run on manual dispatch, on a UI push, or when the upstream extract
+    # succeeded (the last also skips the extract's "no new data" path)
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment: dev
     defaults:
