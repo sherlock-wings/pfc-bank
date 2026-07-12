@@ -45,7 +45,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       # Needed to derive the persona's display labels from its committed
       # persona.yaml via synthetic/persona_meta.py (same helper run-demo.sh uses).
