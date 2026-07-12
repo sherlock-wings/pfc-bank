@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: dim_date
+    descripotion: "Calendar dimension. Needed for calendar things. Runs from New years day '26 to the turn of the century"
+    columns:
+      - name: full_date
+        data_type: date
+        description: "The given calendar date."
+      - name: date_year
+        data_type: utinyint
+        description: "The year of the calendar date."
+      - name: date_quarter
+        data_type: utinyint
+        description: "The quarter for the calendar date."
+      - name: date_month
+        data_type: utinyint
+        description: "The month number for the calendar date."
+      - name: name_date_month
+        data_type: text
+        description: "The month name for the calendar date."
+      - name: total_days_in_month
+        data_type: utinyint
+        description: "The total days in the month for the calendar date."
+      - name: date_week
+        data_type: utinyint
+        description: "The number of the week for the calendar date."
+      - name: day_of_week
+        data_type: utinyint
+        description: "The number of the day of the week for the calendar date."
+      - name: name_day_of_week
+        data_type: text
+        description: "The name of the day of the week for the calendar date."
+      - name: is_weekend_ind
+        data_type: boolean
+        description: "A flag that indicates whether the given date falls on a Saturday or Sunday."
