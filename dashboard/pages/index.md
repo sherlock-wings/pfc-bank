@@ -13,6 +13,7 @@ queries:
   - rows_all_expenses: rows_all_expenses.sql
   - rows_all_income: rows_income.sql
   - chart_monthly_savings: chart_monthly_savings.sql
+  - chart_daily_overunder: chart_daily_overunder.sql
 ---
 
 # {persona[0]?.family_name} Family Finances :)
@@ -111,6 +112,14 @@ order by posted_date desc
 />
 
 ## Daily Spend
+
+<LineChart 
+    data={chart_daily_overunder}
+    x=calendar_date
+    y=daily_spend
+    y2=daily_income
+    yAxisTitle="Daily Spending vs Income"
+/>
 
 ## All Expenses
 
