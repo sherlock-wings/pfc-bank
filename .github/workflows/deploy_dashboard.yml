@@ -79,7 +79,7 @@ jobs:
         run: |
           bash ./scripts/offload-wasm.sh build
           for f in build-wasm-offload/*.wasm; do
-            npx --yes wrangler@3.90.0 r2 object put \
+            npx --yes wrangler@4.110.0 r2 object put \
               "${R2_BUCKET}/$(basename "$f")" \
               --file="$f" --content-type=application/wasm \
               --cache-control="public, max-age=31536000, immutable"
