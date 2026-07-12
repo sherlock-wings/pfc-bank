@@ -1,0 +1,49 @@
+name: deploy dbt docs
+
+on:
+  workflow_dispatch:           # manual button
+  workflow_run:                # auto-run after new data is built (fresh catalog stats)
+    workflows: ["nfcu-pipe extract"]
+    types: [completed]
+  push:                        # model/doc changes go live now, not on the next data refresh
+    branches: [main]
+    paths:
+      - 'dbt_code/**'
+      - '.github/workflows/deploy_dbt_docs.yml'
+
+permissions:
+  id-token: write              # assume the AWS role
+  contents: read
+
+jobs:
+  deploy:
+    # run on manual dispatch, on a model/doc push, or when the upstream extract
+    # succeeded (the last also skips the extract's "no new data" path)
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment: dev
+    defaults:
+      run:
+        working-directory: dbt_code
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - uses: aws-actions/configure-aws-credentials@v4   # gives DuckDB S3 read via env creds
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: us-east-2
+
+      - run: uv run dbt deps
+      - run: uv run dbt docs generate   # writes the static site into dbt_code/target/
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: dbt_code
+          command: pages deploy target --project-name=pfc-finance-dbt-docs --branch=main

@@ -330,3 +330,5 @@ where income_type in ${inputs.inc_type_select.value}
 <Column id=income_type/>
 <Column id=income_source/>
 </DataTable>
+
+# [Want to see the dbt models behind this data? Click here!](https://bank-dbt-docs.patrick-f-callahan.net)
