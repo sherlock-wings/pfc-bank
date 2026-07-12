@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_payrate
+    description: "Passthrough view over the payrate seed. One row per employer per pay-rate effective period; joined onto dim_date by effective date range to derive daily income."
+
+    columns:
+
+      - name: employer_name
+        data_type: varchar
+        description: "Name of the employer paying this rate."
+        tests:
+          - not_null
+
+      - name: employer_address
+        data_type: varchar
+        description: "Mailing address of the employer."
+
+      - name: biweekly_paycheck_posttax_amount
+        data_type: decimal(12,2)
+        description: "Post-tax paycheck amount for this employer, paid on a biweekly cadence."
+        tests:
+          - not_null
+
+      - name: effective_start_date
+        data_type: date
+        description: "First calendar date this pay rate applies to, inclusive."
+        tests:
+          - not_null
+
+      - name: effective_end_date
+        data_type: date
+        description: "Last calendar date this pay rate applies to, inclusive."
+        tests:
+          - not_null
