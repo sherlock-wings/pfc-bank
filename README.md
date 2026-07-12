@@ -9,9 +9,17 @@ Example page at [https://myfinance.patrick-f-callahan.net/](https://myfinance.pa
 ![Project Data Flow](img/lightwt-family-finance-analytics.png)
 *Fig 1: Project Data Flow*
 
-What if you could get all the benefits of a highly customized data pipeline and a analytics dashboard applied to your Finances, with minimal setup, for pennies a day? This project attempts to answer how you might do that. The idea is to have no persisted footprint-- your data lives only as files, not in a persisted database. 
+What if, for pennies a day, a single family could benefit from the same kind of High-powered Analytics used by big business? This project attempts to answer how you might do that. 
 
-By using SimpleFIN, we can pull aggregated bank data produced by Navy Federal via MX, an affiliate firm that provides a secure source of financial records. SimpleFIN allows us to use python to extract those records, which then get stored in S3 in their raw form. Then, using DuckDB as a query engine, we spin up a dbt project to consolidate, clean, and serve that data in an output reporting layer. That layer can then be visualized with free dashboarding tools like evidence.dev, which offers a brilliant Business-Intelligence as Code solution. This platform is mobile-first and AI compatible, so it can easily deliver insights to humans and AI agents alike.
+To do this, we have to meet a few requirements:
+
+1. The pipeline moves real bank transactions and delivers daily updates to keep the data fresh
+  - We achieve this with a python script pulling data from real bank accounts via SimpleFIN
+  - For moving the actual data, we use dbt and their duckdb adapter
+2. The database requires minimal setup and virtually zero maintenance
+  - For this, we use DuckDB. Doesn't get any easier than a file-based database that lives entirely in memory
+3. The BI Dashboard can be deployed in a mobile-friendly format without depending on paid software or complex client-side configuration
+  - For this, we use evidence.dev, a super slick, mobile-first, BI-as-Code toolset that makes snappy dashboarding easy
 
 This allows the every day individual or small family to get deep CPA-level insights onto their own personal finance for no more than the cost of a SimpleFIN subscription ($15/year at time of last edit, or about 4 cents a day.) 
 
