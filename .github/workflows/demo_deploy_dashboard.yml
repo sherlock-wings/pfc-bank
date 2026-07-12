@@ -1,0 +1,104 @@
+name: demo deploy dashboard
+
+# Deploys a fictional persona's PRE-GENERATED demo data to
+# myfinance.patrick-f-callahan.net (the public, no-2FA sibling of the real
+# bank.* site). This is deploy_dashboard.yml with four differences:
+#   1. manual-only trigger — demo data is static, nothing upstream refreshes it
+#   2. data_root + display labels come from a persona, not your real `dev` vars
+#   3. it deploys to the pfc-finance-demo Pages project (→ myfinance.*)
+# The persona's data (transactions + dbt-built dashboard_mart parquet) must
+# already live under s3://pfc-nfcu/demo/<slug>/ from a prior `./run-demo.sh <slug>`
+# run; this workflow only builds the dashboard against it and deploys.
+
+on:
+  workflow_dispatch:           # manual button
+  # Demo data never changes, so (unlike the real site) there's no data-refresh
+  # event to redeploy on. Instead, redeploy whenever the dashboard UI itself
+  # changes on main — a new chart/table/filter in dashboard/** should reach the
+  # demo automatically. Data-only changes still require ./run-demo.sh + a manual
+  # run (or a persona.yaml edit, covered below).
+  push:
+    branches: [main]
+    paths:
+      - 'dashboard/**'
+      - 'synthetic/personas/**'   # persona label edits (family_name/home_address)
+      - '.github/workflows/demo_deploy_dashboard.yml'
+
+permissions:
+  id-token: write              # assume the AWS role (DuckDB reads demo parquet from S3)
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    defaults:
+      run:
+        working-directory: dashboard
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4   # gives DuckDB S3 read via env creds
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: us-east-2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Needed to derive the persona's display labels from its committed
+      # persona.yaml via synthetic/persona_meta.py (same helper run-demo.sh uses).
+      - uses: astral-sh/setup-uv@v5
+
+      - run: npm ci
+
+      # Build the dashboard's runtime config in .env.local (git-ignored), which
+      # Evidence loads. Unlike the real deploy, ALL values come from the persona
+      # (never your real `dev` DASHBOARD_* vars), so no real name/address/data can
+      # leak onto the public demo site:
+      #   - data_root: the persona's demo S3 prefix, holding the dashboard_mart
+      #     parquet that `./run-demo.sh <slug>` already built. Same bucket as the
+      #     real pipeline, so the same AWS role reads it.
+      #   - family_name / home_address: emitted by persona_meta.py, read from the
+      #     persona's persona.yaml in the checkout (no S3 lookup needed).
+      # Swap personas by changing the DEMO_PERSONA variable on the `dev`
+      # environment (falls back to jordan-rivera if unset).
+      - name: Build dashboard runtime config (kept out of git)
+        env:
+          PERSONA: ${{ vars.DEMO_PERSONA }}
+        run: |
+          SLUG="${PERSONA:-jordan-rivera}"
+          : > .env.local
+          echo "EVIDENCE_VAR__data_root=s3://pfc-nfcu/demo/${SLUG}" >> .env.local
+          uv run --no-project --with pyyaml python \
+            "$GITHUB_WORKSPACE/synthetic/persona_meta.py" --persona "$SLUG" --env >> .env.local
+
+      - run: npm run sources      # runs SQL against S3, writes parquet into the build
+      - run: npm run build        # produces dashboard/build/
+
+      # Cloudflare Pages rejects any file >25 MiB; the DuckDB WASM engine is 33-38 MiB.
+      # WASM is data-independent, so reuse the real site's R2 bucket + CDN domain.
+      # Background: workbench/context.md.
+      - name: Offload DuckDB WASM to R2
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          WASM_CDN_BASE: https://duckdb.patrick-f-callahan.net   # R2 bucket's public custom domain
+          R2_BUCKET: pfc-finance-wasm
+        run: |
+          bash ./scripts/offload-wasm.sh build
+          for f in build-wasm-offload/*.wasm; do
+            npx --yes wrangler@3.90.0 r2 object put \
+              "${R2_BUCKET}/$(basename "$f")" \
+              --file="$f" --content-type=application/wasm \
+              --cache-control="public, max-age=31536000, immutable"
+          done
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: dashboard
+          command: pages deploy build --project-name=pfc-finance-demo --branch=main
