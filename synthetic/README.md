@@ -16,10 +16,10 @@ merchant, or location appears anywhere.
 |------|------|
 | `personas/<slug>/persona.yaml` | one imaginary person: identity, accounts, income, recurring flows, timeline. Tune the numbers here. |
 | `personas/<slug>/merchants.yaml` | **single source of truth** for that persona — the fake merchant catalog + structural bank descriptors. Drives both the JSON descriptions *and* the regex seed. |
-| `generate.py` | builds one master ledger, emits SimpleFIN snapshots + a regenerated regex seed. Deterministic (fixed RNG seed). `--persona <slug>` picks which persona. |
+| `generate.py` | builds one master ledger, emits SimpleFIN snapshots + a regenerated regex seed + a regenerated payrate seed. Deterministic (fixed RNG seed). `--persona <slug>` picks which persona. |
 | `verify.py` | replicates dbt's `dim_merchant` categorisation and asserts **zero `**UNKNOWN**`** merchants. |
 | `out/<slug>/` | generated output per persona (git-ignored; regenerate any time). |
-| `../persona.sh` | one-command persona mode: generate → upload → dbt → dashboard. See below. |
+| `../run-demo.sh` | one-command persona mode: generate → upload → dbt → dashboard. See below. |
 
 ## Why the merchant catalog is the source of truth
 
@@ -69,12 +69,12 @@ it, per run, to a per-persona subtree at `s3://pfc-nfcu/demo/<slug>/`.
 ### The one command
 
 ```bash
-./persona.sh list                    # personas you can run
-./persona.sh jordan-rivera           # runs stages B–E below, ends on localhost
-./persona.sh jordan-rivera --no-serve  # stop after dbt (stages B–D), no dashboard
-./persona.sh reset jordan-rivera     # wipe this persona everywhere, then rebuild B–E
-./persona.sh reset jordan-rivera --yes # same, but skip the delete confirmation
-./persona.sh check jordan-rivera     # validate the persona's YAML, run nothing
+./run-demo.sh ls-persona             # personas you can run
+./run-demo.sh jordan-rivera          # runs stages B–E below, ends on localhost
+./run-demo.sh jordan-rivera --no-serve  # stop after dbt (stages B–D), no dashboard
+./run-demo.sh reset jordan-rivera    # wipe this persona everywhere, then rebuild B–E
+./run-demo.sh reset jordan-rivera --yes # same, but skip the delete confirmation
+./run-demo.sh check jordan-rivera    # validate the persona's YAML, run nothing
 ```
 
 `reset` (or `<slug> --reset`) is the tweak-and-rerun button: it recursively
@@ -92,8 +92,8 @@ so you can see (or debug) each stage.
 ### Stage A — pick or create a persona
 
 ```bash
-./persona.sh list                    # what's available
-./persona.sh new casey-brooks        # optional: scaffold a copy of jordan-rivera
+./run-demo.sh ls-persona             # what's available
+./run-demo.sh new casey-brooks        # optional: scaffold a copy of jordan-rivera
 # then edit personas/casey-brooks/{persona,merchants}.yaml so it's nobody real,
 # and change `seed:` for a fresh deterministic draw.
 ```
@@ -116,10 +116,10 @@ well-formed — and reports each problem with a file-scoped, plain-English messa
 (and a "did you mean…?" for near-miss tokens) instead of a `KeyError` traceback.
 
 ```bash
-uv run python synthetic/validate.py --persona "$SLUG"   # or: ./persona.sh check "$SLUG"
+uv run python synthetic/validate.py --persona "$SLUG"   # or: ./run-demo.sh check "$SLUG"
 ```
 
-It runs automatically at the top of `generate.py` and, in `persona.sh`, **before
+It runs automatically at the top of `generate.py` and, in `run-demo.sh`, **before
 the `--reset` wipe** — so a persona that can't be demoed never destroys good S3
 data. *Errors* block the run; *warnings* (e.g. a category outside the dashboard
 taxonomy) let it proceed but flag likely mistakes.
@@ -131,8 +131,9 @@ uv run python synthetic/generate.py --persona "$SLUG"
 uv run python synthetic/verify.py   --persona "$SLUG"   # expect: UNKNOWN keys 0, PASS
 ```
 
-Writes `synthetic/out/$SLUG/transactions/**` and
-`synthetic/out/$SLUG/seed_merchant_category_regex_mapping.csv`.
+Writes `synthetic/out/$SLUG/transactions/**`,
+`synthetic/out/$SLUG/seed_merchant_category_regex_mapping.csv`, and
+`synthetic/out/$SLUG/seed_payrate.csv`.
 
 ### Stage C — upload to the persona's S3 prefix
 
@@ -140,6 +141,8 @@ Writes `synthetic/out/$SLUG/transactions/**` and
 aws s3 sync synthetic/out/$SLUG/transactions/ "$DATA_ROOT/transactions/" --delete
 aws s3 cp   synthetic/out/$SLUG/seed_merchant_category_regex_mapping.csv \
             "$DATA_ROOT/stage/seed_merchant_category_regex_mapping.csv"
+aws s3 cp   synthetic/out/$SLUG/seed_payrate.csv \
+            "$DATA_ROOT/stage/seed_payrate.csv"
 ```
 
 ### Stage D — run the dbt pipeline against the persona
@@ -147,15 +150,18 @@ aws s3 cp   synthetic/out/$SLUG/seed_merchant_category_regex_mapping.csv \
 ```bash
 cd dbt_code
 uv run dbt build \
-  --vars "{data_root: '$DATA_ROOT', regex_seed_csv: '$DATA_ROOT/stage/seed_merchant_category_regex_mapping.csv'}"
+  --vars "{data_root: '$DATA_ROOT', \
+           regex_seed_csv: '$DATA_ROOT/stage/seed_merchant_category_regex_mapping.csv', \
+           payrate_seed_csv: '$DATA_ROOT/stage/seed_payrate.csv'}"
 cd ..
 ```
 
 `data_root` relocates every read/write (raw source, stage, dashboard_mart) into
-the persona subtree; `regex_seed_csv` makes the categorizer read *this persona's*
-regex map from S3 instead of the committed seed. With neither var (your real
-pipeline) dbt reads/writes `s3://pfc-nfcu/...` and the committed seed, exactly as
-before. A green `assert_no_unknown_merchants` confirms the persona categorised.
+the persona subtree; `regex_seed_csv` and `payrate_seed_csv` make the stage
+models read *this persona's* regex map and payrate from S3 instead of the
+committed seeds. With none of these vars set (your real pipeline) dbt
+reads/writes `s3://pfc-nfcu/...` and the committed seeds, exactly as before. A
+green `assert_no_unknown_merchants` confirms the persona categorised.
 
 ### Stage E — deploy the Evidence dashboard to localhost
 
@@ -174,14 +180,14 @@ deployed; your real site is deployed separately by CI.
 
 ### Switching back to real data
 
-`dashboard/.env.local` is the single **active override** slot. `persona.sh`
+`dashboard/.env.local` is the single **active override** slot. `run-demo.sh`
 writes the persona's values there; to go back to your real data, run:
 
 ```bash
-./rfr.sh            # restore real config, then dbt build + serve on localhost
+./run.sh             # restore real config, then dbt build + serve on localhost
 ```
 
-`rfr.sh` copies `dashboard/.env.real` (git-ignored — your real `data_root`,
+`run.sh` copies `dashboard/.env.real` (git-ignored — your real `data_root`,
 name, and address) over `.env.local`, so the page shows *your* data again.
 Because both scripts just rewrite `.env.local`, **whichever you run last wins** —
 that's the switch. (Deleting `.env.local` alone is *not* enough: it falls back to
@@ -198,30 +204,33 @@ time, and always reads your real `data_root` from the committed `.env`. So
 
 ### Notes
 
-**The seed stays isolated.** Each persona's regex map is generated alongside its
-transactions and read from *its* S3 prefix via the `regex_seed_csv` var — so the
-committed dbt seed (which maps your real merchants) is never touched. The legacy
+**The seeds stay isolated.** Each persona's regex map and payrate are generated
+alongside its transactions and read from *its* S3 prefix via the
+`regex_seed_csv` / `payrate_seed_csv` vars — so the committed dbt seeds (which
+carry your real merchants and employer) are never touched. The legacy
 `--write-dbt-seed` flag still exists for publishing, but persona mode does not
-use it and never overwrites your seed.
+use it and never overwrites your seeds.
 
 **Overridable env:** `PFC_BUCKET` (default `pfc-nfcu`), `PFC_DEMO_PREFIX`
-(default `demo`) change the `s3://<bucket>/<prefix>/<slug>/` root `persona.sh`
+(default `demo`) change the `s3://<bucket>/<prefix>/<slug>/` root `run-demo.sh`
 uses.
 
 ## Reshaping a persona
 
 Edit the files under `personas/<slug>/` (a new persona starts as a copy of
-another via `./persona.sh new <slug>`):
+another via `./run-demo.sh new <slug>`):
 
 - **Category mix / "shape"** — adjust merchant `weight`s in `merchants.yaml`
   and `discretionary.purchases_per_week_mean` in `persona.yaml`.
-- **Balances / income / bills** — edit `persona.yaml`.
+- **Balances / income / bills** — edit `persona.yaml`. `income.employer_display`,
+  `income.employer_address`, and `income.net_paycheck` also drive the
+  regenerated `seed_payrate.csv` (`generate.py`'s `emit_payrate`).
 - **Dashboard labels** — `identity.family_name` sets the page title
   (`{family_name} Family Finances :)`) and `identity.home_address` sets the
   Housing card's "Mortgage on …" label. Both are optional: omit `family_name`
   to derive it from `display_name`, and omit `home_address` to auto-generate a
   realistic (invented) street address from `seed`. They reach the Evidence
-  dashboard as `EVIDENCE_VAR__*` values (like `data_root`) that `persona.sh`
+  dashboard as `EVIDENCE_VAR__*` values (like `data_root`) that `run-demo.sh`
   writes into `dashboard/.env.local`; see `synthetic/persona_meta.py`.
 - **History length** — change `timeline.start_date` / `as_of_date` /
   `snapshot_cadence_days`.

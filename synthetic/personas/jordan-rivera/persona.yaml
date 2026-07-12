@@ -89,6 +89,7 @@ accounts:
 # ---------------------------------------------------------------------------
 income:
   employer_display: "MERIDIAN LABS"
+  employer_address: "118 Innovation Way, Bozeman, MT 59718"  # payrate seed only
   peo_display: "NORTHSTAR PEO DBA MERIDIAN"
   net_paycheck: 2412.55          # per-paycheck net deposit
   paycheck_jitter: 85.00         # +/- variation

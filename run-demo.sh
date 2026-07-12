@@ -76,6 +76,8 @@ cmd_run() {
   local out="$ROOT/synthetic/out/$slug"
   local seed_local="$out/seed_merchant_category_regex_mapping.csv"
   local seed_s3="$data_root/stage/seed_merchant_category_regex_mapping.csv"
+  local payrate_local="$out/seed_payrate.csv"
+  local payrate_s3="$data_root/stage/seed_payrate.csv"
 
   echo "== persona '$slug' -> $data_root"
   command -v aws >/dev/null || die "aws CLI not found"
@@ -107,13 +109,14 @@ cmd_run() {
   uv run python "$ROOT/synthetic/generate.py" --persona "$slug"
   uv run python "$ROOT/synthetic/verify.py" --persona "$slug"
 
-  echo "== [2/5] upload transactions + regex seed to S3"
+  echo "== [2/5] upload transactions + regex seed + payrate seed to S3"
   aws s3 sync "$out/transactions/" "$data_root/transactions/" --delete
   aws s3 cp "$seed_local" "$seed_s3"
+  aws s3 cp "$payrate_local" "$payrate_s3"
 
   echo "== [3/5] dbt build on the persona's data"
   ( cd "$ROOT/dbt_code" && uv run dbt build \
-      --vars "{data_root: '$data_root', regex_seed_csv: '$seed_s3'}" )
+      --vars "{data_root: '$data_root', regex_seed_csv: '$seed_s3', payrate_seed_csv: '$payrate_s3'}" )
 
   echo "== [4/5] point the dashboard at the persona"
   {

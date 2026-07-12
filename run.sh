@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
 # run.sh — "run for real": rebuild + serve the Evidence dashboard on YOUR real
-# bank data, undoing any persona override that persona.sh left behind.
+# bank data, undoing any persona override that run-demo.sh left behind.
 #
 # The dashboard's active config lives in dashboard/.env.local (git-ignored).
-# persona.sh writes persona values there; this restores your real values from
+# run-demo.sh writes persona values there; this restores your real values from
 # dashboard/.env.real (also git-ignored, never committed) so the page shows your
 # real name/address and reads your real S3 data_root. If .env.real is absent it
 # seeds .env.local from the committed dashboard/.env.example template — Evidence

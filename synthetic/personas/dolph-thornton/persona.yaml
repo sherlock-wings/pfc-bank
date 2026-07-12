@@ -91,6 +91,7 @@ accounts:
 # ---------------------------------------------------------------------------
 income:
   employer_display: "THORNTON LOGISTICS GROUP"
+  employer_address: "2200 Riverport Blvd, Memphis, TN 38103"  # payrate seed only
   peo_display: "THORNTON LOGISTICS MBR DISTRIBUTION"
   net_paycheck: 287500.00        # per-distribution mean (~3.5M / ~12 periods)
   paycheck_jitter: 135000.00     # +/- swing; owner draws are lumpy

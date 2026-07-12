@@ -7,6 +7,9 @@ Reads persona.yaml + merchants.yaml and emits:
   * out/seed_merchant_category_regex_mapping.csv    — a regex seed regenerated
     from the SAME merchant catalog, so the dbt categorizer matches 100% of the
     demo data (no **UNKNOWN**, assert_no_unknown_merchants stays green).
+  * out/seed_payrate.csv                            — a payrate seed regenerated
+    from persona.yaml's income block, so stg_payrate reflects this persona's
+    fictional employer instead of your real one.
 
 Everything is driven by one fixed RNG seed, so re-running produces identical
 output. A single master ledger of transactions (with stable TRN ids) is built
@@ -491,6 +494,29 @@ class Generator:
             w.writerows(rows)
         return len(rows)
 
+    def emit_payrate(self, path: Path):
+        """Regenerate the payrate seed from persona.yaml's income block.
+
+        One open-ended rate row (effective_end_date 9999-12-31), matching the
+        shape of the committed seed_payrate.csv. biweekly_paycheck_posttax_amount
+        is the flat rate the ledger's per-check jitter is drawn around.
+        """
+        inc = self.p["income"]
+        rows = [(
+            inc["employer_display"].title(),
+            inc["employer_address"],
+            f"{inc['net_paycheck']:.2f}",
+            inc["first_payday"],
+            "9999-12-31",
+        )]
+        with open(path, "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["employer_name", "employer_address",
+                        "biweekly_paycheck_posttax_amount",
+                        "effective_start_date", "effective_end_date"])
+            w.writerows(rows)
+        return len(rows)
+
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
@@ -500,6 +526,7 @@ def main():
                     help="output directory (default: synthetic/out/<persona>)")
     ap.add_argument("--write-dbt-seed", action="store_true",
                     help="also overwrite dbt_code/seeds/seed_merchant_category_regex_mapping.csv "
+                         "and dbt_code/seeds/seed_payrate.csv "
                          "(only when publishing the demo, never on the real-pipeline machine)")
     args = ap.parse_args()
 
@@ -530,13 +557,16 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     files, rows = gen.emit_snapshots(out_dir)
     seed_rows = gen.emit_seed(out_dir / "seed_merchant_category_regex_mapping.csv")
+    payrate_rows = gen.emit_payrate(out_dir / "seed_payrate.csv")
     if args.write_dbt_seed:
         gen.emit_seed(HERE.parent / "dbt_code" / "seeds" / "seed_merchant_category_regex_mapping.csv")
+        gen.emit_payrate(HERE.parent / "dbt_code" / "seeds" / "seed_payrate.csv")
 
     print(f"persona       : {args.persona}")
     print(f"master ledger : {len(gen.ledger):,} unique transactions")
     print(f"snapshots     : {files} files, {rows:,} transaction rows total")
     print(f"regex seed    : {seed_rows} rows -> {out_dir / 'seed_merchant_category_regex_mapping.csv'}")
+    print(f"payrate seed  : {payrate_rows} row(s) -> {out_dir / 'seed_payrate.csv'}")
     print(f"output dir    : {out_dir}")
 
 
