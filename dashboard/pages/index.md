@@ -110,6 +110,8 @@ order by posted_date desc
     legend=false
 />
 
+## Daily Spend
+
 ## All Expenses
 
 ### By Category
@@ -125,7 +127,12 @@ select category
       ,sum(amount_spent) as total_spend
 from ${rows_all_expenses}
 where amount_spent <= coalesce(try_cast('${inputs.COL_dollar_filter}' as decimal(36,2)), 999999999999.99)
-group by 1,2 order by all
+  and category in ${inputs.merch_cat_select1.value}
+  and posted_date between 
+  coalesce(try_cast('${inputs.chart_categories_lowerbound}' as date), '1900-01-01'::date)
+    and 
+  coalesce(try_cast('${inputs.chart_categories_upperbound}' as date), '9999-12-31'::date)
+  group by 1,2 order by all
 ```
 Filter by Purchases under Dollar Amount
 
@@ -135,7 +142,25 @@ Filter by Purchases under Dollar Amount
     defaultValue="9999999999999"
 />
 
-
+Filter by Category and date range
+<Dropdown 
+    data={unique_merch_cats} 
+    title="Filter by category"
+    name=merch_cat_select1 
+    value=category
+    multiple
+    selectAllByDefault=true
+/>
+<TextInput
+    name=chart_categories_lowerbound
+    placeholder="Enter Start Date (YYYY-MM-DD)"
+    defaultValue="1900-01-01"
+/>
+<TextInput
+    name=chart_categories_upperbound
+    placeholder="Enter End Date (YYYY-MM-DD)"
+    defaultValue="9999-12-31"
+/>
 <BarChart 
     data={flt_chart_col_expenses}
     x=category
@@ -184,23 +209,16 @@ where posted_date between
 coalesce(try_cast('${inputs.exp_lower_bound}' as date), '1900-01-01'::date)
 and 
 coalesce(try_cast('${inputs.exp_upper_bound}' as date), '9999-12-31'::date)
-and category in  ${inputs.merch_cat_select.value}
-```
-
-```sql expenses_cutoff_date 
-select (
-    select min(posted_at_timestamp) + interval ${inputs.expensesDateSlider} day
-    from pfc_bank.rpt_expenses_detail
-)::date as expenses_as_of
+and category in  ${inputs.merch_cat_select2.value}
 ```
 
 <Dropdown 
     data={unique_merch_cats} 
     title="Filter by category"
-    name=merch_cat_select 
+    name=merch_cat_select2
     value=category
     multiple
-    defaultValue="cost-of-living"
+    selectAllByDefault=true
 />
 
 <TextInput
