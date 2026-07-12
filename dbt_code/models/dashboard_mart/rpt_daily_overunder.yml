@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: rpt_daily_overunder
+    description: "Daily report tracking spending vs income."
+
+    columns:
+      - name: calendar_date
+        data_type: date
+        description: "Date on which we attribute none or some spend, none or some income."
+      - name: daily_income
+        data_type: decimal(12,2)
+        description: "Attributed income in USD for the given Day."
+      - name: daily_spend
+        data_type: decimal(12,2)
+        description: "Attributed spend in USD for the given Day."
+      - name: dollars_over
+        data_type: decimal(12,2)
+        description: "Total USD in excess of the daily spend."
+      - name: dollars_under
+        data_type: decimal(12,2)
+        description: "Total USD in excess of the daily income"
+      - name: day_color
+        data_type: text
+        description: "A simple tag value. Using the names of colors, it indicates whether the given day is mostly a loss (Red), mostly a gain (Green), is a mostly-break even day (Grey), or is exactly a break-even day (Black)."
