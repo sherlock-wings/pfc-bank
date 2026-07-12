@@ -46,4 +46,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: dbt_code
-          command: pages deploy target --project-name=pfc-finance-dbt-docs --branch=main
+          command: pages deploy target --project-name=bank-dbt-docs --branch=main
