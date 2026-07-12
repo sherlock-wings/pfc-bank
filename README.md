@@ -15,6 +15,8 @@ To do this, we have to meet a few requirements:
 
 1. The pipeline moves real bank transactions and delivers daily updates to keep the data fresh
    - We achieve this with a python script pulling data from real bank accounts via SimpleFIN
+      - SimpleFIN is the only component of this project that is not 100% free. 
+      - As of time of last edit, this service is $15/year, or just a little over 4 cents a day 
    - For moving the actual data, we use dbt and their duckdb adapter
 2. The database requires minimal setup and virtually zero maintenance
    - For this, we use DuckDB. Doesn't get any easier than a file-based database that lives entirely in memory
