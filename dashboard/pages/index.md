@@ -116,9 +116,10 @@ order by posted_date desc
 <LineChart 
     data={chart_daily_overunder}
     x=calendar_date
-    y=daily_spend
-    y2=daily_income
+    y={['daily_spend','daily_income']} 
     yAxisTitle="Daily Spending vs Income"
+    yMin=0
+    yMax=1500
 />
 
 ## All Expenses
