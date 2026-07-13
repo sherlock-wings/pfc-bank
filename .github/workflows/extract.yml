@@ -51,5 +51,5 @@ jobs:
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: us-east-2
-      - run: uv run dbt build
+      - run: uv run dbt deps && uv run dbt build
         working-directory: dbt_code
