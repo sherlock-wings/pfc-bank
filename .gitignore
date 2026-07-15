@@ -8,3 +8,8 @@ workbench*
 *.parquet
 logs*
 output.csv
+# Real payrate/regex-overlay seeds. Source of truth is s3://pfc-nfcu/config/;
+# these paths are anchored to the repo root so they never match the committed
+# placeholder at dbt_code/seeds/seed_payrate.csv.
+/seed_payrate.csv
+/seed_merchant_category_regex_overlay.csv
