@@ -50,7 +50,6 @@ fees,taxes,^.*(federal tax|fed tax).*$,10
 fees,parking,^.*(city of asheville).*$,10
 fees,international,^.*(international transaction fee|intl transaction).*$,1
 payments,peer to peer,^.*(zelle|venmo).*$,10
-payments,paycheck,^.*(meridian|northstar peo).*$,10
 payments,dividend,^.*(dividend).*$,10
 payments,online payment,^.*(nfo payment).*$,10
 payments,rewards,^.*(reward redemption|atm rebate).*$,10
