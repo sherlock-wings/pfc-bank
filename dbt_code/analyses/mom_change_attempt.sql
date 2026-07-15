@@ -83,7 +83,7 @@ select year
       ,try_cast(round(avg_daily_spend - last_month_avg_daily_spend,2)as decimal(12,2)) as dollars_mom_avg_daily_spend_delta
       ,case 
          when last_month_avg_daily_spend <> 0
-         then try_cast(round((avg_daily_spend - last_month_avg_daily_spend)/last_month_avg_daily_spend,2) as decimal(12,2))
+         then try_cast(round((avg_daily_spend - last_month_avg_daily_spend)/last_month_avg_daily_spend,2) as decimal(12,4))
        end as pcnt_mom_avg_daily_spend_delta
       ,case 
          when last_month_total_green_days <> 0
