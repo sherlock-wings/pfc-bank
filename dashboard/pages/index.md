@@ -282,11 +282,11 @@ select (
 
 ## Savings, by Month
 
-<BarChart 
-    data={chart_monthly_savings} 
-    x=year_month 
+
+<Chart data={chart_monthly_savings} > 
+    <Bar x=year_month  
     y=total_spend 
-    y2=total_earned
+    y2=total_earned 
     sort=false
     echartsOptions={{
         tooltip: {
@@ -306,6 +306,8 @@ select (
         }
     }}
 />
+<Line x=year_month y=account_balance/>
+</Chart>
 
 ## All Income streams
 
