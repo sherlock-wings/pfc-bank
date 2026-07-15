@@ -14,6 +14,22 @@ profile: 'dbt_code'
 vars:
   data_root: 's3://pfc-nfcu'
 
+  # Identifying details (employer name/address/pay, and the regex that matches
+  # paycheck deposits) cannot live in this public repo, so they are read at
+  # runtime from S3 rather than from a committed seed. Anything that can already
+  # reach the real data_root can read these; the paths are not themselves secret.
+  # Kept under config/ deliberately: stage/ is written by dbt and wiped by
+  # run-demo.sh --reset, and these objects are the only copy that exists.
+  #
+  # payrate_seed_csv REPLACES the payrate seed outright.
+  # regex_overlay_csv is UNIONED onto the committed merchant catalog, which stays
+  # in git; only the paycheck row is sensitive, so only it lives in S3.
+  # run-demo.sh overrides payrate_seed_csv, and its regex_seed_csv disables the
+  # overlay entirely (see map_merchant_category_regex.sql), so a persona build
+  # cannot read either of these even if run without the right flags.
+  payrate_seed_csv: 's3://pfc-nfcu/config/seed_payrate.csv'
+  regex_overlay_csv: 's3://pfc-nfcu/config/seed_merchant_category_regex_overlay.csv'
+
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
