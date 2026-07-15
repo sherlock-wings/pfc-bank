@@ -1,11 +1,13 @@
+{{ config(location=data_path('dashboard_mart/rpt_mom_performance.parquet')) }}
+
 with filtered_fact as (
-select * from fact_transactions
+select * from {{ ref('fact_transactions') }}
 where day(posted_at_timestamp) <= day(current_date())
 -- This filter allows for day-level Month-over-Month metrics
 )
 
 ,filtered_overunder as (
-    select * from rpt_daily_overunder
+    select * from {{ ref('rpt_daily_overunder') }}
     where day(calendar_date) <= day(current_date())
 -- This filter allows for day-level Month-over-Month metrics
 )
@@ -69,37 +71,49 @@ select year
 from join_tbl
 )
 
-select year
-      ,month
-      ,current_monthly_balance
-      ,this_time_last_month_balance
+select current_date() as as_of_date
+      ,try_cast(year as utinyint) as year 
+      ,try_cast(month as utinyint) as month 
+      ,try_cast(current_monthly_balance as decimal(12,2)) as current_monthly_balance
+      ,try_cast(this_time_last_month_balance as decimal(12,2)) as this_time_last_month_balance
       ,try_cast(round(current_monthly_balance - this_time_last_month_balance,2)as decimal(12,2)) as dollars_mom_balance_delta
       ,case 
          when this_time_last_month_balance <> 0
-         then try_cast(round((avg_daily_spend - this_time_last_month_balance)/this_time_last_month_balance,2) as decimal(12,2))
+         then try_cast(round((current_monthly_balance - this_time_last_month_balance)/abs(this_time_last_month_balance),2) as decimal(14,4))
        end as pcnt_mom_balance_delta
-      ,avg_daily_spend
-      ,last_month_avg_daily_spend
+      ,try_cast(round(avg_daily_spend) as decimal(12,2)) as avg_daily_spend
+      ,try_cast(round(last_month_avg_daily_spend) as decimal(12,2)) as last_month_avg_daily_spend
       ,try_cast(round(avg_daily_spend - last_month_avg_daily_spend,2)as decimal(12,2)) as dollars_mom_avg_daily_spend_delta
       ,case 
          when last_month_avg_daily_spend <> 0
-         then try_cast(round((avg_daily_spend - last_month_avg_daily_spend)/last_month_avg_daily_spend,2) as decimal(12,4))
+         then try_cast(round((avg_daily_spend - last_month_avg_daily_spend)/abs(last_month_avg_daily_spend),2) as decimal(14,4))
        end as pcnt_mom_avg_daily_spend_delta
+      ,try_cast(total_green_days as utinyint) as total_green_days
+      ,try_cast(last_month_total_green_days as utinyint) as last_month_total_green_days
+      ,try_cast(round(total_green_days - last_month_total_green_days,2)as decimal(12,2)) as mom_total_green_days_change
       ,case 
          when last_month_total_green_days <> 0
-         then try_cast(round((total_green_days - last_month_total_green_days)/last_month_total_green_days,2) as decimal(12,2))
-       end as pcnt_mom_total_green_days_delta
+         then try_cast(round((total_green_days - last_month_total_green_days)/abs(last_month_total_green_days),2) as decimal(14,4))
+       end as pcnt_mom_total_green_days
+      ,try_cast(total_red_days as utinyint) as total_red_days
+      ,try_cast(last_month_total_red_days as utinyint) as last_month_total_red_days
+      ,try_cast(round(total_red_days - last_month_total_red_days,2)as decimal(12,2)) as mom_total_red_days_change
       ,case 
          when last_month_total_red_days <> 0
-         then try_cast(round((total_red_days - last_month_total_red_days)/last_month_total_red_days,2) as decimal(12,2))
-       end as pcnt_mom_total_red_days_delta
+         then try_cast(round((total_red_days - last_month_total_red_days)/abs(last_month_total_red_days),2) as decimal(14,4))
+       end as pcnt_mom_total_red_days
+      ,try_cast(total_grey_days as utinyint) as total_grey_days
+      ,try_cast(last_month_total_grey_days as utinyint) as last_month_total_grey_days
+      ,try_cast(round(total_grey_days - last_month_total_grey_days,2)as decimal(12,2)) as mom_total_grey_days_change
       ,case 
          when last_month_total_grey_days <> 0
-         then try_cast(round((total_grey_days - last_month_total_grey_days)/last_month_total_grey_days,2) as decimal(12,2))
-       end as pcnt_mom_total_grey_days_delta
+         then try_cast(round((total_grey_days - last_month_total_grey_days)/abs(last_month_total_grey_days),2) as decimal(14,4))
+       end as pcnt_mom_total_grey_days
+      ,try_cast(total_black_days as utinyint) as total_black_days
+      ,try_cast(last_month_total_black_days as utinyint) as last_month_total_black_days
+      ,try_cast(round(total_black_days - last_month_total_black_days,2)as decimal(12,2)) as mom_total_black_days_change
       ,case 
          when last_month_total_black_days <> 0
-         then try_cast(round((total_black_days - last_month_total_black_days)/last_month_total_black_days,2) as decimal(12,2))
-       end as pcnt_mom_total_black_days_delta
+         then try_cast(round((total_black_days - last_month_total_black_days)/abs(last_month_total_black_days),2) as decimal(14,4))
+       end as pcnt_mom_total_black_days
 from lag_tbl
-order by 1,2;
