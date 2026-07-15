@@ -2,11 +2,14 @@
 -- passthrough model required when reading from seeds
 -- seeds do not support external table strategy; need a passthrough node
 --
--- Each persona has its own fictional employer, hence its own payrate. In persona
--- mode the seed is a CSV in S3 next to the persona's transactions; point at it with
---   --vars '{payrate_seed_csv: s3://pfc-nfcu/demo/<persona>/stage/seed_payrate.csv}'
--- With the var unset (the real pipeline) this reads the committed dbt seed exactly
--- as before, so the real seed is never touched.
+-- A payrate names a real employer, address and salary, so it cannot be committed
+-- to this public repo. The real one is read from S3 via payrate_seed_csv, which
+-- dbt_project.yml defaults to s3://pfc-nfcu/config/seed_payrate.csv. Personas
+-- override it with their own fictional employer (see run-demo.sh).
+--
+-- The committed seed is a zero-income placeholder used only if the var is
+-- explicitly cleared. Zero is on purpose: daily income visibly collapses to 0
+-- rather than quietly computing off a plausible-looking fake rate.
 {% if var('payrate_seed_csv', none) %}
   {% set payrate_source %}read_csv('{{ var('payrate_seed_csv') }}', header=true){% endset %}
 {% else %}
