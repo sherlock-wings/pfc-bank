@@ -1,6 +1,6 @@
 merchant_category,merchant_subcategory,regex_match_pat,match_priority
 cost-of-living,take out,^.*(eggsupgrill|wendy|raising canes|primohoagies|kanji sushi|rubys bagels|mcdonald|cook out|mi tierra|subway|vivachicken|el patron|eats|culvers|firehouse subs|wingstop|china city|domino|five guys|chick.?fil|kairos|cracker barrel|bennymazzetto|zaxby|doordash|dd store|taco bell|smashley|naan at nexton|rise and shine).*$,10
-going-out,restaurants,^.*(twisted laurel|rita s |waffle house|silas restaurant|baddaddysburgerbar|bad ?daddy|lowcountry public|home team bbq|cielo mexican|jnn|smoulder|ymap|katsubo).*$,10
+going-out,restaurants,"^.*(twisted laurel|rita s |waffle house|silas restaurant|baddaddysburgerbar|bad ?daddy|lowcountry public|home team bbq|cielo mexican|jnn|smoulder|ymap|katsubo|the lick at).*$",10
 going-out,bars,^.*(kickin chick|kerryman|agave cantina|pinky & clydes|leye|pack s tavern|new belgium|steel city|rusty bull|o leary|snickers bar|kingstide|godwin).*$,10
 vice,alcohol,^.*(bottles|atlantic spirits|corner liqour|abc stor|harleyville liquor|palmetto wine).*$,10
 vice,sweets,^.*(swank desserts|insomnia).*$,10
@@ -11,9 +11,8 @@ entertainment,programming,^.*(amazon web service|aws|link\.com).*$,10
 entertainment,movie theatre,^.*(northwoods stadium).*$,10
 discretional,online shopping,^.*(amazon mktpl|amazon reta|amzn).*$,10
 discretional,department store,^.*(target|best buy|wm supercenter|wal.?mart).*$,10
-discretional,cosmetics,^.*(ulta|diesel barbershop|sq summerville na summervill).*$,10
-discretional,snacks & beverages,^.*(lodi coffee|starbucks|dutch bros|hudsonnews|el cafecito).*$,10
-discretional,drinks & snacks,^.*(ctlp).*$,10
+discretional,cosmetics,^.*(ulta|diesel barbershop|sq \*?summerville na summervill).*$,10
+discretional,snacks & beverages,^.*(lodi coffee|starbucks|dutch bros|hudsonnews|el cafecito|ctlp\*? ?professional).*$,10
 discretional,holiday,^.*(tnt fireworks|fireworks).*$,10
 discretional,events,^.*(theknot|somethingborrowedb).*$,10
 subscription,streaming,^.*(netflix).*$,10
@@ -24,8 +23,7 @@ home-goods,home hardware,^.*(lowe s|home depot).*$,10
 home-goods,amenities,^.*(bath and body works).*$,10
 home-goods,coffee,^.*(nespresso).*$,10
 cost-of-living,grocery,^.*(212meals|piggly wiggly|harris ?teeter|aldi|costco|publix|ingles).*$,10
-cost-of-living,gas,^.*(enmarket|spinx|sunoco|scotchman|shell oil|shell service).*$,10
-cost-of-living,healthcare,^.*(cvs).*$,10
+cost-of-living,gas,^.*(enmarket|spinx|sunoco|scotchman|shell oil|shell service|pilot).*$,10
 cost-of-living,home maintenance,^.*(core pest solu).*$,10
 cost-of-living,laundry,^.*(dropps).*$,10
 cost-of-living,utility electricity,^.*(dominion energy).*$,10
