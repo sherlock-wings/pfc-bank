@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: rpt_daily_transactions
+  - name: rpt_transaction_detail
     description: "Detail-level transactions from all bank accounts."
 
     columns:
