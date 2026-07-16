@@ -30,6 +30,16 @@ vars:
   payrate_seed_csv: 's3://pfc-nfcu/config/seed_payrate.csv'
   regex_overlay_csv: 's3://pfc-nfcu/config/seed_merchant_category_regex_overlay.csv'
 
+  # The real account balance as of the day data collection started cannot live
+  # in this public repo either, so it is read at runtime from S3 the same way.
+  # initial_balance_seed_csv REPLACES the initial-balance seed outright.
+  #
+  # NOT yet overridden by run-demo.sh -- a persona build will read the real
+  # starting balance from config/ unless this var is also overridden with a
+  # persona-specific seed. Don't build/serve a persona against
+  # rpt_daily_transactions until that's wired up (see stg_initial_balance.sql).
+  initial_balance_seed_csv: 's3://pfc-nfcu/config/seed_initial_balance.csv'
+
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
