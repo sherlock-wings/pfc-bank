@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: rpt_transaction_daily
+    description: "Daily-level balance from all transactions across all bank accounts."
+
+    columns:
+      - name: calendar_date
+        data_type: date
+        description: "The date for the given batch of transactions, represented by one record. May or may not correspond to a day on which transactions actually occur. We fill out empty days like this so we can always do month-over-month daily comparisons. These comparisons require a record for every day on the calendar; Otherwise, it is possible for a comparison on some day to not find a corresponding record on the previous month for the same date."
+      - name: eod_balance
+        data_type: decimal(12,2)
+        description: "The total balance when summing all money gained and lost for that calendar date."
+      - name: last_month_eod_balance
+        data_type: decimal(12,2)
+        description: "The eod_balance on the previous month, same date as the current record."
+      - name: mom_dollars_change
+        data_type: decimal(12,2)
+        description: "The dollars gained/lost between the current date and one month previous."
+      - name: mom_pcnt_change
+        data_type: decimal(14,4)
+        description: "The percent of dollars gained/lost between the current date and one month previous."
+      
