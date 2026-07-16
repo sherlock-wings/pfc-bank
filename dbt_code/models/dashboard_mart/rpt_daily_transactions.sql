@@ -35,8 +35,18 @@ with deduped as (
     ) = 1
 )
 
-select *
-      ,try_cast(sum(txn_amount) over (order by posted_at_timestamp)
-       as decimal(12,2)) as running_balance
+select deduped.*
+      ,try_cast(
+          sum(txn_amount) over (order by posted_at_timestamp
+                                        ,merchant_category
+                                        ,merchant_subcategory
+                                        ,merchant
+                                        ,txn_description
+                                        ,account
+                                        ,txn_amount
+                               ) + ib.account_balance
+          as decimal(12,2)
+       ) as running_balance
 from deduped
+cross join {{ ref('stg_initial_balance') }} ib
 order by all
