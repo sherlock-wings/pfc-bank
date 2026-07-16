@@ -1,21 +1,15 @@
 version: 2
 
 models:
-  - name: dim_accounts
+  - name: dim_accounts_current
     description: "Top-level account information. Shows all NFCU accounts and their balances."
 
     columns:
-      - name: account_scd_key
-        data_type: text
-        description: "Slowly-Changing Type 2 Dimensional Key. One for each account-record-version."
-        tests:
-          - unique:
-              config:
-                severity: warn
       - name: bank_account_id
         data_type: text
         description: "Natural key for bank accounts-- some kind of UUID."
         tests:
+          - unique
           - not_null
       - name: bank_account_name
         data_type: text
@@ -40,16 +34,6 @@ models:
       - name: filename
         data_type: text
         description: "Name of the file (stored in S3) that contains the given record."
-      - name: record_loaded_at_timestamp
+      - name: balance_last_updated_timestamp
         data_type: timestamptz
-        description: "The time at which the given record was loaded to s3."
-      - name: is_current_ind
-        data_type: boolean
-        description: "Flag that indicates whether a given record/account-version is the latest known information for that account."
-      - name: balance_valid_from
-        data_type: timestamptz
-        description: "The time at which NFCU declared the given balance to *begin* being valid."
-      - name: balance_valid_to
-        data_type: timestamptz
-        description: "The time at which NFCU declared the given balance *stopped* being valid."
-
+        description: "The time at which NFCU most recently updated this account's balance."
