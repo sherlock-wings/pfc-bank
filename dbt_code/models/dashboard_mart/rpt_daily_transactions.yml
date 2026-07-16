@@ -5,6 +5,9 @@ models:
     description: "Detail-level transactions from all bank accounts."
 
     columns:
+      - name: calendar_date
+        data_type: date
+        description: "The date for the given record. May or may not correspond to a day on which transactions actually occur. We fill out empty days like this so we can always do month-over-month daily comparisons. These comparisons require a record for every day on the calendar; Otherwise, it is possible for a comparison on some day to not find a corresponding record on the previous month for the same date."
       - name: posted_at_timestamp
         data_type: timestamptz
         description: "The time at which the transaction was posted to the SimpleFIN/MX Aggregator."
@@ -29,4 +32,6 @@ models:
       - name: running_balance
         data_type: decimal(12,2)
         description: "Cumulative balance as of the point after the current row's transaciton."
+        tests:
+          - not_null
       

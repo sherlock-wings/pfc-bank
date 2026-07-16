@@ -35,6 +35,7 @@ with deduped as (
     ) = 1
 )
 
+,blnc as (
 select deduped.*
       ,try_cast(
           sum(txn_amount) over (order by posted_at_timestamp
@@ -49,4 +50,31 @@ select deduped.*
        ) as running_balance
 from deduped
 cross join {{ ref('stg_initial_balance') }} ib
+)
+
+select d.full_date as calendar_date
+      ,d.full_date - interval 1 month as last_month_date
+      ,b.posted_at_timestamp
+      ,coalesce(b.merchant_category, '**NONE (no transactions this day)**') as merchant_category
+      ,coalesce(b.merchant_subcategory, '**NONE (no transactions this day)**') as merchant_subcategory
+      ,coalesce(b.merchant, '**NONE (no transactions this day)**') as merchant
+      ,coalesce(b.txn_description, '**NONE (no transactions this day)**') as txn_description
+      ,coalesce(b.account, '**NONE (no transactions this day)**') as account
+      ,b.txn_amount
+      ,last_value(b.running_balance ignore nulls) over (
+                order by calendar_date
+                        ,posted_at_timestamp
+                        ,merchant_category
+                        ,merchant_subcategory
+                        ,merchant
+                        ,txn_description
+                        ,account
+                        ,txn_amount
+               rows between unbounded preceding and current row
+        ) as running_balance
+from {{ ref('dim_date') }} d 
+left join blnc b 
+       on b.posted_at_timestamp::date = d.full_date
+where calendar_date between '2026-04-03'::date
+  and current_date()
 order by all
