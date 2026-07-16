@@ -9,6 +9,8 @@ with money_spine as (
     group by 1 
 )
 
+,
+
 select a.calendar_date
       ,try_cast(a.eod_balance as decimal(12,2)) as eod_balance
       ,try_cast(b.eod_balance as decimal(12,2)) as last_month_eod_balance
