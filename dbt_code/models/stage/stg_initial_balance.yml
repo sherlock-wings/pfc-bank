@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: stg_initial_balance
+    description: "Passthrough view over the initial-balance seed. Single row holding the real account balance as of the day data collection started, used to offset running-balance calculations."
+
+    columns:
+
+      - name: balance_as_of_timestamp
+        data_type: timestamptz
+        description: "Timestamp the account_balance is accurate as of."
+        tests:
+          - not_null
+
+      - name: account_balance
+        data_type: decimal(12,2)
+        description: "Account balance as of balance_as_of_timestamp, used as the starting offset for cumulative running-balance sums."
+        tests:
+          - not_null
