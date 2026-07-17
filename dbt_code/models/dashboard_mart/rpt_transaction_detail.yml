@@ -29,9 +29,14 @@ models:
       - name: txn_amount
         data_type: decimal(12,2)
         description: "Currency amount gained/lost in the transaction."
-      - name: running_balance
+      - name: this_acnt_running_balance
         data_type: decimal(12,2)
-        description: "Cumulative balance as of the point after the current row's transaciton."
+        description: "Cumulative balance for this row's account as of the point after the current row's transaciton."
+        tests:
+          - not_null
+      - name: all_acnts_running_balance
+        data_type: decimal(12,2)
+        description: "Cumulative balance across all accounts as of the point after the current row's transaciton."
         tests:
           - not_null
       

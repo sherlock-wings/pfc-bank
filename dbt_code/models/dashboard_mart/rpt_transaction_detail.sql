@@ -38,6 +38,18 @@ with deduped as (
 ,blnc as (
 select deduped.*
       ,try_cast(
+          sum(txn_amount) over (partition by account
+                                order     by posted_at_timestamp
+                                            ,merchant_category
+                                            ,merchant_subcategory
+                                            ,merchant
+                                            ,txn_description
+                                            ,account
+                                            ,txn_amount
+                               ) --+ ib.account_balance
+          as decimal(12,2)
+       ) as this_acnt_running_balance
+       ,try_cast(
           sum(txn_amount) over (order by posted_at_timestamp
                                         ,merchant_category
                                         ,merchant_subcategory
@@ -47,7 +59,7 @@ select deduped.*
                                         ,txn_amount
                                ) + ib.account_balance
           as decimal(12,2)
-       ) as running_balance
+       ) as all_acnts_running_balance
 from deduped
 cross join {{ ref('stg_initial_balance') }} ib
 )
