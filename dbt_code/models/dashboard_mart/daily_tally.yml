@@ -11,10 +11,10 @@ models:
       - name: posted_date
         data_type: date
         description: "The date on which one or more transactions where posted."
-      - name: eod_balance
+      - name: acnt_balance
         data_type: decimal(12,2)
         description: "The total balance when summing all money gained and lost for that calendar date."
-      - name: last_month_eod_balance
+      - name: last_month_balance
         data_type: decimal(12,2)
         description: "The eod_balance on the previous month, same date as the current record."
       - name: mom_dollars_change
