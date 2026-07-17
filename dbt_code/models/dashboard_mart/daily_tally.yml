@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: daily_tally
-    description: "Daily end-of-day balance per bank account. Uses the bank-reported balance (dim_accounts) wherever available, and walks backward from the earliest reported balance via transaction deltas for dates before reporting coverage begins. Also carries month-over-month change vs the same calendar day one month prior."
+    description: "Daily end-of-day balance per bank account, from each account's first bank-reported date (its trust floor/anchor) through today. Every balance is the bank-reported balance from dim_accounts (carried forward across gap days) -- pre-anchor dates are intentionally excluded because they can't be reconciled to a bank balance. Also carries month-over-month change vs the same calendar day one month prior, which is null until a month of anchored history exists."
 
     columns:
       - name: account
@@ -10,16 +10,16 @@ models:
         description: "The bank account this daily balance is for."
       - name: posted_date
         data_type: date
-        description: "Calendar date. One row per account per day from first activity through today (no gaps)."
+        description: "Calendar date. One row per account per day from the account's anchor date (first bank-reported balance) through today (no gaps)."
       - name: eod_txn_count
         data_type: bigint
         description: "Number of transactions posted on this date for this account (0 on days with no activity)."
       - name: acnt_balance
         data_type: decimal(12,2)
-        description: "End-of-day balance for this account: the bank-reported balance where the bank reported one, else the backward-anchored transaction walk for pre-coverage dates."
+        description: "End-of-day balance for this account: the bank-reported balance (dim_accounts), carried forward across gap days and today. Always the bank's own number -- never a reconstruction."
       - name: last_month_balance
         data_type: decimal(12,2)
-        description: "acnt_balance on the same calendar day one month earlier (null before coverage/history begins)."
+        description: "acnt_balance on the same calendar day one month earlier. Null when that day is before the anchor (roughly the first month of coverage), so MoM is never computed against an untrusted balance."
       - name: mom_dollars_change
         data_type: decimal(12,2)
         description: "Dollars gained/lost between this date and one month prior (acnt_balance - last_month_balance)."
