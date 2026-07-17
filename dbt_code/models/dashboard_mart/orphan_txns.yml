@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: rpt_unknown_transactions
+  - name: orphan_txns
     description: "Passthrough view containing merchant categories."
 
     columns:

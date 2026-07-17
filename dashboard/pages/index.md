@@ -5,6 +5,11 @@ select sum(actual_balance) as balance, 'All' as account
 from pfc_bank.dim_accounts_current
 where bank_account_name not ilike '%mortgage%'
 ```
+```sql mom_blnc_all_accounts
+select mom_pcnt_change,do
+```
+
+
 ```sql blnc_main_savings
 select sum(actual_balance) as balance, bank_account_name as account_name
 from pfc_bank.dim_accounts_current
@@ -21,11 +26,15 @@ from pfc_bank.dim_accounts_current
 where bank_account_name ilike '%check%'
 ```
 
+
 <BigValue 
   data={blnc_all_accounts} 
   value=balance
   fmt=usd2
   title="Balance, All Accounts"
+  comparison=order_growth
+  comparisonFmt=pct1
+  comparisonTitle="vs. Last Month"
 />
 <BigValue 
   data={blnc_main_savings} 
