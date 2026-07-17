@@ -2,25 +2,27 @@ version: 2
 
 models:
   - name: daily_tally
-    description: "Daily-level balance from all transactions across all bank accounts."
+    description: "Daily end-of-day balance per bank account. Uses the bank-reported balance (dim_accounts) wherever available, and walks backward from the earliest reported balance via transaction deltas for dates before reporting coverage begins. Also carries month-over-month change vs the same calendar day one month prior."
 
     columns:
       - name: account
         data_type: text
-        description: "The bank account for which we are comparing MoM balance change on a daily basis. Includes 'ALL' (meaning MoM balance across all accounts) as an option."
+        description: "The bank account this daily balance is for."
       - name: posted_date
         data_type: date
-        description: "The date on which one or more transactions where posted."
+        description: "Calendar date. One row per account per day from first activity through today (no gaps)."
+      - name: eod_txn_count
+        data_type: bigint
+        description: "Number of transactions posted on this date for this account (0 on days with no activity)."
       - name: acnt_balance
         data_type: decimal(12,2)
-        description: "The total balance when summing all money gained and lost for that calendar date."
+        description: "End-of-day balance for this account: the bank-reported balance where the bank reported one, else the backward-anchored transaction walk for pre-coverage dates."
       - name: last_month_balance
         data_type: decimal(12,2)
-        description: "The eod_balance on the previous month, same date as the current record."
+        description: "acnt_balance on the same calendar day one month earlier (null before coverage/history begins)."
       - name: mom_dollars_change
         data_type: decimal(12,2)
-        description: "The dollars gained/lost between the current date and one month previous."
+        description: "Dollars gained/lost between this date and one month prior (acnt_balance - last_month_balance)."
       - name: mom_pcnt_change
         data_type: decimal(14,4)
-        description: "The percent of dollars gained/lost between the current date and one month previous."
-      
+        description: "Percent change between this date and one month prior."
