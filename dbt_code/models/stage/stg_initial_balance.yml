@@ -2,18 +2,25 @@ version: 2
 
 models:
   - name: stg_initial_balance
-    description: "Passthrough view over the initial-balance seed. Single row holding the real account balance as of the day data collection started, used to offset running-balance calculations."
+    description: "Passthrough view over the initial-balance seed. One row per account holding the real account balance as of the day data collection started for that account, used to offset running-balance calculations."
 
     columns:
 
-      - name: balance_as_of_timestamp
-        data_type: timestamptz
-        description: "Timestamp the account_balance is accurate as of."
+      - name: offset_as_of_date
+        data_type: date
+        description: "Date the initial_offset_balance is accurate as of, for this account."
         tests:
           - not_null
 
-      - name: account_balance
+      - name: account_name
+        data_type: text
+        description: "Name of the NFCU bank account, matching ledger.account / dim_accounts.bank_account_name."
+        tests:
+          - not_null
+          - unique
+
+      - name: initial_offset_balance
         data_type: decimal(12,2)
-        description: "Account balance as of balance_as_of_timestamp, used as the starting offset for cumulative running-balance sums."
+        description: "Account balance as of offset_as_of_date, used as the starting offset for this account's cumulative running-balance sum."
         tests:
           - not_null
