@@ -1,7 +1,12 @@
 {{ config(location=data_path('dashboard_mart/ledger.parquet')) }}
 
-with deduped as (
-    select f.posted_at_timestamp
+-- Exact-identity dedup: collapse rows the feed re-records with an identical
+-- description, payee, timestamp and amount (a purchase NFCU minted two txn_ids
+-- for, or the same file loaded twice). One row per identity, newest load wins.
+with base as (
+    select f.bank_account_id                  as account_id
+          ,f.txn_id
+          ,f.posted_at_timestamp
           ,m.merchant_category
           ,m.merchant_subcategory
           ,f.payee as merchant
@@ -20,6 +25,74 @@ with deduped as (
             order     by f.record_loaded_at_timestamp desc nulls last
                         ,f.txn_id
     ) = 1
+)
+
+-- Restatement dedup. From June 2026 on, NFCU re-posts some transactions (so far
+-- only Savings<->Checking transfers) a second time in a TERSE form pinned to
+-- 08:00:00, 0-1 days after the real VERBOSE, real-timestamped posting -- e.g.
+-- "Transfer From Savings -7685" @08:00 restating "Transfer from Savings TFR FR
+-- OTHER" @19:46. The exact-identity dedup above can't collapse these because the
+-- description AND the timestamp differ, so they double-count. We drop the terse
+-- copy whenever a verbose original of the same account+amount posted within the
+-- prior 2 days, paired 1:1 so we never drop more terse rows than there are
+-- originals to restate.
+--
+-- Why this doesn't over-collapse:
+--   * We only ever drop terse (08:00) rows and always keep every verbose one, so
+--     two genuine identical purchases -- which both arrive verbose (real
+--     timestamps) -- are never touched.
+--   * Terse-only postings with no verbose partner are kept: credit-card txns (all
+--     post at 08:00 with no verbose form), recurring ACH bills, and recent days
+--     whose verbose copy hasn't synced yet.
+,tagged as (
+    select *
+          ,strftime(posted_at_timestamp, '%H:%M:%S') = '08:00:00' as is_terse
+    from base
+)
+
+-- Every terse<->verbose in-window candidate pair (same account + amount, verbose
+-- posted on or up to 2 days before the terse copy).
+,cand as (
+    select t.txn_id               as terse_id
+          ,v.txn_id               as verbose_id
+          ,v.posted_at_timestamp  as verbose_ts
+    from tagged t
+    join tagged v
+      on  v.account_id = t.account_id
+     and  v.txn_amount = t.txn_amount
+     and  not v.is_terse
+     and  v.posted_at_timestamp::date
+              between t.posted_at_timestamp::date - 2
+                  and t.posted_at_timestamp::date
+    where t.is_terse
+)
+
+-- Pair each terse copy with its nearest verbose original...
+,pref as (
+    select terse_id, verbose_id
+    from cand
+    qualify row_number() over (
+            partition by terse_id order by verbose_ts desc, verbose_id
+    ) = 1
+)
+
+-- ...and let each verbose original absorb at most one terse restatement.
+,restated as (
+    select terse_id
+    from pref
+    qualify row_number() over (partition by verbose_id order by terse_id) = 1
+)
+
+,deduped as (
+    select posted_at_timestamp
+          ,merchant_category
+          ,merchant_subcategory
+          ,merchant
+          ,txn_description
+          ,account
+          ,txn_amount
+    from tagged
+    where txn_id not in (select terse_id from restated)
 )
 
 -- Bank-reported balance per account per reported date, straight from the account
