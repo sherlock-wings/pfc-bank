@@ -11,19 +11,6 @@ with deduped as (
     from {{ ref('fact_transactions') }} f
     left join {{ ref('dim_merchant')}} m
            on f.merchant_category_key = m.merchant_category_key
-    -- Transfers between checkings and savings accounts are not
-    -- expenses, nor income. Filter out net-zero txns
-    where (
-        (f.txn_description ilike '%transfer%' and f.txn_description ilike '%credit card%')
-        or
-        (f.txn_description ilike '%transfer%' and f.txn_description ilike '%mortgage%')
-        or
-        f.txn_description not ilike '%transfer%'
-      )
-    -- When two transactions have different transaction IDs, but the same Account, 
-    -- description, payee, amount, and time of posting, assume they are NOT in fact 
-    -- two distinct transactions. Take whichever record was posted latest and call that
-    -- the *SOLE* transaction
     qualify row_number() over (
             partition by f.bank_account_id
                         ,f.txn_description
@@ -33,6 +20,22 @@ with deduped as (
             order     by f.record_loaded_at_timestamp desc nulls last
                         ,f.txn_id            
     ) = 1
+)
+
+,anchor_cumsum as (
+    -- initial_offset_balance is the true balance as of offset_as_of_date, which
+    -- can land mid-history rather than before the first transaction. To anchor
+    -- the running-balance series there, the flat offset added below has to net
+    -- out whatever the transaction sum already accumulates by that date --
+    -- otherwise every balance is off by the account's pre-anchor cumulative sum.
+    select ib.account_name
+          ,ib.initial_offset_balance
+          ,coalesce(sum(d.txn_amount), 0) as cumsum_thru_anchor
+    from {{ ref('stg_initial_balance') }} ib
+    left join deduped d
+           on d.account = ib.account_name
+          and d.posted_at_timestamp::date <= ib.offset_as_of_date
+    group by all
 )
 
 ,blnc as (
@@ -46,11 +49,12 @@ select deduped.*
                                             ,txn_description
                                             ,account
                                             ,txn_amount
-                               ) --+ ib.account_balance
+                               ) + coalesce(ac.initial_offset_balance - ac.cumsum_thru_anchor, 0)
           as decimal(12,2)
        ) as acnt_running_balance
 from deduped
-cross join {{ ref('stg_initial_balance') }} ib
+left join anchor_cumsum ac
+       on deduped.account = ac.account_name
 )
 
 select posted_at_timestamp
